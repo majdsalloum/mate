@@ -1,2 +1,2 @@
-# mate
-Maté Browser
+# Maté
+Maté web Browser
