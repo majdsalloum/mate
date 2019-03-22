@@ -2,7 +2,7 @@ package core.render;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import GUI.Page;
+import gui.Page;
 public class FXDrawer implements Drawer {
     Tab tab;
     Page page;

@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -6,7 +6,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import Network.InternetConnection;
+import network.InternetConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,7 +64,7 @@ public class Window {
     public void createNewTab()
     {
         tab = new Tab("NewTab");
-        Image image =new Image(getClass().getResourceAsStream("..\\Img\\home1.png"));
+        Image image =new Image(getClass().getResourceAsStream("..\\img\\home1.png"));
         ImageView imageView =new ImageView(image);
         imageView.setFitHeight(15);
         imageView.setFitWidth(15);

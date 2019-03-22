@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,7 +22,7 @@ public class UserInterface {
         mainStage.setMaximized(true);
         mainStage.setTitle("Matté");
         mainStage.initStyle(StageStyle.DECORATED);
-        Image image=new Image(getClass().getResourceAsStream("..\\Img\\mate.png"));
+        Image image=new Image(getClass().getResourceAsStream("..\\img\\mate.png"));
         mainStage.getIcons().add(image);
 
         //TapPane

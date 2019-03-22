@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import core.render.FXDrawer;
 import core.tags.HTML;
