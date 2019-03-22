@@ -16,12 +16,23 @@ public class Window {
         searchLog.add("matte:\\home");
         pageToolBar =new PageToolBar(this);
         //pageToolBar.setWindow(this);
-
+//        searchLog =new ArrayList<>();
+//        searchLog.add("matte:\\home");
+//        pageToolBar =new PageToolBar(this);
+//        //pageToolBar.setWindow(this);
+//
+//        page= new HomePage();
+//        searchLog.add(page.getPath());
+//        pageToolBar.getTextSearch().setText(page.getPath());
+//        content = new VBox();
+//        Integer pageCounter=0;
         page= new HomePage();
         searchLog.add(page.getPath());
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
         Integer pageCounter=0;
+
+
     }
     public void changeContent(Page page)
     {
