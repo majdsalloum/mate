@@ -139,7 +139,6 @@ public class Window {
     public void search(String path)
     {
         InternetConnection internetConnection = new InternetConnection(this);
-        InputStream inputStream=null;
         internetConnection.getPage(path);
         Page newPage = new Page();
         page = newPage;
@@ -150,7 +149,10 @@ public class Window {
     {
         FXDrawer fxDrawer = new FXDrawer(tab,page);
         Tag head = new HTML();
+        System.out.println(2);
+        head.addChildren("ode");
         head.draw(fxDrawer);
+
     }
 
 }

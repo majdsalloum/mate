@@ -11,6 +11,7 @@ public class HTML extends Tag {
 
     @Override
     public void draw(Drawer drawer) {
+        drawer.drawText((String)children.get(0));
 //        drawer.drawText(lang != null ? lang : "No Language");
     }
 }

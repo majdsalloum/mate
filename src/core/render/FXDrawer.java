@@ -3,6 +3,7 @@ package core.render;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import gui.Page;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 public class FXDrawer implements Drawer {
@@ -22,6 +23,7 @@ public class FXDrawer implements Drawer {
     public void drawText(String text) {
         Label label = new Label(text);
         label.setText(text);
+        page.getFlowPane().getChildren().add(label);
     }
 
     @Override
