@@ -152,6 +152,7 @@ public class Window {
         System.out.println(2);
         head.addChildren("ode");
         head.draw(fxDrawer);
+        ////
 
     }
 
