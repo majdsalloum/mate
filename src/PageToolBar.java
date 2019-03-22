@@ -7,15 +7,17 @@ public class PageToolBar {
     private ToolBar toolBar;
     private Button backward,forward,refresh,home,search,newTabButton;
     private TextField textSearch ;
-    private MenuItem setting,newTab,download,newWindow,exit;
+    private MenuItem setting,newTab,downloads,newWindow,exit;
     private MenuBar menuBar;
     private Menu file;
     private final Integer ICON_SIZE=15;
     Window window;
+    private TabPane tabPane;
 
-    public PageToolBar(Window window)
+    public PageToolBar(Window window , TabPane tabPane)
     {
         this.window=window;
+        this.tabPane=tabPane;
         toolBar = new ToolBar();
         toolBar.setPadding(new Insets(20));
         //add buttons
@@ -64,10 +66,10 @@ public class PageToolBar {
 
         newTab=new MenuItem("NewTab");
         newWindow=new MenuItem("NewWindow");
-        download=new MenuItem("Download");
+        downloads=new MenuItem("Downloads");
         setting=new MenuItem("Setting");
         exit=new MenuItem("Exit");
-        file.getItems().addAll(newTab,newWindow,download,setting,exit);
+        file.getItems().addAll(newTab,newWindow,downloads,setting,exit);
         menuBar.getMenus().addAll(file);
 
         newTabButton= new Button();
@@ -86,8 +88,6 @@ public class PageToolBar {
         imageView.setFitWidth(ICON_SIZE);
         button.setGraphic(imageView);
     }
-
-
 
 
 
@@ -133,8 +133,8 @@ public class PageToolBar {
         return newTab;
     }
 
-    public MenuItem getDownload() {
-        return download;
+    public MenuItem getDownloads() {
+        return downloads;
     }
 
     public MenuItem getNewWindow() {

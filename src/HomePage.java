@@ -1,6 +1,6 @@
+import Network.InternetConnection;
 import javafx.animation.*;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -10,6 +10,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class HomePage extends Page{
     private Label matteLabel;
@@ -39,10 +42,22 @@ public class HomePage extends Page{
         search.setFont(Font.font(20));
         search.setTextFill(Color.GREEN);
         homePage.getChildren().addAll(matteLabel,textSearch,search);
+        search.setOnAction(event -> {
+            Window.search(textSearch.getText());
+        });
+
     }
     @Override
     public Node getContent()
     {
         return homePage;
+    }
+
+    public Button getSearch() {
+        return search;
+    }
+
+    public TextField getTextSearch() {
+        return textSearch;
     }
 }
