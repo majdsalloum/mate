@@ -3,7 +3,6 @@ package gui;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 import java.io.BufferedReader;
@@ -11,10 +10,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
-public class TestPage extends Page {
+public class TestPage extends Page{
+    InputStream inputStream;
 
-    public TestPage(InputStream inputStream) {
-        VBox vBox = new VBox();
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    @Override
+    public Node getContent()
+    {   VBox vBox = new VBox();
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
@@ -23,10 +28,17 @@ public class TestPage extends Page {
                 vBox.getChildren().add(new Label(line));
                 line = br.readLine();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (Exception e){
             vBox.getChildren().add(new Label("Page not founf :("));
         }
-        flowPane.getChildren().add(vBox);
+        /*
+        WebView webView = new WebView();
+        WebEngine webEngine =webView.getEngine();
+        vBox = new VBox();
+        webView.setPrefHeight(720);
+        vBox.getChildren().add(webView);
+        webEngine.load("https://google.com");*/
+        return new ScrollPane(vBox);
     }
 }
