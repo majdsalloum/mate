@@ -1,5 +1,5 @@
-import Network.InternetConnection;
-import core.exceptions.UnsupportedAttributeException;
+package gui;
+
 import core.render.FXDrawer;
 import core.tags.HTML;
 import core.tags.Tag;
@@ -14,12 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomePage extends Page{
     private Label matteLabel;

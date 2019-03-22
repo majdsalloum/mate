@@ -1,3 +1,5 @@
+package gui;
+
 import javafx.scene.Node;
 
 public class Page {
@@ -15,5 +17,6 @@ public class Page {
     public String getPath() {
         return path;
     }
+
 
 }

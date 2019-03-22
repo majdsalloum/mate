@@ -1,3 +1,5 @@
+package gui;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -23,7 +25,7 @@ public class PageToolBar {
         //add buttons
         backward =new Button();
         backward.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("Img//backward.png",backward);
+        insertImage("..\\img//backward.png",backward);
         backward.setAccessibleHelp("backward");
 //        if (window.getSearchLog().size()<=1)
 //            backward.setDisable(true);
@@ -31,7 +33,7 @@ public class PageToolBar {
 
         forward =new Button();
         forward.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("Img//forward.png",forward);
+        insertImage("..\\img//forward.png",forward);
         forward.setAccessibleHelp("forward");
 //        if (window.getPageIndexInSearchLog()==window.getSearchLog().size()-1)
 //            forward.setDisable(true);
@@ -39,12 +41,12 @@ public class PageToolBar {
 
         refresh =new Button();
         refresh.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("Img//refresh1.png",refresh);
+        insertImage("..\\img//refresh1.png",refresh);
         refresh.setAccessibleHelp("refresh");
 
         home=new Button();
         home.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("Img//home1.png",home);
+        insertImage("..\\img//home1.png",home);
         home.setAccessibleHelp("home");
 
         textSearch =new TextField();
@@ -53,12 +55,12 @@ public class PageToolBar {
 
         search =new Button();
         search.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("Img//search1.png",search);
+        insertImage("..\\img//search1.png",search);
         search.setAccessibleHelp("search");
 
         menuBar=new MenuBar();
         file =new Menu();
-        Image image=new Image(getClass().getResourceAsStream("Img//menu.png"));
+        Image image=new Image(getClass().getResourceAsStream("..\\img//menu.png"));
         ImageView imageView=new ImageView(image);
         imageView.setFitHeight(ICON_SIZE);
         imageView.setFitWidth(ICON_SIZE);
@@ -73,7 +75,7 @@ public class PageToolBar {
         menuBar.getMenus().addAll(file);
 
         newTabButton= new Button();
-        insertImage("Img//newtab.png",newTabButton);
+        insertImage("..\\img//newtab.png",newTabButton);
         newTabButton.setAccessibleHelp("newTabButton");
 
         toolBar.getItems().add(new Separator());

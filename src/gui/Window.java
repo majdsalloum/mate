@@ -1,12 +1,12 @@
-import javafx.animation.FadeTransition;
+package gui;
+
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import Network.InternetConnection;
-import javafx.util.Duration;
+import network.InternetConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,23 +28,12 @@ public class Window {
         pageToolBar =new PageToolBar(this,tabPane);
         //set Actions
         setActions();
-        //pageToolBar.setWindow(this);
-//        searchLog =new ArrayList<>();
-//        searchLog.add("matte:\\home");
-//        pageToolBar =new PageToolBar(this);
-//        //pageToolBar.setWindow(this);
-//
-//        page= new HomePage();
-//        searchLog.add(page.getPath());
-//        pageToolBar.getTextSearch().setText(page.getPath());
-//        content = new VBox();
-//        Integer pageCounter=0;
         page= new HomePage();
         searchLog.add(page.getPath());
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
         Integer pageCounter=0;
-        creatNewTab();
+        createNewTab();
         tabPane.getTabs().add(tab);
     }
     public void changeContent(Page page)
@@ -72,10 +61,10 @@ public class Window {
     {
         return pageIndexInSearchLog;
     }
-    public void creatNewTab()
+    public void createNewTab()
     {
         tab = new Tab("NewTab");
-        Image image =new Image(getClass().getResourceAsStream("Img\\home1.png"));
+        Image image =new Image(getClass().getResourceAsStream("..\\img\\home1.png"));
         ImageView imageView =new ImageView(image);
         imageView.setFitHeight(15);
         imageView.setFitWidth(15);
