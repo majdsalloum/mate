@@ -19,29 +19,30 @@ public class InternetConnection {
     }
 
     public void getPage(String urlPath) {
-
-        try {
-            URL url;
-            try {
-                url = new URL(urlPath);
-            } catch (Exception e) {
-                String google = "https://www.google.com/search/web?v=1.0&q=";
-                String search = urlPath;
-                String charset = "UTF-8";
-                url = new URL(google + URLEncoder.encode(search, charset));
-            }
-            InputStream inputStream = url.openStream();
-
-            String data = "";
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = br.readLine();
-            while (line != null) {
-                data = data + "\n" + line;
-                line = br.readLine();
-            }
-            window.onLoad(data);
-        } catch (IOException e) {
-            
-        }
+//
+//        try {
+//            URL url;
+//            try {
+//                url = new URL(urlPath);
+//            } catch (Exception e) {
+//                String google = "https://www.google.com/search/web?v=1.0&q=";
+//                String search = urlPath;
+//                String charset = "UTF-8";
+//                url = new URL(google + URLEncoder.encode(search, charset));
+//            }
+//            InputStream inputStream = url.openStream();
+//
+//            String data = "";
+//            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+//            String line = br.readLine();
+//            while (line != null) {
+//                data = data + "\n" + line;
+//                line = br.readLine();
+//            }
+//            window.onLoad(data);
+//        } catch (IOException e) {
+//
+//        }
+        window.onLoad("hey");
     }
 }

@@ -11,7 +11,11 @@ public class HTML extends Tag {
 
     @Override
     public void draw(Drawer drawer) {
-        drawer.drawText((String)children.get(0));
-//        drawer.drawText(lang != null ? lang : "No Language");
+        for (Object item : children) {
+            if (item instanceof Tag)
+                ((Tag) item).draw(drawer);
+            else
+                drawer.drawText(item.toString());
+        }
     }
 }

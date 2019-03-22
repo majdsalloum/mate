@@ -1,5 +1,6 @@
 package gui;
 
+import core.parser.HTMLParser;
 import core.render.Drawer;
 import core.render.FXDrawer;
 import core.tags.HTML;
@@ -21,40 +22,39 @@ public class Window {
     private List<String> searchLog;
     private PageToolBar pageToolBar;
     private Page page;
-    private Integer pageIndexInSearchLog=0;
+    private Integer pageIndexInSearchLog = 0;
     private VBox content;
     private Tab tab;
-    public Window(TabPane tabPane)
-    {
-        searchLog =new ArrayList<>();
+
+    public Window(TabPane tabPane) {
+        searchLog = new ArrayList<>();
         searchLog.add("matte:\\home");
-        pageToolBar =new PageToolBar(this,tabPane);
+        pageToolBar = new PageToolBar(this, tabPane);
         //set Actions
         setActions();
-        page= new HomePage();
+        page = new HomePage();
         page.setWindow(this);
         searchLog.add(page.getPath());
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
-        Integer pageCounter=0;
+        Integer pageCounter = 0;
         createNewTab();
         tabPane.getTabs().add(tab);
     }
-    public void changeContent(Page page)
-    {
-        this.page=page;
+
+    public void changeContent(Page page) {
+        this.page = page;
         page.setWindow(this);
     }
-    public  Node getContent()
-    {
+
+    public Node getContent() {
         //changeContent();
         content = new VBox();
-        content.getChildren().addAll(pageToolBar.getToolBar(),page.getContent());
+        content.getChildren().addAll(pageToolBar.getToolBar(), page.getContent());
         return content;
     }
 
-    public void openNewPage(String path)
-    {
+    public void openNewPage(String path) {
         /**send path to url connection and get page*/
         /**get page type */
         page = new HomePage();
@@ -62,31 +62,26 @@ public class Window {
         pageIndexInSearchLog++;
 
     }
-    Integer getPageIndexInSearchLog()
-    {
+
+    Integer getPageIndexInSearchLog() {
         return pageIndexInSearchLog;
     }
-    public void createNewTab()
-    {
+
+    public void createNewTab() {
         tab = new Tab("NewTab");
-        Image image =new Image(getClass().getResourceAsStream("..\\img\\home1.png"));
-        ImageView imageView =new ImageView(image);
+        Image image = new Image(getClass().getResourceAsStream("..\\img\\home1.png"));
+        ImageView imageView = new ImageView(image);
         imageView.setFitHeight(15);
         imageView.setFitWidth(15);
         tab.setGraphic(imageView);
         tab.closableProperty();//what is this???
         tab.setContent(this.getContent());
     }
-    public  void updateTabContent()
-    {
+
+    public void updateTabContent() {
         tab.setContent(getContent());
 
     }
-
-
-
-
-
 
     public List<String> getSearchLog() {
         return searchLog;
@@ -111,24 +106,23 @@ public class Window {
     public void setPage(Page page) {
         this.page = page;
     }
-    public Tab getTab() {return tab; }
 
-    public void setTab(Tab tab) { this.tab = tab; }
+    public Tab getTab() {
+        return tab;
+    }
+
+    public void setTab(Tab tab) {
+        this.tab = tab;
+    }
 
     public void setActions() {
 
-        pageToolBar.getSearch().setOnAction((e)->{
+        pageToolBar.getSearch().setOnAction((e) -> {
             String urlPath = pageToolBar.getTextSearch().getText();
-            InputStream inputStream = null;
-            InternetConnection internetConnection = new InternetConnection(this);
-            internetConnection.getPage(urlPath);
-            Page newPage = new Page();
-            page = newPage;
-            updateTabContent();
-
+            search(urlPath);
         });
 
-        pageToolBar.getHome().setOnAction((e)->{
+        pageToolBar.getHome().setOnAction((e) -> {
             page = new HomePage();
             page.setWindow(this);
             updateTabContent();
@@ -136,23 +130,17 @@ public class Window {
         });
     }
 
-    public void search(String path)
-    {
+    public void search(String path) {
+        page = new Page();
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
-        Page newPage = new Page();
-        page = newPage;
-        page.setWindow(this);
-        updateTabContent();
     }
-    public void onLoad(String string)
-    {
-        FXDrawer fxDrawer = new FXDrawer(tab,page);
-        Tag head = new HTML();
-        System.out.println(2);
-        head.addChildren("ode");
-        head.draw(fxDrawer);
 
+    public void onLoad(String string) {
+        FXDrawer fxDrawer = new FXDrawer(tab, page);
+        Tag head = HTMLParser.compile(string);
+        head.draw(fxDrawer);
+        updateTabContent();
     }
 
 }
