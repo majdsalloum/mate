@@ -5,8 +5,6 @@ import core.exceptions.UnsupportedChildrenTag;
 import core.render.Drawer;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +13,7 @@ import java.util.Map;
 
 public abstract class Tag {
 
-    protected List<Tag> children = new ArrayList<>();
+    protected List<Object> children = new ArrayList<>();
     // TODO INHERTIED TYPES AND ATTRIBUTES
     protected final static String[] SUPPORTED_ATTRIBUTES = {};
     protected final static String[] CHILDREN_TYPES = {};
@@ -50,4 +48,9 @@ public abstract class Tag {
             throw new UnsupportedChildrenTag(tag.getClass().getName(), getClass().getName());
         children.add(tag);
     }
+
+    public void addChildren(String string) {
+        children.add(string);
+    }
+
 }
