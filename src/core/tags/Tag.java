@@ -6,11 +6,14 @@ import core.render.Drawer;
 
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Tag {
 
-    protected ArrayList<Object> children = new ArrayList<>();
+    protected List<Object> children = new ArrayList<>();
     // TODO INHERTIED TYPES AND ATTRIBUTES
     protected final static String[] SUPPORTED_ATTRIBUTES = {};
     protected final static String[] CHILDREN_TYPES = {};

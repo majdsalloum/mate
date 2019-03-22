@@ -1,9 +1,6 @@
 package core.tags;
 
-import core.exceptions.UnsupportedChildrenTag;
 import core.render.Drawer;
-
-import java.util.Collections;
 
 public class HTML extends Tag {
 
@@ -14,11 +11,6 @@ public class HTML extends Tag {
 
     @Override
     public void draw(Drawer drawer) {
-        for (Object element : children) {
-            if (element instanceof Tag) ((Tag) element).draw(drawer);
-            else if (element instanceof String) {
-                drawer.drawText((String) element);
-            }
-        }
+//        drawer.drawText(lang != null ? lang : "No Language");
     }
 }

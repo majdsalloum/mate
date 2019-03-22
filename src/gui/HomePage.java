@@ -49,7 +49,7 @@ public class HomePage extends Page{
         });
 
         Tag node = new HTML();
-//        node.draw(new FXDrawer(matteLabel));
+        node.draw(new FXDrawer(matteLabel));
 
     }
     @Override
