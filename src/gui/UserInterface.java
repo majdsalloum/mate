@@ -30,7 +30,7 @@ public class UserInterface {
         tabPane.setPrefWidth(1500);
         //List Window
         windows  = new ArrayList<>();
-        createNewWindow();
+        creatNewWindow();
 
     }
 
@@ -55,14 +55,14 @@ public class UserInterface {
     private void setAddTabAction(Window window){
         Button button = window.getPageToolBar().getNewTabButton();
         button.setOnAction((e)->{
-            createNewWindow();
+            creatNewWindow();
         });
         MenuItem menuItem = window.getPageToolBar().getNewTab();
         menuItem.setOnAction((e)->{
-            createNewWindow();
+            creatNewWindow();
         });
     }
-    private void createNewWindow()
+    private void creatNewWindow()
     {
         Window newWindow = new Window(tabPane);
         windows.add(newWindow);
