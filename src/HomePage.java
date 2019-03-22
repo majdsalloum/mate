@@ -1,6 +1,9 @@
+import core.exceptions.UnsupportedAttributeException;
+import core.render.FXDrawer;
+import core.tags.HTML;
+import core.tags.Tag;
 import javafx.animation.*;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -10,6 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomePage extends Page{
     private Label matteLabel;
@@ -39,6 +46,11 @@ public class HomePage extends Page{
         search.setFont(Font.font(20));
         search.setTextFill(Color.GREEN);
         homePage.getChildren().addAll(matteLabel,textSearch,search);
+
+        Tag node = new HTML();
+        node.draw(new FXDrawer(matteLabel));
+
+
     }
     @Override
     public Node getContent()
