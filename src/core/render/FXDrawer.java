@@ -22,6 +22,7 @@ public class FXDrawer implements Drawer {
     public void drawText(String text) {
         Label label = new Label(text);
         label.setText(text);
+        page.getFlowPane().getChildren().add(label);
     }
 
     @Override
