@@ -11,7 +11,7 @@ public abstract class Tag {
 
     final static String[] childrenTypes = new String[0];
 
-    abstract public void setAtrributes(Map<String,String> attributes) throws UnsupportedAttributeException;
+    abstract public void setAttributes(Map<String,String> attributes) throws UnsupportedAttributeException;
 
     abstract public void draw(Drawer drawer);
 
