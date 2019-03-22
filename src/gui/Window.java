@@ -15,11 +15,11 @@ import java.util.List;
 
 public class Window {
     private List<String> searchLog;
-    private static PageToolBar pageToolBar;
-    private static Page page;
+    private PageToolBar pageToolBar;
+    private Page page;
     private Integer pageIndexInSearchLog=0;
-    private static VBox content;
-    private static Tab tab;
+    private VBox content;
+    private Tab tab;
     public Window(TabPane tabPane)
     {
 
@@ -29,6 +29,7 @@ public class Window {
         //set Actions
         setActions();
         page= new HomePage();
+        page.setWindow(this);
         searchLog.add(page.getPath());
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
@@ -39,8 +40,9 @@ public class Window {
     public void changeContent(Page page)
     {
         this.page=page;
+        page.setWindow(this);
     }
-    public static Node getContent()
+    public  Node getContent()
     {
         //changeContent();
         content = new VBox();
@@ -72,7 +74,7 @@ public class Window {
         tab.closableProperty();//what is this???
         tab.setContent(this.getContent());
     }
-    public static void updateTabContent()
+    public  void updateTabContent()
     {
         tab.setContent(getContent());
 
@@ -134,12 +136,13 @@ public class Window {
 
         pageToolBar.getHome().setOnAction((e)->{
             page = new HomePage();
+            page.setWindow(this);
             updateTabContent();
 
         });
     }
 
-    static public void search(String path)
+    public void search(String path)
     {
         InternetConnection internetConnection = new InternetConnection();
         InputStream inputStream=null;
@@ -151,6 +154,7 @@ public class Window {
         Page newPage = new TestPage();
         ((TestPage) newPage).setInputStream(inputStream);
         page = newPage;
+        page.setWindow(this);
         updateTabContent();
     }
 

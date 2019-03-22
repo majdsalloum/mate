@@ -44,7 +44,8 @@ public class HomePage extends Page{
         search.setTextFill(Color.GREEN);
         homePage.getChildren().addAll(matteLabel,textSearch,search);
         search.setOnAction(event -> {
-            Window.search(textSearch.getText());
+            if (textSearch.getText()!=null)
+            window.search(textSearch.getText());
         });
 
         Tag node = new HTML();
