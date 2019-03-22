@@ -18,21 +18,29 @@ public abstract class Tag {
     protected List<Tag> children = new ArrayList<>();
     // TODO INHERTIED TYPES AND ATTRIBUTES
     protected final static String[] SUPPORTED_ATTRIBUTES = {};
-
     protected final static String[] CHILDREN_TYPES = {};
 
+    protected Map<String, Object> attributes;
 
     public void setAttributes(Map<String, Object> attributes) throws UnsupportedAttributeException, NoSuchFieldException, IllegalAccessException {
         for (String key : attributes.keySet()) {
             if (!Arrays.asList(((String[]) getClass().getDeclaredField("SUPPORTED_ATTRIBUTES").get(this))).contains(key))
                 throw new UnsupportedAttributeException(key, getClass().getName());
             final Object value = attributes.get(key);
-            Field field = getClass().getDeclaredField(key.toLowerCase());
-            Class parameterType = field.getType();
-            if (!value.getClass().equals(parameterType))
-                throw new InvalidParameterException();
-            field.set(this, value);
+            try {
+                Field field = getClass().getDeclaredField(key.toLowerCase());
+                Class parameterType = field.getType();
+                if (!value.getClass().equals(parameterType))
+                    throw new InvalidParameterException();
+                field.set(this, value);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
         }
+        this.attributes = attributes;
     }
 
     abstract public void draw(Drawer drawer);
