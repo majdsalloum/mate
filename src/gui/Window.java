@@ -1,5 +1,9 @@
 package gui;
 
+import core.render.Drawer;
+import core.render.FXDrawer;
+import core.tags.HTML;
+import core.tags.Tag;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -22,7 +26,6 @@ public class Window {
     private Tab tab;
     public Window(TabPane tabPane)
     {
-
         searchLog =new ArrayList<>();
         searchLog.add("matte:\\home");
         pageToolBar =new PageToolBar(this,tabPane);
@@ -117,18 +120,9 @@ public class Window {
         pageToolBar.getSearch().setOnAction((e)->{
             String urlPath = pageToolBar.getTextSearch().getText();
             InputStream inputStream = null;
-            if(urlPath!=null)
-            {
-                //check if url is external or internal
-                InternetConnection internetConnection = new InternetConnection();
-                try {
-                    inputStream=internetConnection.getPage(urlPath);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            Page newPage = new TestPage();
-            ((TestPage) newPage).setInputStream(inputStream);
+            InternetConnection internetConnection = new InternetConnection(this);
+            internetConnection.getPage(urlPath);
+            Page newPage = new Page();
             page = newPage;
             updateTabContent();
 
@@ -144,18 +138,19 @@ public class Window {
 
     public void search(String path)
     {
-        InternetConnection internetConnection = new InternetConnection();
+        InternetConnection internetConnection = new InternetConnection(this);
         InputStream inputStream=null;
-        try {
-             inputStream = internetConnection.getPage(path);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        Page newPage = new TestPage();
-        ((TestPage) newPage).setInputStream(inputStream);
+        internetConnection.getPage(path);
+        Page newPage = new Page();
         page = newPage;
         page.setWindow(this);
         updateTabContent();
+    }
+    public void onLoad(String string)
+    {
+        FXDrawer fxDrawer = new FXDrawer(tab,page);
+        Tag head = new HTML();
+        head.draw(fxDrawer);
     }
 
 }

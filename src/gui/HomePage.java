@@ -47,22 +47,11 @@ public class HomePage extends Page{
             if (textSearch.getText()!=null)
             window.search(textSearch.getText());
         });
-
-        Tag node = new HTML();
-        node.draw(new FXDrawer(matteLabel));
-
     }
     @Override
     public Node getContent()
     {
         return homePage;
     }
-
-    public Button getSearch() {
-        return search;
-    }
-
-    public TextField getTextSearch() {
-        return textSearch;
-    }
+    
 }
