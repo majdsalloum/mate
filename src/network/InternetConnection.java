@@ -14,29 +14,34 @@ public class InternetConnection {
 
     private Window window;
 
-    InternetConnection(Window window) {
+    public InternetConnection(Window window) {
         this.window = window;
     }
 
-    public void getPage(String urlPath) throws IOException {
-        URL url;
-        try {
-            url = new URL(urlPath);
-        } catch (Exception e) {
-            String google = "https://www.google.com/search/web?v=1.0&q=";
-            String search = urlPath;
-            String charset = "UTF-8";
-            url = new URL(google + URLEncoder.encode(search, charset));
-        }
-        InputStream inputStream = url.openStream();
+    public void getPage(String urlPath) {
 
-        String data = "";
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-        String line = br.readLine();
-        while (line != null) {
-            data = data + "\n" + line;
-            line = br.readLine();
+        try {
+            URL url;
+            try {
+                url = new URL(urlPath);
+            } catch (Exception e) {
+                String google = "https://www.google.com/search/web?v=1.0&q=";
+                String search = urlPath;
+                String charset = "UTF-8";
+                url = new URL(google + URLEncoder.encode(search, charset));
+            }
+            InputStream inputStream = url.openStream();
+
+            String data = "";
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String line = br.readLine();
+            while (line != null) {
+                data = data + "\n" + line;
+                line = br.readLine();
+            }
+            window.onLoad(data);
+        } catch (IOException e) {
+            
         }
-        window.onLoad(data);
     }
 }
