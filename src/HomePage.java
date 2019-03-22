@@ -1,4 +1,8 @@
 import Network.InternetConnection;
+import core.exceptions.UnsupportedAttributeException;
+import core.render.FXDrawer;
+import core.tags.HTML;
+import core.tags.Tag;
 import javafx.animation.*;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,6 +17,9 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomePage extends Page{
     private Label matteLabel;
@@ -45,6 +52,9 @@ public class HomePage extends Page{
         search.setOnAction(event -> {
             Window.search(textSearch.getText());
         });
+
+        Tag node = new HTML();
+        node.draw(new FXDrawer(matteLabel));
 
     }
     @Override
