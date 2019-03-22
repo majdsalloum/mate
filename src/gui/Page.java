@@ -6,6 +6,7 @@ public class Page {
     protected String path;
     protected Window window;
 
+
     public void setWindow(Window window) {
         this.window = window;
     }
