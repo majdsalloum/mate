@@ -132,9 +132,11 @@ public class Window {
     }
 
     public void search(String path) {
+        //TODO: HANDLE SEARCH IF PREVIOUS SEARCH STILL RUNNING
         ProgressIndicator progressIndicator = new ProgressIndicator();
         progressIndicator.setPrefSize(20,20);
         tab.setGraphic(progressIndicator);
+
         page = new Page();
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
