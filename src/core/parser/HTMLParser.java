@@ -2,21 +2,39 @@ package core.parser;
 
 import core.exceptions.UnsupportedChildrenTag;
 import core.tags.*;
+
 import java.util.regex.*;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class HTMLParser {
+
+    private static class TagLocation {
+        Integer startTagBegin;
+        Integer startTagEnd;
+        Integer endTagBegin;
+        Integer endTagEnd;
+    }
+
+    private static String removeExtraSpaces(String text) {
+        return text.replaceAll("\\s+", " ");
+    }
+
+    private static TagLocation[] detectTagsLocations(String text) {
+        // TODO
+        return new TagLocation[0];
+    }
+
+    private static Tag convertLocationsToTag(TagLocation[] tagLocations) {
+        // TODO
+        return new HTML();
+    }
+
     public static Tag compile(String text) {
-//        LinkedList<String> stack = new LinkedList<>();
-//        text = text.replaceAll("(.+?)\\s{2,}", "$1 ");
-//        final Pattern TAG_MATCHER = Pattern.compile("<(\\w+)(.|\\s)*?>");
-//        Matcher matcher = TAG_MATCHER.matcher(text);
-//        Stream<MatchResult> stream =  matcher.results();
-//        while (stream.iterator().hasNext()) {
-//            MatchResult result = stream.iterator().next();
-//        }
+        String textWithoutExtraSpaces = removeExtraSpaces(text);
+        TagLocation[] tagsLocations = detectTagsLocations(textWithoutExtraSpaces);
+        Tag root = convertLocationsToTag(tagsLocations);
         HTML html = new HTML();
         HEAD head = new HEAD();
         TITLE title = new TITLE();
