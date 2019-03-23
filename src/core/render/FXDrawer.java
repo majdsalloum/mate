@@ -3,6 +3,7 @@ package core.render;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import gui.Page;
+import javafx.scene.layout.FlowPane;
 
 public class FXDrawer implements Drawer {
     Tab tab;

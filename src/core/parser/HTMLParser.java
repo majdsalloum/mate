@@ -9,14 +9,14 @@ import java.util.stream.Stream;
 
 public class HTMLParser {
     public static Tag compile(String text) {
-        LinkedList<String> stack = new LinkedList<>();
-        text = text.replaceAll("(.+?)\\s{2,}", "$1 ");
-        final Pattern TAG_MATCHER = Pattern.compile("<(\\w+)(.|\\s)*?>");
-        Matcher matcher = TAG_MATCHER.matcher(text);
-        Stream<MatchResult> stream =  matcher.results();
-        while (stream.iterator().hasNext()) {
-            MatchResult result = stream.iterator().next();
-        }
+//        LinkedList<String> stack = new LinkedList<>();
+//        text = text.replaceAll("(.+?)\\s{2,}", "$1 ");
+//        final Pattern TAG_MATCHER = Pattern.compile("<(\\w+)(.|\\s)*?>");
+//        Matcher matcher = TAG_MATCHER.matcher(text);
+//        Stream<MatchResult> stream =  matcher.results();
+//        while (stream.iterator().hasNext()) {
+//            MatchResult result = stream.iterator().next();
+//        }
         HTML html = new HTML();
         HEAD head = new HEAD();
         TITLE title = new TITLE();

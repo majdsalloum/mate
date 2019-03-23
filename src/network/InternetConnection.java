@@ -1,7 +1,11 @@
 package network;
 
+import com.sun.javaws.jnl.JavaFXRuntimeDesc;
 import gui.Window;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
+import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +15,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class InternetConnection {
-
     private Window window;
 
     public InternetConnection(Window window) {
@@ -43,6 +46,20 @@ public class InternetConnection {
 //        } catch (IOException e) {
 //
 //        }
-        window.onLoad("hey");
+        //window.onLoad("hey");
+        Thread thread =new  Thread(()->{
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("i woke up");
+            Platform.runLater(()->{
+                window.onLoad("hey");
+            });
+
+        });
+        thread.start();
+
     }
 }

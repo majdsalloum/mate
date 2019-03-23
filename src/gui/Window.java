@@ -6,6 +6,7 @@ import core.render.FXDrawer;
 import core.tags.HTML;
 import core.tags.Tag;
 import javafx.scene.Node;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -131,16 +132,26 @@ public class Window {
     }
 
     public void search(String path) {
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        progressIndicator.setPrefSize(20,20);
+        tab.setGraphic(progressIndicator);
         page = new Page();
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
     }
 
     public void onLoad(String string) {
+        Image image = new Image(getClass().getResourceAsStream("..\\img\\home1.png"));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(15);
+        imageView.setFitWidth(15);
+        tab.setGraphic(imageView);
+        tab.setGraphic(imageView);
         FXDrawer fxDrawer = new FXDrawer(tab, page);
         Tag head = HTMLParser.compile(string);
         head.draw(fxDrawer);
         updateTabContent();
+
     }
 
 }
