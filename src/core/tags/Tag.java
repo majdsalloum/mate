@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Tag {
+abstract public class Tag {
 
     protected List<Object> children = new ArrayList<>();
     // TODO INHERTIED TYPES AND ATTRIBUTES
@@ -31,9 +31,7 @@ public abstract class Tag {
                 if (!value.getClass().equals(parameterType))
                     throw new InvalidParameterException();
                 field.set(this, value);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
 
