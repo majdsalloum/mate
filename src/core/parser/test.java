@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class test {
     public static void main(String[] args)
     {
-        String HTML = "<html>" +
+        String HTML = "<html lolo='0'>" +
                 "<Body>" +
                 "Shadi ss"+
                 "</body>" +
@@ -23,7 +23,7 @@ public class test {
     private static void getTag(String text)
     {
         Stack<String> tags  = new Stack<>();
-       String regex = "(<\\w+>)|(</\\w+>)|(\\w+)|(\\s)";
+       String regex = "(<\\w(.|\\s)*?>)|(</\\w+>)|(\\w+)|(\\s)";
        HTMLItem root = new HTMLItem("Root" , HTML_ITEM_TYPE.NON);
        HTMLItem iterator = root;
        Pattern pattern =Pattern.compile(regex);
