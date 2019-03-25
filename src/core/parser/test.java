@@ -24,7 +24,7 @@ public class test {
     {
         Stack<String> tags  = new Stack<>();
        String regex = "(<\\w(.|\\s)*?>)|(</\\w+>)|(\\w+)|(\\s)";
-       HTMLItem root = new HTMLItem("Root" , HTML_ITEM_TYPE.NON);
+       HTMLItem root = new HTMLItem("<Ro_ot attr='val' attr2='val2  " , HTML_ITEM_TYPE.NON);
        HTMLItem iterator = root;
        Pattern pattern =Pattern.compile(regex);
        Matcher matcher =pattern.matcher(text);
@@ -53,7 +53,8 @@ public class test {
            }
        }
        root.surfTree();
-
+       HTMLItemAnalyzer htmlItemAnalyzer = new HTMLItemAnalyzer(root);
+       htmlItemAnalyzer.analyze();
     }
 
 }
