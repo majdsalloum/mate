@@ -1,8 +1,10 @@
 package gui;
 
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 
+import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -28,7 +30,7 @@ public class Page {
     public Node
     getContent()
     {
-       return flowPane;
+       return new ScrollPane(flowPane);
     }
 
     public void setPath(String URL) {

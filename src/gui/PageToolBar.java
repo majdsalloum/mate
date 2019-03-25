@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 
 public class PageToolBar {
     private ToolBar toolBar;
-    private Button backward,forward,refresh,home,search,newTabButton;
+    private Button backward,forward,refresh,home,search,newTabButton,disconnect;
     private TextField textSearch ;
     private MenuItem setting,newTab,downloads,newWindow,exit;
     private MenuBar menuBar;
@@ -43,6 +43,11 @@ public class PageToolBar {
         refresh.setPrefSize(ICON_SIZE,ICON_SIZE);
         insertImage("..\\img//refresh1.png",refresh);
         refresh.setAccessibleHelp("refresh");
+
+        disconnect = new Button();
+        disconnect.setPrefSize(ICON_SIZE,ICON_SIZE);
+        insertImage("..\\img//disconnect.png",disconnect);
+        //todo: work on this
 
         home=new Button();
         home.setPrefSize(ICON_SIZE,ICON_SIZE);
@@ -90,8 +95,6 @@ public class PageToolBar {
         imageView.setFitWidth(ICON_SIZE);
         button.setGraphic(imageView);
     }
-
-
 
 
     ///Getters/////////////////////////////////////

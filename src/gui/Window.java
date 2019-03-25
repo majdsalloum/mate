@@ -136,7 +136,6 @@ public class Window {
         ProgressIndicator progressIndicator = new ProgressIndicator();
         progressIndicator.setPrefSize(20,20);
         tab.setGraphic(progressIndicator);
-
         page = new Page();
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
