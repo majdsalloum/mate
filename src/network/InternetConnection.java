@@ -1,10 +1,7 @@
 package network;
 
-import com.sun.deploy.net.protocol.ProtocolType;
-import com.sun.jndi.toolkit.url.UrlUtil;
 import gui.Window;
 import javafx.application.Platform;
-import javafx.scene.web.WebEngine;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -66,7 +63,7 @@ public class InternetConnection {
         }
         catch (MalformedURLException e)
         {
-            url = new URL("https://"+urlPath);
+            url = new URL("http://"+urlPath);
         }
     }
     private void tryInSearchEngine() throws UnsupportedEncodingException, MalformedURLException {
