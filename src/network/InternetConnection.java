@@ -1,7 +1,6 @@
 package network;
 
-import com.sun.deploy.net.protocol.ProtocolType;
-import com.sun.jndi.toolkit.url.UrlUtil;
+
 import gui.Window;
 import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
