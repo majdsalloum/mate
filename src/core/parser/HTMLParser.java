@@ -1,5 +1,6 @@
 package core.parser;
 
+import core.exceptions.CommentWithoutEndException;
 import core.exceptions.UnsupportedChildrenTag;
 import core.tags.*;
 
@@ -17,8 +18,11 @@ public class HTMLParser {
         return text.replaceAll("\\s+", " ");
     }
 
-    private static String removeComments(String text) {
-        return text.replaceAll("<!--(?:.|\\s)+?-->", "");
+    private static String removeComments(String text) throws CommentWithoutEndException {
+        String replacedValidComments = text.replaceAll("<!--(?:.|\\s)*?-->", "");
+        if (replacedValidComments.contains("<!--"))
+            throw new CommentWithoutEndException("At index" + replacedValidComments.indexOf("<!--"));
+        return replacedValidComments;
     }
 
     private static TagLocation[] detectTagsLocations(String text) {
@@ -32,8 +36,13 @@ public class HTMLParser {
     }
 
     public static Tag compile(String text) {
-        String textWithoutExtraSpaces = removeExtraSpaces(text);
-        String textWithoutComments = removeComments(text);
+        String textWithoutComments = text;
+        try {
+            textWithoutComments = removeComments(text);
+        } catch (CommentWithoutEndException e) {
+            e.printStackTrace();
+        }
+        String textWithoutExtraSpaces = removeExtraSpaces(textWithoutComments);
         TagLocation[] tagsLocations = detectTagsLocations(textWithoutExtraSpaces);
         Tag root = convertLocationsToTag(tagsLocations);
         HTML html = new HTML();
