@@ -1,12 +1,9 @@
 package core.parser;
 
+import core.exceptions.CommentWithoutEndException;
 import core.exceptions.UnsupportedChildrenTag;
 import core.tags.*;
 
-import java.util.regex.*;
-import java.util.LinkedList;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class HTMLParser {
 
@@ -21,6 +18,13 @@ public class HTMLParser {
         return text.replaceAll("\\s+", " ");
     }
 
+    private static String removeComments(String text) throws CommentWithoutEndException {
+        String replacedValidComments = text.replaceAll("<!--(?:.|\\s)*?-->", "");
+        if (replacedValidComments.contains("<!--"))
+            throw new CommentWithoutEndException("At index" + replacedValidComments.indexOf("<!--"));
+        return replacedValidComments;
+    }
+
     private static TagLocation[] detectTagsLocations(String text) {
         // TODO
         return new TagLocation[0];
@@ -32,7 +36,13 @@ public class HTMLParser {
     }
 
     public static Tag compile(String text) {
-        String textWithoutExtraSpaces = removeExtraSpaces(text);
+        String textWithoutComments = text;
+        try {
+            textWithoutComments = removeComments(text);
+        } catch (CommentWithoutEndException e) {
+            e.printStackTrace();
+        }
+        String textWithoutExtraSpaces = removeExtraSpaces(textWithoutComments);
         TagLocation[] tagsLocations = detectTagsLocations(textWithoutExtraSpaces);
         Tag root = convertLocationsToTag(tagsLocations);
         HTML html = new HTML();
@@ -43,12 +53,8 @@ public class HTMLParser {
             head.addChildren(title);
             html.addChildren(head);
             html.addChildren(text);
-        } catch (UnsupportedChildrenTag unsupportedChildrenTag) {
+        } catch (UnsupportedChildrenTag | NoSuchFieldException | IllegalAccessException unsupportedChildrenTag) {
             unsupportedChildrenTag.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         }
         return html;
     }

@@ -37,7 +37,6 @@ public class HomePage extends Page{
         transition.setToValue(1.0);
         //transition.setCycleCount(Animation.INDEFINITE);
         transition.play();
-        Hyperlink hyperlink = new Hyperlink("welcome");
         textSearch = new TextField();
         textSearch.setMaxWidth(500);
         search = new Button("Search");

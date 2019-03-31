@@ -36,6 +36,7 @@ public class test {
                //todo: tags.push(tag); get tag name and PUSH it
                iterator =iterator.addChild(tag , HTML_ITEM_TYPE.START_TAG);
                System.out.println(tag + " pushed and added");
+               //add to stack
            }
            else if (tag.equals(matcher.group(2)))
            {

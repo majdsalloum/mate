@@ -7,7 +7,7 @@ public class HTML extends Tag {
     protected String lang = null;
 
     protected final static String[] CHILDREN_TYPES = {"body", "head"};
-    protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES, new String[]{"lang"});
+    protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES, new String[]{"lang"});//todo manifest
 
     @Override
     public void draw(Drawer drawer) {
