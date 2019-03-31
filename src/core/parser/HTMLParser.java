@@ -1,6 +1,7 @@
 package core.parser;
 
 import core.exceptions.CommentWithoutEndException;
+import core.exceptions.InvalidContentException;
 import core.exceptions.UnsupportedChildrenTag;
 import core.tags.*;
 
@@ -54,8 +55,8 @@ public class HTMLParser {
             head.addChildren(title);
             html.addChildren(head);
             html.addChildren(text);
-        } catch (UnsupportedChildrenTag | NoSuchFieldException | IllegalAccessException unsupportedChildrenTag) {
-            unsupportedChildrenTag.printStackTrace();
+        } catch (InvalidContentException e) {
+            e.printStackTrace();
         }
         return html;
     }
