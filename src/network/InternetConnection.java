@@ -58,13 +58,13 @@ public class InternetConnection {
     }
     private void tryAddProtocol()throws MalformedURLException
     {
-        try {
-            url = new URL("https://" + urlPath);
-        }
-        catch (MalformedURLException e)
-        {
-            url = new URL("http://"+urlPath);
-        }
+//        try {
+            url = new URL("http://" + urlPath);
+//        }
+//        catch (MalformedURLException e)
+//        {
+//            url = new URL("http://"+urlPath);
+//        }
     }
     private void tryInSearchEngine() throws UnsupportedEncodingException, MalformedURLException {
         String google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";

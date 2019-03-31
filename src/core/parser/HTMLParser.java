@@ -12,6 +12,7 @@ public class HTMLParser {
         Integer startTagEnd;
         Integer endTagBegin;
         Integer endTagEnd;
+        Tag tag;
     }
 
     private static String removeExtraSpaces(String text) {
