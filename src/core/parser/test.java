@@ -11,14 +11,19 @@ import java.util.regex.Pattern;
 public class test {
     public static void main(String[] args)
     {
-        String HTML = "<html lolo='0'>" +
-                "<Body>" +
-                "Shadi ss"+
-                "</body>" +
-                "<lolo>" +
-                "</lolo>" +
-                "</html>";
-        getTag(HTML);
+        try {
+            System.out.println(Class.forName("core.tags.BODY").getName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+//        String HTML = "<html lolo='0'>" +
+//                "<Body>" +
+//                "Shadi ss"+
+//                "</body>" +
+//                "<lolo>" +
+//                "</lolo>" +
+//                "</html>";
+//        getTag(HTML);
     }
     private static void getTag(String text)
     {
