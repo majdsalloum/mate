@@ -194,6 +194,7 @@ public class HTMLParser {
             getTree(tagLocations);
             Tag root = tagLocations.get(0).tag;
             printTree(root);
+
         } catch (InvalidContentException e) {
             e.printStackTrace();
         }
