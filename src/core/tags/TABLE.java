@@ -8,7 +8,8 @@ public class TABLE extends Tag {
     protected final static String[] CHILDREN_TYPES = {"thead","tbody","tr","tfoot","colgroup"};
 
     void validate() throws InvalidContentException {
-        if ( children.getClass() == TR.class)
+        for(int i=0;i<children.size();i++)
+        if ( children.get(i).getClass() == TR.class)
             return;
         throw new InvalidContentException("TABLE TAG MUST HAVE AT LEAST ONE CHILDREN (TR)");
     }

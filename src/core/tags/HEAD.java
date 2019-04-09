@@ -10,8 +10,9 @@ public class HEAD extends Tag {
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.GLOBAL_HTML_ATTRIBUTES;
     @Override
     void validate() throws InvalidContentException {
-        if ( children.getClass() == TITLE.class)
-            return;
+        for (int i=0;i<children.size();i++)
+            if(children.get(i).getClass()==TITLE.class)
+                return;
         throw new InvalidContentException(" HEAD TAG MUST HAVE AT LEAST ONE CHILDREN(TITLE)");
     }
 
