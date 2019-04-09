@@ -27,6 +27,10 @@ abstract public class Tag {
 
     }
 
+    public List<Object> getChildren() {
+        return children;
+    }
+
     public void setAttributes(Map<String, Object> attributes) throws InvalidContentException {
         try {
             for (String key : attributes.keySet()) {
@@ -66,4 +70,8 @@ abstract public class Tag {
         children.add(string);
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }

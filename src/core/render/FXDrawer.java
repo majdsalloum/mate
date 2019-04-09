@@ -4,7 +4,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 
 import gui.Page;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 public class FXDrawer implements Drawer {
@@ -28,4 +29,12 @@ public class FXDrawer implements Drawer {
         tab.setText(text);
     }
 
+    @Override
+    public void drawImage(Image image)
+    {
+        Label label = new Label() ;
+        ImageView imageView=new ImageView(image);
+        label.setGraphic(imageView);
+        page.getFlowPane().getChildren().add(label);
+    }
 }

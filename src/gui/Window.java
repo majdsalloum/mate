@@ -1,9 +1,7 @@
 package gui;
 
 import core.parser.HTMLParser;
-import core.render.Drawer;
 import core.render.FXDrawer;
-import core.tags.HTML;
 import core.tags.Tag;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressIndicator;
@@ -13,9 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import network.InternetConnection;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
