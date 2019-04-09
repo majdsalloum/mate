@@ -5,7 +5,7 @@ import core.exceptions.UnsupportedAttributeException;
 import core.exceptions.UnsupportedChildrenTag;
 import core.render.Drawer;
 
-import javax.xml.bind.ValidationException;
+
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;

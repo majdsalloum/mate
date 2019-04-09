@@ -8,7 +8,5 @@ public class HR extends Tag {
 
     @Override
     public void draw(Drawer drawer) {
-        if (!children.isEmpty())
-            drawer.setTitle((String) children.get(0));
     }
 }
