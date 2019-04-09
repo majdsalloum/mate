@@ -5,7 +5,6 @@ import core.exceptions.UnsupportedAttributeException;
 import core.exceptions.UnsupportedChildrenTag;
 import core.render.Drawer;
 
-
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -21,6 +20,8 @@ abstract public class Tag {
     protected final static String[] CHILDREN_TYPES = {};
 
     protected Map<String, Object> attributes;
+
+    public final static Boolean REQUIRE_CLOSING = true;
 
     void validate() throws InvalidContentException {
 
