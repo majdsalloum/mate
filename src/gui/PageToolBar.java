@@ -58,6 +58,7 @@ public class PageToolBar {
         textSearch.setPrefWidth(1200-(ICON_SIZE*6));//todo :Edit this
         textSearch.setPrefHeight(30);
 
+
         search =new Button();
         search.setPrefSize(ICON_SIZE,ICON_SIZE);
         insertImage("..\\img//search1.png",search);
@@ -95,7 +96,6 @@ public class PageToolBar {
         imageView.setFitWidth(ICON_SIZE);
         button.setGraphic(imageView);
     }
-
 
     ///Getters/////////////////////////////////////
     public ToolBar getToolBar() {

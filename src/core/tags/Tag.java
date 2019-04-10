@@ -65,6 +65,7 @@ abstract public class Tag {
             throw new InvalidContentException(e.getClass().getName() + " " + e.getMessage());
         }
     }
+    //todo : ====> change all children type to lower case in each tag <=====
 
     public void addChildren(String string) {
         children.add(string);

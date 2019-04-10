@@ -90,7 +90,7 @@ public class HTMLParser {
                     tag = new HEAD();//todo: change it to div
                 }
                 tagLocation.tag = tag;
-                tagLocationList.push(tagLocation);
+                tagLocationList.add(tagLocation);
                 tempStack.push(tagLocation);
             } else if (minStart.equals(closeTagStart)) {
                 if (closeTagMatcher.group(0)!=tempStack.getFirst().toString())
@@ -114,7 +114,7 @@ public class HTMLParser {
                 tagLocation.startTagEnd=openTagMatcher.end();
                 tagLocation.endTagEnd=openTagMatcher.end();
                 tagLocation.tag=tag;
-                tagLocationList.push(tagLocation);
+                tagLocationList.add(tagLocation);
             }
         }
         return tagLocationList;
@@ -167,19 +167,18 @@ public class HTMLParser {
 //        LinkedList<TagLocation> tagsLocations = detectTagsLocations(textWithoutExtraSpaces); // TODO : RENAME TO GET TAGS AND LOCATIONS
 //        setAttributes(tagsLocations , textWithoutExtraSpaces);
 //        return getTree(tagsLocations);
-//        HTML html = new HTML();
-//        HEAD head = new HEAD();
-//        TITLE title = new TITLE();
-//        title.addChildren(text);
-//        try {
-//            head.addChildren(title);
-//            html.addChildren(head);
-//            html.addChildren(text);
-//        } catch (InvalidContentException e) {
-//            e.printStackTrace();
-//        }
-//        return html;
-        return null;
+        HTML html = new HTML();
+        HEAD head = new HEAD();
+        TITLE title = new TITLE();
+        title.addChildren(text);
+        try {
+            head.addChildren(title);
+            html.addChildren(head);
+            html.addChildren(text);
+        } catch (InvalidContentException e) {
+            e.printStackTrace();
+        }
+        return html;
     }
     public static void main(String[] args)
     {
