@@ -55,7 +55,7 @@ public class InternetConnection {
                     "</tr>" +
                     "</table>" +
                     "</body>" +
-                    "<html>";
+                    "</html>";
 
             Platform.runLater(() -> window.onLoad(data));
         } catch (Exception e) {
