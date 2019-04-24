@@ -5,9 +5,7 @@ import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.exceptions.MoreThanOneRootException;
 import core.tags.*;
-import javafx.util.Pair;
 
-import javax.script.ScriptEngine;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,7 +118,7 @@ public class HTMLParser {
                 newEnd = openAndCloseMatcher.end();
             }
             try {
-                String remainingText = text.substring(start, minStart - 1).trim();
+                String remainingText = text.substring(start, minStart).trim();
                 if (!remainingText.isEmpty()) {
                     TagLocation textTagLocation = new TagLocation();
                     textTagLocation.startTagBegin = start;
