@@ -5,8 +5,9 @@ import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.exceptions.MoreThanOneRootException;
 import core.tags.*;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.SyntaxException;
+import javafx.util.Pair;
 
+import javax.script.ScriptEngine;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,27 +15,20 @@ import java.util.regex.Pattern;
 
 public class HTMLParser {
 
-    private static class TagLocation {
+    public static class TagLocation {
         Integer startTagBegin;
         Integer startTagEnd;
         Integer endTagBegin;
         Integer endTagEnd;
         Tag tag;
         TagLocation father;
-        public boolean includes(TagLocation tagLocation)
-        {
-            return this.startTagEnd<tagLocation.startTagBegin &&
-                    this.endTagBegin>tagLocation.endTagEnd;
+        String tagText = null;
+
+        public boolean includes(TagLocation tagLocation) {
+            return this.startTagEnd < tagLocation.startTagBegin &&
+                    this.endTagBegin > tagLocation.endTagEnd;
         }
-        TagLocation(Integer a, Integer b ,Integer c ,Integer d , Tag tag)
-        {
-            this.startTagBegin=a;
-            this.startTagEnd=b;
-            this.endTagBegin=c;
-            this.endTagEnd=d;
-            this.tag=tag;
-        }
-        TagLocation(){}
+
     }
 
     private static String removeExtraSpaces(String text) {
@@ -58,14 +52,16 @@ public class HTMLParser {
         return min;
     }
 
-    private static LinkedList<TagLocation> detectTagsLocations(String text) {//todo : make it return tag location list
-        final Pattern openTag = Pattern.compile("");
-        final Pattern closeTag = Pattern.compile("");
-        final Pattern openAndCloseTag = Pattern.compile("");
+    private static LinkedList<TagLocation> detectTagsLocations(String text) throws InvalidSyntaxException {//todo : make it return tag location list
+        final Pattern openTag = Pattern.compile("<(\\w+)\\s?(?:\\w+(?:=(['\"])(?:.|\\s)+?\\2)?\\s?)*?\\s*?>");
+        final Pattern closeTag = Pattern.compile("</(\\w+)\\s*>");
+        final Pattern openAndCloseTag = Pattern.compile("<\\w+\\s?(?:\\w+=(['\"])(?:.|\\s)+\\1\\s?)*\\s*?/>");
         LinkedList<TagLocation> tagLocationList = new LinkedList<>();
         LinkedList<TagLocation> tempStack = new LinkedList<>();
+        // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
         int start = 0;
         while (true) {
+            int newEnd;
             Matcher openTagMatcher = openTag.matcher(text);
             Matcher closeTagMatcher = closeTag.matcher(text);
             Matcher openAndCloseMatcher = openAndCloseTag.matcher(text);
@@ -73,136 +69,131 @@ public class HTMLParser {
             if (openTagMatcher.find(start))
                 openTagStart = openTagMatcher.start();
             if (closeTagMatcher.find(start))
-                closeTagStart = openTagMatcher.start();
+                closeTagStart = closeTagMatcher.start();
             if (openAndCloseMatcher.find(start))
-                openAndCloseTagStart = openTagMatcher.start();
+                openAndCloseTagStart = openAndCloseMatcher.start();
             Integer minStart = min(openTagStart, closeTagStart, openAndCloseTagStart);
             if (minStart == null)
                 break;
+            TagLocation tagLocationToAdd = null;
             if (minStart.equals(openTagStart)) {
                 TagLocation tagLocation = new TagLocation();
                 tagLocation.startTagBegin = openTagMatcher.start();
-                tagLocation.startTagEnd = openTagMatcher.end();
-                Tag tag = null;
+                tagLocation.startTagEnd = openTagMatcher.end() - 1;
+                tagLocation.tagText = openTagMatcher.group(1).toLowerCase();
+                Tag tag;
                 try {
-                    tag = (Tag) Class.forName("core.tags." + openTagMatcher.group(0).toUpperCase()).getDeclaredConstructor().newInstance();
+                    tag = (Tag) Class.forName("core.tags." + openTagMatcher.group(1).toUpperCase()).getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
-                    tag = new HEAD();//todo: change it to div
+                    tag = new DIV();
                 }
                 tagLocation.tag = tag;
-                tagLocationList.add(tagLocation);
+                tagLocationToAdd = tagLocation;
                 tempStack.push(tagLocation);
+                newEnd = openTagMatcher.end();
             } else if (minStart.equals(closeTagStart)) {
-                if (closeTagMatcher.group(0)!=tempStack.getFirst().toString())
-                    throw new SyntaxException(tempStack.getFirst().toString()+" not closed correctly");
+                if (!closeTagMatcher.group(1).toLowerCase().equals(tempStack.getFirst().tagText)
+                        &&
+                        tempStack.getFirst().tag.requiresClosing()
+                )
+                    throw new InvalidSyntaxException(tempStack.getFirst().tag.toString() + " not closed correctly");
                 else {
-                    tempStack.pop();
-                    tagLocationList.getFirst().endTagBegin=closeTagMatcher.start();
-                    tagLocationList.getFirst().endTagEnd=closeTagMatcher.end();
+                    TagLocation tagLocation = tempStack.pop();
+                    tagLocation.endTagBegin = closeTagMatcher.start();
+                    tagLocation.endTagEnd = closeTagMatcher.end() - 1;
                 }
+                newEnd = closeTagMatcher.end();
             } else {
                 Tag tag;
                 try {
-                    tag = (Tag) Class.forName("core.tags." + openTagMatcher.group(0).toUpperCase()).getDeclaredConstructor().newInstance();
-                }catch (Exception e)
-                {
-                    tag  = new HEAD();//todo : change to div
+                    tag = (Tag) Class.forName("core.tags." + openTagMatcher.group(1).toUpperCase()).getDeclaredConstructor().newInstance();
+                } catch (Exception e) {
+                    tag = new DIV();
                 }
-                TagLocation tagLocation = new TagLocation() ;
-                tagLocation.startTagBegin= openTagMatcher.start();
-                tagLocation.endTagBegin=openTagMatcher.start();
-                tagLocation.startTagEnd=openTagMatcher.end();
-                tagLocation.endTagEnd=openTagMatcher.end();
-                tagLocation.tag=tag;
-                tagLocationList.add(tagLocation);
+                TagLocation tagLocation = new TagLocation();
+                tagLocation.startTagBegin = openTagMatcher.start();
+                tagLocation.endTagBegin = openTagMatcher.start();
+                tagLocation.startTagEnd = openTagMatcher.end() - 1;
+                tagLocation.endTagEnd = openTagMatcher.end() - 1;
+                tagLocation.tag = tag;
+                tagLocationToAdd = tagLocation;
+                newEnd = openAndCloseMatcher.end();
             }
+            try {
+                String remainingText = text.substring(start, minStart - 1).trim();
+                if (!remainingText.isEmpty()) {
+                    TagLocation textTagLocation = new TagLocation();
+                    textTagLocation.startTagBegin = start;
+                    textTagLocation.startTagEnd = minStart - 1;
+                    textTagLocation.endTagBegin = start;
+                    textTagLocation.endTagEnd = minStart - 1;
+                    textTagLocation.tagText = remainingText;
+                    if (tagLocationToAdd != null)
+                        tagLocationList.add(tagLocationList.size() - 1, textTagLocation);
+                    else
+                        tagLocationList.add(textTagLocation);
+                }
+            } catch (Exception ignored) {
+            }
+            if (tagLocationToAdd != null)
+                tagLocationList.add(tagLocationToAdd);
+            start = newEnd;
         }
         return tagLocationList;
     }
 
 
-
-    private static void setAttributes(LinkedList<TagLocation> list, String text)
-    {
-
-        for(TagLocation item : list) {
-            String content = text.substring(item.startTagBegin+1, item.startTagEnd);
-            content.replaceAll("-","_");
-            Pattern pattern = Pattern.compile("(\\w+)(=('|'')([#@%^&!$*]?\\w+)(\\2))?");
-            Matcher matcher = pattern.matcher(content);
-            Map<String , Object> attributes = new HashMap<>();
-            while (matcher.find())
-            {
-                attributes.put(matcher.group(1),matcher.group(3));
+    private static void setAttributes(LinkedList<TagLocation> list, String text) throws InvalidContentException {
+        final Pattern attributePattern = Pattern.compile("(\\w+)(?:=(['\"])((?:.|\\s)+?)\\2)?(\\s+|>)");
+        for (TagLocation tagLocation : list) {
+            if (tagLocation.tag == null) continue;
+            String tagStartText = text.substring(tagLocation.startTagBegin + tagLocation.tagText.length() + 1, tagLocation.startTagEnd + 1);
+            final Matcher matcher = attributePattern.matcher(tagStartText);
+            HashMap<String, Object> attributes = new HashMap<>();
+            while (matcher.find()) {
+                if (matcher.groupCount() == 1)
+                    attributes.put(matcher.group(1), true);
+                else
+                    attributes.put(matcher.group(1), matcher.group(3));
             }
-            try {
-                item.tag.setAttributes(attributes);
-            } catch (InvalidContentException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    private static void getTree(LinkedList<TagLocation> list) throws InvalidContentException , MoreThanOneRootException {
-        TagLocation location  =list.get(0);
-        for (int i=1;i<list.size();i++)
-        {
-            while (!location.includes(list.get(i))) {
-                location=location.father;
-                if (location==null) throw new MoreThanOneRootException(list.get(i).tag.getClass().getSimpleName()+" cannot be root");
-            }
-            location.tag.addChildren(list.get(i).tag);
-            list.get(i).father=location;
-            location=list.get(i);
+            tagLocation.tag.setAttributes(attributes);
         }
     }
 
-    public static Tag compile(String text)  {
-//        String textWithoutComments = text;
-//        try {
-//            textWithoutComments = removeComments(text);
-//        } catch (CommentWithoutEndException e) {
-//            e.printStackTrace();
-//        }
-//        String textWithoutExtraSpaces = removeExtraSpaces(textWithoutComments);
-//        LinkedList<TagLocation> tagsLocations = detectTagsLocations(textWithoutExtraSpaces); // TODO : RENAME TO GET TAGS AND LOCATIONS
-//        setAttributes(tagsLocations , textWithoutExtraSpaces);
-//        return getTree(tagsLocations);
-        HTML html = new HTML();
-        HEAD head = new HEAD();
-        TITLE title = new TITLE();
-        title.addChildren(text);
+    private static void getTree(LinkedList<TagLocation> list) throws InvalidContentException, MoreThanOneRootException {
+        LinkedList<TagLocation> stack = new LinkedList<>();
+        stack.push(list.getFirst());
+        for (TagLocation tagLocation : list) {
+            if (tagLocation == stack.peek()) continue; // first time
+            if (stack.isEmpty())
+                throw new MoreThanOneRootException("");
+            while (!stack.peek().includes(tagLocation)) {
+                stack.poll();
+                if (stack.isEmpty())
+                    throw new MoreThanOneRootException("");
+            }
+            TagLocation top = stack.peek();
+            tagLocation.father = top;
+            if (tagLocation.tag != null) {
+                top.tag.addChildren(tagLocation.tag);
+                stack.push(tagLocation);
+            } else
+                top.tag.addChildren(tagLocation.tagText);
+        }
+    }
+
+
+    public static List<TagLocation> compile(String text) {
         try {
-            head.addChildren(title);
-            html.addChildren(head);
-            html.addChildren(text);
-        } catch (InvalidContentException e) {
+            String textWithoutComments = removeComments(text);
+            LinkedList<TagLocation> tagsLocations = detectTagsLocations(textWithoutComments);
+            getTree(tagsLocations);
+            setAttributes(tagsLocations, textWithoutComments);
+            return tagsLocations;
+        } catch (InvalidSyntaxException | InvalidContentException e) {
             e.printStackTrace();
+            return null;
         }
-        return html;
-    }
-    public static void main(String[] args)
-    {
-        LinkedList<TagLocation> tagLocations =new LinkedList<>();
-        tagLocations.add(new TagLocation(0,1,14,15,new HTML()));
-        tagLocations.add(new TagLocation(2,3,8,9,new BODY()));
-        tagLocations.add(new TagLocation(4,5,6,7,new TABLE()));
-        tagLocations.add(new TagLocation(10,11,12,13,new BODY()));
-        for (TagLocation tagLocation:tagLocations)
-            System.out.println(tagLocation.tag);
-        try {
-            getTree(tagLocations);
-            Tag root = tagLocations.get(0).tag;
-            printTree(root);
-
-        } catch (InvalidContentException e) {
-            e.printStackTrace();
-        }
-    }
-    private static void printTree(Tag tag)
-    {
-        System.out.println(tag.toString());
-        for(Object tag1 : tag.getChildren())
-            printTree((Tag)tag1);
     }
 
 }

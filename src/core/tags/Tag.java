@@ -21,7 +21,9 @@ abstract public class Tag {
 
     protected Map<String, Object> attributes;
 
-    public final static Boolean REQUIRE_CLOSING = true;
+    public boolean requiresClosing() {
+        return true;
+    }
 
     void validate() throws InvalidContentException {
 
@@ -34,7 +36,7 @@ abstract public class Tag {
     public void setAttributes(Map<String, Object> attributes) throws InvalidContentException {
         try {
             for (String key : attributes.keySet()) {
-                if (!Arrays.asList(((String[]) getClass().getDeclaredField("SUPPORTED_ATTRIBUTES").get(this))).contains(key)) {
+                if (Arrays.asList(((String[]) getClass().getDeclaredField("SUPPORTED_ATTRIBUTES").get(this))).contains(key.toLowerCase())) {
                     final Object value = attributes.get(key);
                     try {
                         Field field = getClass().getDeclaredField(key.toLowerCase());
@@ -65,7 +67,6 @@ abstract public class Tag {
             throw new InvalidContentException(e.getClass().getName() + " " + e.getMessage());
         }
     }
-    //todo : ====> change all children type to lower case in each tag <=====
 
     public void addChildren(String string) {
         children.add(string);

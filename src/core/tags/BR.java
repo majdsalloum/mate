@@ -6,7 +6,11 @@ public class BR extends Tag {
     protected final static String[] CHILDREN_TYPES = {};
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.GLOBAL_HTML_ATTRIBUTES;
 
-    public static Boolean REQUIRE_CLOSING = false;
+
+    public boolean requiresClosing() {
+        return false;
+    }
+
 
     @Override
     public void draw(Drawer drawer) {
