@@ -144,8 +144,8 @@ public class Window {
         tab.setGraphic(imageView);
         tab.setGraphic(imageView);
         FXDrawer fxDrawer = new FXDrawer(tab, page);
-        Tag head = HTMLParser.compile(string);
-        head.draw(fxDrawer);
+//        Tag head = HTMLParser.compile(string);
+//        head.draw(fxDrawer);
         updateTabContent();
 
     }
