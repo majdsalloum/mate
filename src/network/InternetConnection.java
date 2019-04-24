@@ -39,7 +39,23 @@ public class InternetConnection {
                 if (line != null)
                     dataBuilder.append("\n");
             }
-            final String data = dataBuilder.toString();
+            final String data;// = dataBuilder.toString();
+            data="<html>" +
+                    "<head>" +
+                    "</head>" +
+                    "<body>" +
+                    "<table>" +
+                    "<tr>" +
+                    "<td>shadi</td>" +
+                    "<td>majd</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td>reem</td>" +
+                    "<td>rite</td>" +
+                    "</tr>" +
+                    "</table>" +
+                    "</body>" +
+                    "<html>";
 
             Platform.runLater(() -> window.onLoad(data));
         } catch (Exception e) {
