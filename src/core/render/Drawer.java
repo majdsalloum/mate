@@ -9,6 +9,11 @@ public interface Drawer {
         FONT_ITALIC,
         FONT_UNDERLINE,
     }
+
+    enum ALIGN
+    {
+        CENTER , LEFT , RIGHT
+    }
     public void drawText(String text);
     public void setTitle(String text);
     public void drawImage(Image image);
@@ -16,4 +21,11 @@ public interface Drawer {
     public void unUseAttribute(ATTRIBUTES attributes);
     public Boolean hasAttribute(ATTRIBUTES attributes);
     public void drawTable();
+    public void usePane(DrawerPane drawerPane);
+    public void unUsePane();
+    public void useAlign(ALIGN align);
+    public void unUseAlign();
+
+
+
 }
