@@ -3,6 +3,8 @@ package core.render;
 
 import javafx.scene.image.Image;
 
+import java.util.LinkedList;
+
 public interface Drawer {
     enum ATTRIBUTES{
         FONT_BOLD,
@@ -25,6 +27,7 @@ public interface Drawer {
     public void unUsePane();
     public void useAlign(ALIGN align);
     public void unUseAlign();
+    public LinkedList<DrawerPane> getParents ();
 
 
 

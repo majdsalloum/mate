@@ -39,30 +39,37 @@ public class TABLE extends Tag {
         }
         DrawerPane drawerPane  =new DrawerPane();
         drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.TABLE);
-        drawerPane.setParent(new GridPane());
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(2);
+        gridPane.setHgap(2);
+        gridPane.setGridLinesVisible(true);
+        drawerPane.setParent(gridPane);
         drawer.usePane(drawerPane);
         for (Object item:children)
         {
-            if (item.toString()=="TR")
-            {
-                drawerPane.setRow(drawerPane.getRow()+1);
+//            System.out.println(item);
+//            if (item.toString()=="TR")
+//            {
+//                drawerPane.setRow(drawerPane.getRow()+1);
+//                ((Tag)item).draw(drawer);
+//            }
+//            else if (item.toString()=="TD") {
+//                drawerPane.setCol(drawerPane.getCol() + 1);
+//                ((Tag)item).draw(drawer);
+//            }
+//            else if (item.toString()=="TH")
+//            {
+//                drawer.useAttribute(Drawer.ATTRIBUTES.FONT_BOLD);
+//                drawer.useAlign(Drawer.ALIGN.CENTER);
+//
+//                drawerPane.setCol(drawerPane.getCol() + 1);
+//                ((Tag)item).draw(drawer);
+//
+//                drawer.unUseAttribute(Drawer.ATTRIBUTES.FONT_BOLD);
+//                drawer.unUseAlign();
+//            }
+            if (item instanceof Tag && item.toString()!="CAPTION")
                 ((Tag)item).draw(drawer);
-            }
-            else if (item.toString()=="TD") {
-                drawerPane.setCol(drawerPane.getCol() + 1);
-                ((Tag)item).draw(drawer);
-            }
-            else if (item.toString()=="TH")
-            {
-                drawer.useAttribute(Drawer.ATTRIBUTES.FONT_BOLD);
-                drawer.useAlign(Drawer.ALIGN.CENTER);
-
-                drawerPane.setCol(drawerPane.getCol() + 1);
-                ((Tag)item).draw(drawer);
-
-                drawer.unUseAttribute(Drawer.ATTRIBUTES.FONT_BOLD);
-                drawer.unUseAlign();
-            }
         }
         drawer.unUsePane();
     }

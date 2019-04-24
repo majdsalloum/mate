@@ -9,6 +9,14 @@ public class TD extends Tag {
     protected final static String[] CHILDREN_TYPES = {};
     @Override
     public void draw(Drawer drawer) {
+        drawer.getParents().peek().setCol(drawer.getParents().peek().getCol()+1);
+        for (Object item : children)
+        {
+            if (item instanceof Tag)
+                ((Tag) item).draw(drawer);
+            else
+                drawer.drawText((String) item);
+        }
 
     }
 

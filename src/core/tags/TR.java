@@ -15,6 +15,15 @@ public class TR extends Tag {
     }
     @Override
     public void draw(Drawer drawer) {
+        drawer.getParents().peek().setRow(drawer.getParents().peek().getRow()+1);
+        drawer.getParents().peek().setCol(0);
 
+        for (Object item : children)
+        {
+            if (item instanceof Tag)
+                ((Tag) item).draw(drawer);
+            else
+                drawer.drawText((String) item);
+        }
     }
 }

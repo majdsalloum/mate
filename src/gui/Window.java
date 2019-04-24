@@ -1,8 +1,9 @@
 package gui;
 
+import core.exceptions.InvalidContentException;
 import core.parser.HTMLParser;
 import core.render.FXDrawer;
-import core.tags.Tag;
+import core.tags.*;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
@@ -145,6 +146,29 @@ public class Window {
         tab.setGraphic(imageView);
         FXDrawer fxDrawer = new FXDrawer(tab, page);
         Tag head = HTMLParser.compile(string);
+        head=new HTML();
+        BODY body = new BODY();
+        TABLE table = new TABLE();
+        TR tr=new TR();
+        TD td=new TD();
+        TD td1=new TD();
+        TR tr1=new TR();
+        TD td2=new TD();
+        try {
+            head.addChildren(body);
+
+        body.addChildren(table);
+        table.addChildren(tr);
+        tr.addChildren(td);
+        td.addChildren("hello");
+        tr.addChildren(td1);
+        td1.addChildren("bye");
+        table.addChildren(tr1);
+        tr1.addChildren(td2);
+        td2.addChildren("ok");
+        } catch (InvalidContentException e) {
+            e.printStackTrace();
+        }
         head.draw(fxDrawer);
         updateTabContent();
 

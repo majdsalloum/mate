@@ -28,6 +28,11 @@ public class FXDrawer implements Drawer {
     public void drawText(String text) {
         Label label = new Label(text);
         label.setText(text);
+        if (parents.size()>0){
+            if (parents.peek().getDrawing_parent()==DrawerPane.DRAWING_PARENT.TABLE)
+            ((GridPane)parents.peek().getParent()).add(label,parents.peek().col,parents.peek().row);
+        }
+        else
         page.getFlowPane().getChildren().add(label);
     }
 
@@ -97,7 +102,7 @@ public class FXDrawer implements Drawer {
 
     @Override
     public void usePane(DrawerPane drawerPane) {
-
+        parents.add(drawerPane);
     }
 
     @Override
@@ -122,5 +127,10 @@ public class FXDrawer implements Drawer {
     @Override
     public void unUseAlign() {
        aligns.pop();
+    }
+
+    @Override
+    public LinkedList<DrawerPane> getParents() {
+        return parents;
     }
 }
