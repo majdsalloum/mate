@@ -183,13 +183,13 @@ public class HTMLParser {
     }
 
 
-    public static List<TagLocation> compile(String text) {
+    public static Tag compile(String text) {
         try {
             String textWithoutComments = removeComments(text);
             LinkedList<TagLocation> tagsLocations = detectTagsLocations(textWithoutComments);
             getTree(tagsLocations);
             setAttributes(tagsLocations, textWithoutComments);
-            return tagsLocations;
+            return tagsLocations.getFirst().tag;
         } catch (InvalidSyntaxException | InvalidContentException e) {
             e.printStackTrace();
             return null;

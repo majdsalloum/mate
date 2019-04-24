@@ -21,15 +21,37 @@ public class ParsingTest {
             builder.append(line);
         }
         System.out.println("Done reading");
-        List<HTMLParser.TagLocation> a = HTMLParser.compile(builder.toString());
+        Tag a = HTMLParser.compile(builder.toString());
         int b = 1;
     }
 
 
+    private static void simpleTestTable() {
+        String html = "<html>" +
+                "<head>" +
+                "</head>" +
+                "<body>" +
+                "<table>" +
+                "<tr>" +
+                "<td>shadi</td>" +
+                "<td>majd</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td>reem</td>" +
+                "<td>rite</td>" +
+                "</tr>" +
+                "</table>" +
+                "</body>" +
+                "</html>";
+        Tag a = HTMLParser.compile(html);
+    }
+
     public static void main(String... args) throws Exception {
 
-        simpleTest();
+        //simpleTest();
 
+
+        simpleTestTable();
 
     }
 }
