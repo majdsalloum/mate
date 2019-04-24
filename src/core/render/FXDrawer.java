@@ -41,14 +41,7 @@ public class FXDrawer implements Drawer {
         tab.setText(text);
     }
 
-    @Override
-    public void drawImage(Image image)
-    {
-        Label label = new Label() ;
-        ImageView imageView=new ImageView(image);
-        label.setGraphic(imageView);
-        page.getFlowPane().getChildren().add(label);
-    }
+
     @Override
     public Boolean hasAttribute(ATTRIBUTES attributes){
         switch (attributes)
@@ -94,12 +87,7 @@ public class FXDrawer implements Drawer {
                 break;
         }
     }
-    @Override
-    public void drawTable()
-    {
-
-    }
-
+    
     @Override
     public void usePane(DrawerPane drawerPane) {
         parents.add(drawerPane);
