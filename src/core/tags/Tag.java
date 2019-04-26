@@ -15,7 +15,7 @@ import java.util.Map;
 abstract public class Tag {
 
     protected List<Object> children = new ArrayList<>();
-    // TODO INHERTIED TYPES AND ATTRIBUTES
+    // TODO INHERTIED TYPES AND Effect
     protected final static String[] SUPPORTED_ATTRIBUTES = {};
     protected final static String[] CHILDREN_TYPES = {};
 

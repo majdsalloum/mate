@@ -1,43 +1,43 @@
 package core.tags;
 
 import core.exceptions.InvalidContentException;
+import core.render.Alignment;
 import core.render.Drawer;
 import core.render.DrawerPane;
 import javafx.scene.layout.GridPane;
 
 public class TABLE extends Tag {
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES, new String[]{"border"});
-    protected final static String[] CHILDREN_TYPES = {"thead","tbody","tr","tfoot","colgroup"};
+    protected final static String[] CHILDREN_TYPES = {"thead", "tbody", "tr", "tfoot", "colgroup"};
 
     void validate() throws InvalidContentException {
-        for(int i=0;i<children.size();i++)
-        if ( children.get(i).getClass() == TR.class)
-            return;
+        for (int i = 0; i < children.size(); i++)
+            if (children.get(i).getClass() == TR.class)
+                return;
         throw new InvalidContentException("TABLE TAG MUST HAVE AT LEAST ONE CHILDREN (TR)");
     }
+
     @Override
     public void draw(Drawer drawer) {
-        for (Object item : children)
-        {
+        for (Object item : children) {
             if (!(item instanceof Tag))
                 drawer.drawText((String) item);
         }
-        for (Object item:children)
-        {
-            if (item.toString()=="CAPTION") {
+        for (Object item : children) {
+            if (item.toString() == "CAPTION") {
                 DrawerPane drawerPane = new DrawerPane();
                 drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.VBOX);
                 drawer.usePane(drawerPane);
-                drawer.useAlign(Drawer.ALIGN.CENTER);
+                drawer.useAlignment(Alignment.CENTER);
                 for (Object item2 : ((Tag) item).children) {
                     if (!(item2 instanceof Tag)) {
                         drawer.drawText((String) item2);
                     } else ((Tag) item2).draw(drawer);
                 }
-                drawer.unUseAlign();
+                drawer.unUseAlignment();
             }
         }
-        DrawerPane drawerPane  =new DrawerPane();
+        DrawerPane drawerPane = new DrawerPane();
         drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.TABLE);
         GridPane gridPane = new GridPane();
         gridPane.setVgap(2);
@@ -45,8 +45,7 @@ public class TABLE extends Tag {
         gridPane.setGridLinesVisible(true);
         drawerPane.setParent(gridPane);
         drawer.usePane(drawerPane);
-        for (Object item:children)
-        {
+        for (Object item : children) {
 //            System.out.println(item);
 //            if (item.toString()=="TR")
 //            {
@@ -59,17 +58,17 @@ public class TABLE extends Tag {
 //            }
 //            else if (item.toString()=="TH")
 //            {
-//                drawer.useAttribute(Drawer.ATTRIBUTES.FONT_BOLD);
-//                drawer.useAlign(Drawer.ALIGN.CENTER);
+//                drawer.useAttribute(Drawer.Effect.FONT_BOLD);
+//                drawer.useAlignment(Drawer.Alignment.CENTER);
 //
 //                drawerPane.setCol(drawerPane.getCol() + 1);
 //                ((Tag)item).draw(drawer);
 //
-//                drawer.unUseAttribute(Drawer.ATTRIBUTES.FONT_BOLD);
-//                drawer.unUseAlign();
+//                drawer.unUseAttribute(Drawer.Effect.FONT_BOLD);
+//                drawer.unUseAlignment();
 //            }
-            if (item instanceof Tag && item.toString()!="CAPTION")
-                ((Tag)item).draw(drawer);
+            if (item instanceof Tag && item.toString() != "CAPTION")
+                ((Tag) item).draw(drawer);
         }
         drawer.unUsePane();
     }

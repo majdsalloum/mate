@@ -13,34 +13,35 @@ public class InternetConnection {
     private Window window;
     private String urlPath;
     private URL url;
+
     public InternetConnection(Window window) {
         this.window = window;
     }
 
     private void getPageLogic() {
         try {
-            try {
-                url = new URL(urlPath);
-            } catch (Exception e) {
-                try {
-                tryAddProtocol();}catch (Exception e2)
-                {
-                    tryInSearchEngine();
-                }
-            }
-
-            InputStream inputStream = url.openStream();
-            StringBuilder dataBuilder = new StringBuilder();
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = br.readLine();
-            while (line != null) {
-                dataBuilder.append(line);
-                line = br.readLine();
-                if (line != null)
-                    dataBuilder.append("\n");
-            }
+//            try {
+//                url = new URL(urlPath);
+//            } catch (Exception e) {
+//                try {
+//                    tryAddProtocol();
+//                } catch (Exception e2) {
+//                    tryInSearchEngine();
+//                }
+//            }
+//
+//            InputStream inputStream = url.openStream();
+//            StringBuilder dataBuilder = new StringBuilder();
+//            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+//            String line = br.readLine();
+//            while (line != null) {
+//                dataBuilder.append(line);
+//                line = br.readLine();
+//                if (line != null)
+//                    dataBuilder.append("\n");
+//            }
             final String data;// = dataBuilder.toString();
-            data="<html>" +
+            data = "<html>" +
                     "<head>" +
                     "</head>" +
                     "<body>" +
@@ -73,16 +74,17 @@ public class InternetConnection {
         this.urlPath = urlPath;
         new Thread(this::getPageLogic).start();
     }
-    private void tryAddProtocol()throws MalformedURLException
-    {
+
+    private void tryAddProtocol() throws MalformedURLException {
 //        try {
-            url = new URL("http://" + urlPath);
+        url = new URL("http://" + urlPath);
 //        }
 //        catch (MalformedURLException e)
 //        {
 //            url = new URL("http://"+urlPath);
 //        }
     }
+
     private void tryInSearchEngine() throws UnsupportedEncodingException, MalformedURLException {
         String google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";
         String search = urlPath;

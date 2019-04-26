@@ -1,34 +1,50 @@
 package core.render;
 
 
-import javafx.scene.image.Image;
-
 import java.util.LinkedList;
 
-public interface Drawer {
-    enum ATTRIBUTES{
-        FONT_BOLD,
-        FONT_ITALIC,
-        FONT_UNDERLINE,
+public abstract class Drawer {
+    protected int[] effectsUsages = new int[Effect.values().length];
+
+    protected LinkedList<Alignment> alignments = new LinkedList<>();
+
+    public Boolean hasEffect(Effect effect) {
+        return effectsUsages[effect.ordinal()] > 0;
     }
 
-    enum ALIGN
-    {
-        CENTER , LEFT , RIGHT
+    public void useEffect(Effect effect) {
+        effectsUsages[effect.ordinal()]++;
     }
-    public void drawText(String text);
-    public void setTitle(String text);
 
-    public void useAttribute(ATTRIBUTES attributes);
-    public void unUseAttribute(ATTRIBUTES attributes);
-    public Boolean hasAttribute(ATTRIBUTES attributes);
+    public void unUseEffect(Effect effect) {
+        if (effectsUsages[effect.ordinal()] == 0) {
+            System.out.println("Warning: effect " + effect + " is not used and you're trying to unuse it");
+            return;
+        }
+        effectsUsages[effect.ordinal()]--;
+    }
 
-    public void usePane(DrawerPane drawerPane);
-    public void unUsePane();
-    public void useAlign(ALIGN align);
-    public void unUseAlign();
-    public LinkedList<DrawerPane> getParents ();
+    public void useAlignment(Alignment alignment) {
+        alignments.add(alignment);
+    }
 
+    public void unUseAlignment() {
+        if (alignments.isEmpty()) {
+            System.out.println("Warning: You're trying to unuse alignment while it's not being used!");
+            return;
+        }
+        alignments.pop();
+    }
+
+    abstract public void drawText(String text);
+
+    abstract public void setTitle(String text);
+
+    abstract public void usePane(DrawerPane drawerPane);
+
+    abstract public void unUsePane();
+
+    abstract public LinkedList<DrawerPane> getParents();
 
 
 }
