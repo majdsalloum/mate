@@ -3,12 +3,24 @@ package core.render;
 import javafx.scene.Parent;
 
 public class DrawerPane {
-    public enum DRAWING_PARENT{
-        TABLE , VBOX
+    public enum DRAWING_PARENT {
+        TABLE, VBOX
     }
-    Integer row=0 ,col=0;
+
+    Integer row = -1, col = -1;
     Parent parent;
     DRAWING_PARENT drawing_parent;
+
+    public DrawerPane() {
+
+    }
+
+    public DrawerPane(Integer row, Integer col, Parent parent, DRAWING_PARENT drawing_parent) {
+        this.row = row;
+        this.col = col;
+        this.parent = parent;
+        this.drawing_parent = drawing_parent;
+    }
 
     public Parent getParent() {
         return parent;
@@ -30,16 +42,16 @@ public class DrawerPane {
     public Integer getRow() {
         return row;
     }
-    public Integer getCol()
-    {
+
+    public Integer getCol() {
         return col;
     }
-    public void setRow(Integer val)
-    {
-        row=val;
+
+    public void setRow(Integer val) {
+        row = val;
     }
-    public void setCol(Integer val)
-    {
-        col=val;
+
+    public void setCol(Integer val) {
+        col = val;
     }
 }

@@ -19,57 +19,13 @@ public class TABLE extends Tag {
 
     @Override
     public void draw(Drawer drawer) {
+        drawer.drawTable();
         for (Object item : children) {
             if (!(item instanceof Tag))
                 drawer.drawText((String) item);
-        }
-        for (Object item : children) {
-            if (item.toString() == "CAPTION") {
-                DrawerPane drawerPane = new DrawerPane();
-                drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.VBOX);
-                drawer.usePane(drawerPane);
-                drawer.useAlignment(Alignment.CENTER);
-                for (Object item2 : ((Tag) item).children) {
-                    if (!(item2 instanceof Tag)) {
-                        drawer.drawText((String) item2);
-                    } else ((Tag) item2).draw(drawer);
-                }
-                drawer.unUseAlignment();
-            }
-        }
-        DrawerPane drawerPane = new DrawerPane();
-        drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.TABLE);
-        GridPane gridPane = new GridPane();
-        gridPane.setVgap(2);
-        gridPane.setHgap(2);
-        gridPane.setGridLinesVisible(true);
-        drawerPane.setParent(gridPane);
-        drawer.usePane(drawerPane);
-        for (Object item : children) {
-//            System.out.println(item);
-//            if (item.toString()=="TR")
-//            {
-//                drawerPane.setRow(drawerPane.getRow()+1);
-//                ((Tag)item).draw(drawer);
-//            }
-//            else if (item.toString()=="TD") {
-//                drawerPane.setCol(drawerPane.getCol() + 1);
-//                ((Tag)item).draw(drawer);
-//            }
-//            else if (item.toString()=="TH")
-//            {
-//                drawer.useAttribute(Drawer.Effect.FONT_BOLD);
-//                drawer.useAlignment(Drawer.Alignment.CENTER);
-//
-//                drawerPane.setCol(drawerPane.getCol() + 1);
-//                ((Tag)item).draw(drawer);
-//
-//                drawer.unUseAttribute(Drawer.Effect.FONT_BOLD);
-//                drawer.unUseAlignment();
-//            }
-            if (item instanceof Tag && item.toString() != "CAPTION")
+            else
                 ((Tag) item).draw(drawer);
         }
-        drawer.unUsePane();
+        drawer.endDrawTable();
     }
 }

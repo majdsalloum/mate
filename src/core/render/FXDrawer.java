@@ -14,6 +14,7 @@ public class FXDrawer extends Drawer {
     Page page;
     LinkedList<DrawerPane> parents = new LinkedList<>();
 
+
     public FXDrawer(Tab tab, Page page) {
         this.tab = tab;
         this.page = page;
@@ -24,8 +25,8 @@ public class FXDrawer extends Drawer {
         Label label = new Label(text);
         label.setText(text);
         if (parents.size() > 0) {
-            if (parents.peek().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE)
-                ((GridPane) parents.peek().getParent()).add(label, parents.peek().col, parents.peek().row);
+            if (parents.getLast().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE)
+                ((GridPane) parents.getLast().getParent()).add(label, parents.getLast().col, parents.getLast().row);
         } else
             page.getFlowPane().getChildren().add(label);
     }
@@ -35,27 +36,80 @@ public class FXDrawer extends Drawer {
         tab.setText(text);
     }
 
-    @Override
-    public void usePane(DrawerPane drawerPane) {
+    private void usePane(DrawerPane drawerPane) {
         parents.add(drawerPane);
     }
 
-    @Override
-    public void unUsePane() {
-        DrawerPane drawerPane = parents.pop();
+    private void unUsePane() {
+        DrawerPane drawerPane = parents.pollLast();
         if (parents.isEmpty())
             page.getFlowPane().getChildren().add(drawerPane.parent);
         else {
-            if (parents.peek().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE) {
-                ((GridPane) parents.peek().getParent()).add(drawerPane.parent, drawerPane.col, drawerPane.row);
+            if (parents.getLast().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE) {
+                ((GridPane) parents.getLast().getParent()).add(drawerPane.parent, drawerPane.col, drawerPane.row);
             }
         }
     }
 
-
+    @Override
+    public void drawTable() {
+        DrawerPane drawerPane = new DrawerPane();
+        drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.TABLE);
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(2);
+        gridPane.setHgap(2);
+        gridPane.setGridLinesVisible(true);
+        drawerPane.setParent(gridPane);
+        usePane(drawerPane);
+    }
 
     @Override
-    public LinkedList<DrawerPane> getParents() {
-        return parents;
+    public void drawHeader() {
+
     }
+
+    @Override
+    public void endDrawHeader() {
+
+    }
+
+    @Override
+    public void drawTableColumn() {
+
+    }
+
+    @Override
+    public void endDraTableColumn() {
+        parents.getLast().setCol(parents.getLast().getCol() + 1);
+    }
+
+    @Override
+    public void drawTableRow() {
+        parents.getLast().setRow(parents.getLast().getRow() + 1);
+        parents.getLast().setCol(0);
+    }
+
+    @Override
+    public void endDrawTableRow() {
+
+    }
+
+    @Override
+    public void endDrawTable() {
+        unUsePane();
+    }
+
+    @Override
+    public void drawCaption() {
+        DrawerPane drawerPane = new DrawerPane();
+        drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.VBOX);
+        usePane(drawerPane);
+        useAlignment(Alignment.CENTER);
+    }
+
+    @Override
+    public void endDrawCaption() {
+        unUseAlignment();
+    }
+
 }

@@ -51,8 +51,8 @@ public class InternetConnection {
                     "<td>majd</td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td>reem</td>" +
-                    "<td>rite</td>" +
+                    "<td><table><tr><td>reem</td><td>reeeeem</td></tr></table></td>" +
+                    "<td>rita</td>" +
                     "</tr>" +
                     "</table>" +
                     "</body>" +
