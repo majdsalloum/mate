@@ -1,8 +1,7 @@
 package gui;
 
-import core.exceptions.InvalidContentException;
 import core.parser.HTMLParser;
-import core.render.FXDrawer;
+import core.render.fx.FXDrawer;
 import core.tags.*;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressIndicator;

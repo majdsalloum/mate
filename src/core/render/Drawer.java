@@ -1,15 +1,25 @@
 package core.render;
 
 
+import core.render.actions.Action;
+
 import java.util.LinkedList;
 
 public abstract class Drawer {
     protected int[] effectsUsages = new int[Effect.values().length];
-
+    protected LinkedList<Action> actions = new LinkedList<>();
     protected LinkedList<Alignment> alignments = new LinkedList<>();
 
     public Boolean hasEffect(Effect effect) {
         return effectsUsages[effect.ordinal()] > 0;
+    }
+
+    public void useAction(Action action) {
+        actions.add(action);
+    }
+
+    public void unUssAction() {
+        actions.removeLast();
     }
 
     public void useEffect(Effect effect) {

@@ -1,10 +1,7 @@
 package core.tags;
 
 import core.exceptions.InvalidContentException;
-import core.render.Alignment;
 import core.render.Drawer;
-import core.render.DrawerPane;
-import javafx.scene.layout.GridPane;
 
 public class TABLE extends Tag {
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES, new String[]{"border"});

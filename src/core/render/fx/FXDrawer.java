@@ -1,13 +1,19 @@
-package core.render;
+package core.render.fx;
 
-import javafx.scene.Parent;
+import core.render.Alignment;
+import core.render.Drawer;
+import core.render.Effect;
+import core.render.actions.Action;
+import core.render.actions.HrefAction;
+import core.render.fx.panes.DrawerPane;
+import core.render.fx.panes.GridDrawerPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 
 import gui.Page;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
 import java.util.LinkedList;
 
 
@@ -15,7 +21,6 @@ public class FXDrawer extends Drawer {
     Tab tab;
     Page page;
     LinkedList<DrawerPane> parents = new LinkedList<>();
-
 
     public FXDrawer(Tab tab, Page page) {
         this.tab = tab;
@@ -29,8 +34,7 @@ public class FXDrawer extends Drawer {
         if (hasEffect(Effect.FONT_BOLD))
             label.setStyle("-fx-font-weight: bold;");
         if (parents.size() > 0) {
-            if (parents.getLast().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE)
-                ((GridPane) parents.getLast().getParent()).add(label, parents.getLast().col, parents.getLast().row);
+            parents.getLast().add(label);
         } else
             page.getFlowPane().getChildren().add(label);
     }
@@ -47,12 +51,9 @@ public class FXDrawer extends Drawer {
     private void unUsePane() {
         DrawerPane drawerPane = parents.pollLast();
         if (parents.isEmpty())
-            page.getFlowPane().getChildren().add(drawerPane.parent);
+            page.getFlowPane().getChildren().add(drawerPane.getParent());
         else {
-            if (parents.getLast().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE) {
-                ((GridPane) parents.getLast().getParent()).add(drawerPane.parent, parents.getLast().col, parents.getLast().row)
-                ;
-            }
+            parents.getLast().add(drawerPane.getParent());
         }
     }
 
@@ -62,11 +63,7 @@ public class FXDrawer extends Drawer {
         gridPane.setVgap(2);
         gridPane.setHgap(2);
         gridPane.setGridLinesVisible(true);
-        Parent parent = gridPane;
-        DrawerPane drawerPane = new DrawerPane();
-        drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.TABLE);
-        drawerPane.setParent(parent);
-        usePane(drawerPane);
+        usePane(new GridDrawerPane(gridPane));
     }
 
     @Override
@@ -86,18 +83,18 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDraTableColumn() {
-        parents.getLast().setCol(parents.getLast().getCol() + 1);
+        ((GridDrawerPane) parents.getLast()).setCol(((GridDrawerPane) parents.getLast()).getCol() + 1);
     }
 
     @Override
     public void drawTableRow() {
-        parents.getLast().setRow(parents.getLast().getRow() + 1);
-        parents.getLast().setCol(0);
+        GridDrawerPane p = (GridDrawerPane) parents.getLast();
+        p.setRow(p.getRow() + 1);
+        p.setCol(0);
     }
 
     @Override
     public void endDrawTableRow() {
-
     }
 
     @Override
@@ -107,8 +104,7 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawCaption() {
-        DrawerPane drawerPane = new DrawerPane();
-        drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.VBOX);
+        DrawerPane drawerPane = new DrawerPane(new FlowPane());
         usePane(drawerPane);
         useAlignment(Alignment.CENTER);
     }
@@ -118,4 +114,13 @@ public class FXDrawer extends Drawer {
         unUseAlignment();
     }
 
+    @Override
+    public void useAction(Action action) {
+        super.useAction(action);
+        DrawerPane drawerPane = new DrawerPane(new FlowPane());
+        if (action instanceof HrefAction) {
+            int s = 0;
+        }
+        parents.addLast(drawerPane);
+    }
 }
