@@ -1,11 +1,13 @@
 package core.render;
 
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 
 import gui.Page;
 import javafx.scene.layout.GridPane;
 
+import java.awt.*;
 import java.util.LinkedList;
 
 
@@ -24,6 +26,8 @@ public class FXDrawer extends Drawer {
     public void drawText(String text) {
         Label label = new Label(text);
         label.setText(text);
+        if (hasEffect(Effect.FONT_BOLD))
+            label.setStyle("-fx-font-weight: bold;");
         if (parents.size() > 0) {
             if (parents.getLast().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE)
                 ((GridPane) parents.getLast().getParent()).add(label, parents.getLast().col, parents.getLast().row);
@@ -46,31 +50,33 @@ public class FXDrawer extends Drawer {
             page.getFlowPane().getChildren().add(drawerPane.parent);
         else {
             if (parents.getLast().getDrawing_parent() == DrawerPane.DRAWING_PARENT.TABLE) {
-                ((GridPane) parents.getLast().getParent()).add(drawerPane.parent, drawerPane.col, drawerPane.row);
+                ((GridPane) parents.getLast().getParent()).add(drawerPane.parent, parents.getLast().col, parents.getLast().row)
+                ;
             }
         }
     }
 
     @Override
     public void drawTable() {
-        DrawerPane drawerPane = new DrawerPane();
-        drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.TABLE);
         GridPane gridPane = new GridPane();
         gridPane.setVgap(2);
         gridPane.setHgap(2);
         gridPane.setGridLinesVisible(true);
-        drawerPane.setParent(gridPane);
+        Parent parent = gridPane;
+        DrawerPane drawerPane = new DrawerPane();
+        drawerPane.setDrawing_parent(DrawerPane.DRAWING_PARENT.TABLE);
+        drawerPane.setParent(parent);
         usePane(drawerPane);
     }
 
     @Override
-    public void drawHeader() {
-
+    public void drawTableHeader() {
+        useEffect(Effect.FONT_BOLD);
     }
 
     @Override
-    public void endDrawHeader() {
-
+    public void endDrawTableHeader() {
+        unUseEffect(Effect.FONT_BOLD);
     }
 
     @Override

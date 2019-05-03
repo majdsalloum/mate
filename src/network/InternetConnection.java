@@ -46,6 +46,12 @@ public class InternetConnection {
                     "</head>" +
                     "<body>" +
                     "<table>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<td> H1 </td>" +
+                    "<td> H2 </td>" +
+                    "</tr>"+
+                    "</thead>" +
                     "<tr>" +
                     "<td>shadi</td>" +
                     "<td>majd</td>" +

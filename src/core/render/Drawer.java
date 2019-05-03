@@ -48,9 +48,9 @@ public abstract class Drawer {
 
     abstract public void endDrawCaption();
 
-    abstract public void drawHeader();
+    abstract public void drawTableHeader();
 
-    abstract public void endDrawHeader();
+    abstract public void endDrawTableHeader();
 
     abstract public void drawTableColumn();
 

@@ -1,5 +1,6 @@
 package core.render;
 
+import javafx.scene.Node;
 import javafx.scene.Parent;
 
 public class DrawerPane {
@@ -8,7 +9,7 @@ public class DrawerPane {
     }
 
     Integer row = -1, col = -1;
-    Parent parent;
+    Node parent;
     DRAWING_PARENT drawing_parent;
 
     public DrawerPane() {
@@ -22,11 +23,11 @@ public class DrawerPane {
         this.drawing_parent = drawing_parent;
     }
 
-    public Parent getParent() {
+    public Node getParent() {
         return parent;
     }
 
-    public void setParent(Parent parent) {
+    public void setParent(Node parent) {
         this.parent = parent;
     }
 
