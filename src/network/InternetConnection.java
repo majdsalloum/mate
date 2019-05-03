@@ -45,6 +45,7 @@ public class InternetConnection {
                     "<head>" +
                     "</head>" +
                     "<body>" +
+                    "<a href=\"www.html.com\">" +
                     "<table>" +
                     "<thead>" +
                     "<tr>" +
@@ -61,6 +62,7 @@ public class InternetConnection {
                     "<td>rita</td>" +
                     "</tr>" +
                     "</table>" +
+                    "</a>" +
                     "</body>" +
                     "</html>";
 

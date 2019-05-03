@@ -10,61 +10,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserInterface {
-    private Stage mainStage ;
+    private Stage mainStage;
     private Scene scene;
     private TabPane tabPane;
-    private List<Window> windows ;
+    private List<Window> windows;
 
-    public void initializeUserInterface()
-    {
+    public void initializeUserInterface() {
         //Stage
         mainStage = new Stage();
         mainStage.setMaximized(true);
         mainStage.setTitle("Matté");
         mainStage.initStyle(StageStyle.DECORATED);
-        Image image=new Image(getClass().getResourceAsStream("..\\img\\mate.png"));
+        Image image = new Image(getClass().getResourceAsStream("..\\img\\mate.png"));
         mainStage.getIcons().add(image);
 
         //TapPane
         tabPane = new TabPane();
         tabPane.setPrefWidth(1500);
         //List Window
-        windows  = new ArrayList<>();
-        creatNewWindow();
+        windows = new ArrayList<>();
+        createNewWindow();
 
     }
 
-    public void showUI()
-    {
+    public void showUI() {
         initializeUserInterface();
         scene = new Scene(tabPane);
 
         mainStage.setScene(scene);
         mainStage.show();
     }
-    private void setTabCloseAction(Window window)
-    {
-        window.getTab().setOnClosed((e)->
+
+    private void setTabCloseAction(Window window) {
+        window.getTab().setOnClosed((e) ->
         {
-            if(windows.size()>1)
-            windows.remove(window);
+            if (windows.size() > 1)
+                windows.remove(window);
             else
                 mainStage.close();
         });
     }
-    private void setAddTabAction(Window window){
+
+    private void setAddTabAction(Window window) {
         Button button = window.getPageToolBar().getNewTabButton();
-        button.setOnAction((e)->{
-            creatNewWindow();
+        button.setOnAction((e) -> {
+            createNewWindow();
         });
         MenuItem menuItem = window.getPageToolBar().getNewTab();
-        menuItem.setOnAction((e)->{
-            creatNewWindow();
+        menuItem.setOnAction((e) -> {
+            createNewWindow();
         });
     }
-    private void creatNewWindow()
-    {
-        Window newWindow = new Window(tabPane);
+
+    public Window createNewWindow() {
+        Window newWindow = new Window(tabPane,this);
         windows.add(newWindow);
         //setActions
         setTabCloseAction(newWindow);
@@ -73,6 +72,7 @@ public class UserInterface {
         //Select the new tab to show it
         SingleSelectionModel singleSelectionModel = tabPane.getSelectionModel();
         singleSelectionModel.select(newWindow.getTab());
+        return newWindow;
     }
 
 }

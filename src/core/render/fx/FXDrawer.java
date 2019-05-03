@@ -7,12 +7,17 @@ import core.render.actions.Action;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.GridDrawerPane;
+import gui.UserInterface;
+import gui.Window;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 
 import gui.Page;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 
@@ -20,11 +25,13 @@ import java.util.LinkedList;
 public class FXDrawer extends Drawer {
     Tab tab;
     Page page;
+    UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
 
-    public FXDrawer(Tab tab, Page page) {
+    public FXDrawer(Tab tab, Page page, UserInterface userInterface) {
         this.tab = tab;
         this.page = page;
+        this.ui = userInterface;
     }
 
     @Override
@@ -118,9 +125,20 @@ public class FXDrawer extends Drawer {
     public void useAction(Action action) {
         super.useAction(action);
         DrawerPane drawerPane = new DrawerPane(new FlowPane());
+        drawerPane.getParent().setBackground(new Background(new BackgroundFill(Color.rgb(100, 100, 100), null, null)));
         if (action instanceof HrefAction) {
-            int s = 0;
+            HrefAction hrefAction = (HrefAction) action;
+            drawerPane.getParent().setOnMouseClicked((event) -> {
+                Window window = this.ui.createNewWindow();
+                window.search(hrefAction.getLink());
+            });
         }
         parents.addLast(drawerPane);
+    }
+
+    @Override
+    public void unUssAction() {
+        super.unUssAction();
+        unUsePane();
     }
 }

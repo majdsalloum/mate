@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import network.InternetConnection;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,10 @@ public class Window {
     private Integer pageIndexInSearchLog = 0;
     private VBox content;
     private Tab tab;
+    private UserInterface ui;
 
-    public Window(TabPane tabPane) {
+    public Window(TabPane tabPane, UserInterface ui) {
+        this.ui = ui;
         searchLog = new ArrayList<>();
         searchLog.add("matte:\\home");
         pageToolBar = new PageToolBar(this, tabPane);
@@ -129,7 +132,7 @@ public class Window {
     public void search(String path) {
         //TODO: HANDLE SEARCH IF PREVIOUS SEARCH STILL RUNNING
         ProgressIndicator progressIndicator = new ProgressIndicator();
-        progressIndicator.setPrefSize(20,20);
+        progressIndicator.setPrefSize(20, 20);
         tab.setGraphic(progressIndicator);
         page = new Page();
         InternetConnection internetConnection = new InternetConnection(this);
@@ -143,7 +146,7 @@ public class Window {
         imageView.setFitWidth(15);
         tab.setGraphic(imageView);
         tab.setGraphic(imageView);
-        FXDrawer fxDrawer = new FXDrawer(tab, page);
+        FXDrawer fxDrawer = new FXDrawer(tab, page, ui);
 
         Tag head = (Tag) HTMLParser.compile(string);
         head.draw(fxDrawer);
