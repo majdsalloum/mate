@@ -17,14 +17,14 @@ public class UserInterface {
     private TabPane tabPane;
     private List<Window> windows;
 
+
     public void initializeUserInterface() {
         //Stage
         mainStage = new Stage();
         mainStage.setMaximized(true);
         mainStage.setTitle("Matté");
         mainStage.initStyle(StageStyle.DECORATED);
-        Image image = new Image(getClass().getResourceAsStream("..\\img\\mate.png"));
-        mainStage.getIcons().add(image);
+        mainStage.getIcons().add(Images.logo);
 
         //TapPane
         tabPane = new TabPane();

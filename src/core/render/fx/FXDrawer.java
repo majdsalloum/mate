@@ -3,13 +3,13 @@ package core.render.fx;
 import core.render.Alignment;
 import core.render.Drawer;
 import core.render.Effect;
-import core.render.Symbols.UnOrderedSymbol;
 import core.render.actions.Action;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.GridDrawerPane;
 import core.render.fx.panes.ListItem;
 import core.render.fx.panes.UnOrderedListDrawPane;
+import gui.Page;
 import gui.UserInterface;
 import gui.Window;
 import javafx.application.Platform;
@@ -17,16 +17,12 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-
-import gui.Page;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.LinkedList;
 
@@ -75,10 +71,12 @@ public class FXDrawer extends Drawer {
     public void drawImage(String path) {
         final ImageView iv = new ImageView();
         drawNode(iv);
+        page.getWindow().showLoading();
         (new Thread(() -> {
             Image image = new Image(getRelativePath(path));
             Platform.runLater(() -> {
                 iv.setImage(image);
+                page.getWindow().hideLoading();
             });
         }
         )).start();

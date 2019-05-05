@@ -9,91 +9,88 @@ import javafx.scene.layout.Priority;
 
 public class PageToolBar {
     private ToolBar toolBar;
-    private Button backward,forward,refresh,home,search,newTabButton,disconnect;
-    private TextField textSearch ;
-    private MenuItem setting,newTab,downloads,newWindow,exit;
+    private Button backward, forward, refresh, home, search, newTabButton, disconnect;
+    private TextField textSearch;
+    private MenuItem setting, newTab, downloads, newWindow, exit;
     private MenuBar menuBar;
     private Menu file;
-    private final Integer ICON_SIZE=15;
+    private final Integer ICON_SIZE = 15;
     Window window;
     private TabPane tabPane;
 
-    public PageToolBar(Window window , TabPane tabPane)
-    {
-        this.window=window;
-        this.tabPane=tabPane;
+    public PageToolBar(Window window, TabPane tabPane) {
+        this.window = window;
+        this.tabPane = tabPane;
         toolBar = new ToolBar();
         toolBar.setPadding(new Insets(20));
         //add buttons
-        backward =new Button();
-        backward.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("..\\img//backward.png",backward);
+        backward = new Button();
+        backward.setPrefSize(ICON_SIZE, ICON_SIZE);
+        insertImage("..\\img//backward.png", backward);
         backward.setAccessibleHelp("backward");
 //        if (window.getSearchLog().size()<=1)
 //            backward.setDisable(true);
 //        else backward.setDisable(false);
 
-        forward =new Button();
-        forward.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("..\\img//forward.png",forward);
+        forward = new Button();
+        forward.setPrefSize(ICON_SIZE, ICON_SIZE);
+        insertImage("..\\img//forward.png", forward);
         forward.setAccessibleHelp("forward");
 //        if (window.getPageIndexInSearchLog()==window.getSearchLog().size()-1)
 //            forward.setDisable(true);
 //        else forward.setDisable(false);
 
-        refresh =new Button();
-        refresh.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("..\\img//refresh1.png",refresh);
+        refresh = new Button();
+        refresh.setPrefSize(ICON_SIZE, ICON_SIZE);
+        insertImage("..\\img//refresh1.png", refresh);
         refresh.setAccessibleHelp("refresh");
 
         disconnect = new Button();
-        disconnect.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("..\\img//disconnect.png",disconnect);
+        disconnect.setPrefSize(ICON_SIZE, ICON_SIZE);
+        insertImage("..\\img//disconnect.png", disconnect);
         //todo: work on this
 
-        home=new Button();
-        home.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("..\\img//home1.png",home);
+        home = new Button();
+        home.setPrefSize(ICON_SIZE, ICON_SIZE);
+        insertImage("..\\img//home1.png", home);
         home.setAccessibleHelp("home");
 
-        textSearch =new TextField();
+        textSearch = new TextField();
         HBox.setHgrow(textSearch, Priority.ALWAYS);
         textSearch.setPrefHeight(30);
 
 
-        search =new Button();
-        search.setPrefSize(ICON_SIZE,ICON_SIZE);
-        insertImage("..\\img//search1.png",search);
+        search = new Button();
+        search.setPrefSize(ICON_SIZE, ICON_SIZE);
+        insertImage("..\\img//search1.png", search);
         search.setAccessibleHelp("search");
 
-        menuBar=new MenuBar();
-        file =new Menu();
-        Image image=new Image(getClass().getResourceAsStream("..\\img//menu.png"));
-        ImageView imageView=new ImageView(image);
+        menuBar = new MenuBar();
+        file = new Menu();
+        ImageView imageView = new ImageView(Images.menu);
         imageView.setFitHeight(ICON_SIZE);
         imageView.setFitWidth(ICON_SIZE);
         file.setGraphic(imageView);
 
-        newTab=new MenuItem("NewTab");
-        newWindow=new MenuItem("NewWindow");
-        downloads=new MenuItem("Downloads");
-        setting=new MenuItem("Setting");
-        exit=new MenuItem("Exit");
-        file.getItems().addAll(newTab,newWindow,downloads,setting,exit);
+        newTab = new MenuItem("NewTab");
+        newWindow = new MenuItem("NewWindow");
+        downloads = new MenuItem("Downloads");
+        setting = new MenuItem("Setting");
+        exit = new MenuItem("Exit");
+        file.getItems().addAll(newTab, newWindow, downloads, setting, exit);
         menuBar.getMenus().addAll(file);
 
-        newTabButton= new Button();
-        insertImage("..\\img//newtab.png",newTabButton);
+        newTabButton = new Button();
+        insertImage("..\\img//newtab.png", newTabButton);
         newTabButton.setAccessibleHelp("newTabButton");
 
         toolBar.getItems().add(new Separator());
-        toolBar.getItems().addAll(backward,forward,refresh,home,textSearch,search,newTabButton,menuBar);
+        toolBar.getItems().addAll(backward, forward, refresh, home, textSearch, search, newTabButton, menuBar);
     }
 
-    private void insertImage(String imagePath,Button button)
-    {
-        Image image=new Image(getClass().getResourceAsStream(imagePath));
-        ImageView imageView=new ImageView(image);
+    private void insertImage(String imagePath, Button button) {
+        Image image = Images.getImage(imagePath);
+        ImageView imageView = new ImageView(image);
         imageView.setFitHeight(ICON_SIZE);
         imageView.setFitWidth(ICON_SIZE);
         button.setGraphic(imageView);
@@ -159,8 +156,8 @@ public class PageToolBar {
     public Menu getFile() {
         return file;
     }
-    void setWindow(Window window)
-    {
-        this.window=window;
+
+    void setWindow(Window window) {
+        this.window = window;
     }
 }

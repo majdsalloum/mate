@@ -22,6 +22,10 @@ public class Page {
         this.window = window;
     }
 
+    public Window getWindow() {
+        return window;
+    }
+
     public FlowPane getFlowPane() {
         return flowPane;
     }

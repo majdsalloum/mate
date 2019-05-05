@@ -69,7 +69,7 @@ public class Window {
 
     public void createNewTab() {
         tab = new Tab("NewTab");
-        Image image = new Image(getClass().getResourceAsStream("..\\img\\home1.png"));
+        Image image = Images.getImage("..\\img\\home1.png");
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(15);
         imageView.setFitWidth(15);
@@ -126,24 +126,40 @@ public class Window {
         });
     }
 
+    private int loading = 0;
+
+    public void showLoading() {
+        if (loading++ > 0) {
+            ProgressIndicator progressIndicator = new ProgressIndicator();
+            progressIndicator.setPrefSize(20, 20);
+            tab.setGraphic(progressIndicator);
+        }
+    }
+
+    public void hideLoading() {
+        if (loading == 0) return;
+        if (--loading == 0) {
+            Image image = Images.getImage("..\\img\\home1.png");
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(15);
+            imageView.setFitWidth(15);
+            tab.setGraphic(imageView);
+            tab.setGraphic(imageView);
+        }
+    }
+
     public void search(String path) {
-        //TODO: HANDLE SEARCH IF PREVIOUS SEARCH STILL RUNNING
+        if (loading > 0) return;
         searchLog.add(path);
-        ProgressIndicator progressIndicator = new ProgressIndicator();
-        progressIndicator.setPrefSize(20, 20);
-        tab.setGraphic(progressIndicator);
+        showLoading();
         page = new Page();
+        page.setWindow(this);
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
     }
 
     public void onLoad(String string) {
-        Image image = new Image(getClass().getResourceAsStream("..\\img\\home1.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(15);
-        imageView.setFitWidth(15);
-        tab.setGraphic(imageView);
-        tab.setGraphic(imageView);
+        hideLoading();
         FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
 
         Tag head = (Tag) HTMLParser.compile(string);
