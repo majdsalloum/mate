@@ -45,6 +45,12 @@ public abstract class Drawer {
         actions.removeLast();
     }
 
+    public boolean hasAction(Class<? extends Action> action) {
+        for (Action action1 : actions)
+            if (action.isInstance(action1)) return true;
+        return false;
+    }
+
     public void useEffect(Effect effect) {
         effectsUsages[effect.ordinal()]++;
     }

@@ -12,6 +12,7 @@ import core.render.fx.panes.ListItem;
 import core.render.fx.panes.UnOrderedListDrawPane;
 import gui.UserInterface;
 import gui.Window;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -19,8 +20,12 @@ import javafx.scene.control.Tab;
 import gui.Page;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 
 import java.util.LinkedList;
 
@@ -51,6 +56,12 @@ public class FXDrawer extends Drawer {
         label.setText(text);
         if (hasEffect(Effect.FONT_BOLD))
             label.setStyle("-fx-font-weight: bold;");
+        if (hasAction(HrefAction.class)) {
+            label.setStyle(label.getStyle() + "-fx-font-style: italic;");
+            Styler.changeColorToPassiveLink(label);
+            label.setOnMouseEntered(Styler::changeColorToActiveLink);
+            label.setOnMouseExited(Styler::changeColorToPassiveLink);
+        }
         drawNode(label);
     }
 
@@ -166,7 +177,7 @@ public class FXDrawer extends Drawer {
     public void useAction(Action action) {
         super.useAction(action);
         DrawerPane drawerPane = new DrawerPane(new FlowPane());
-        drawerPane.getParent().setBackground(new Background(new BackgroundFill(Color.rgb(100, 100, 100), null, null)));
+        drawerPane.getParent().setCursor(Cursor.HAND);
         if (action instanceof HrefAction) {
             HrefAction hrefAction = (HrefAction) action;
             drawerPane.getParent().setOnMouseClicked((event) -> {

@@ -45,6 +45,9 @@ public class InternetConnection {
                     "<head>" +
                     "</head>" +
                     "<body>" +
+                    "<a href=\"asdas\">" +
+                    "click me" +
+                    "</a>" +
                     "</body>" +
                     "</html>";
 
