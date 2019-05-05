@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 public class PageToolBar {
     private ToolBar toolBar;
@@ -55,7 +57,7 @@ public class PageToolBar {
         home.setAccessibleHelp("home");
 
         textSearch =new TextField();
-        textSearch.setPrefWidth(1200-(ICON_SIZE*6));//todo :Edit this
+        HBox.setHgrow(textSearch, Priority.ALWAYS);
         textSearch.setPrefHeight(30);
 
 

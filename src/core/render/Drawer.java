@@ -2,7 +2,6 @@ package core.render;
 
 
 import core.render.actions.Action;
-import javafx.scene.image.Image;
 
 import java.net.MalformedURLException;
 import java.net.URI;

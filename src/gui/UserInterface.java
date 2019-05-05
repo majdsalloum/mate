@@ -3,6 +3,8 @@ package gui;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -27,6 +29,7 @@ public class UserInterface {
         //TapPane
         tabPane = new TabPane();
         tabPane.setPrefWidth(1500);
+        VBox.setVgrow(tabPane, Priority.ALWAYS);
         //List Window
         windows = new ArrayList<>();
         createNewWindow();
@@ -63,7 +66,7 @@ public class UserInterface {
     }
 
     public Window createNewWindow() {
-        Window newWindow = new Window(tabPane,this);
+        Window newWindow = new Window(tabPane, this);
         windows.add(newWindow);
         //setActions
         setTabCloseAction(newWindow);

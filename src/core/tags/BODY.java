@@ -12,7 +12,7 @@ public class BODY extends Tag {
             if (item instanceof Tag)
                 ((Tag) item).draw(drawer);
             else
-                drawer.drawText((String) item);
+                drawer.drawText(item.toString());
         }
 
     }
