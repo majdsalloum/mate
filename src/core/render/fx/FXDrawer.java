@@ -12,6 +12,7 @@ import core.render.fx.panes.ListItem;
 import core.render.fx.panes.UnOrderedListDrawPane;
 import gui.UserInterface;
 import gui.Window;
+import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -72,8 +73,15 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawImage(String path) {
-        Image image = new Image(path);
-        drawNode(new ImageView(image));
+        final ImageView iv = new ImageView();
+        drawNode(iv);
+        (new Thread(() -> {
+            Image image = new Image(getRelativePath(path));
+            Platform.runLater(() -> {
+                iv.setImage(image);
+            });
+        }
+        )).start();
     }
 
     private void usePane(DrawerPane drawerPane) {

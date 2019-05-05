@@ -24,10 +24,23 @@ public class HTMLParser {
         String originalTag = null;
 
         public boolean includes(TagLocation tagLocation) {
+            if (endTagBegin == null)
+                return false;
+            else if (tagLocation.endTagBegin == null)
+                return tagLocation.startTagBegin > startTagEnd && tagLocation.startTagEnd < endTagBegin;
             return this.startTagEnd < tagLocation.startTagBegin &&
                     this.endTagBegin > tagLocation.endTagEnd;
         }
 
+        @Override
+        public String toString() {
+            if (originalTag != null)
+                return originalTag;
+            if (tag != null)
+                return tag.toString();
+            else
+                return tagText;
+        }
     }
 
     private static String removeExtraSpaces(String text) {
@@ -92,6 +105,9 @@ public class HTMLParser {
                 tempStack.push(tagLocation);
                 newEnd = openTagMatcher.end();
             } else if (minStart.equals(closeTagStart)) {
+                while (!tempStack.peek().tag.requiresClosing() &&
+                        !tempStack.peek().tag.toString().toLowerCase().equals(closeTagMatcher.group(1).toLowerCase()))
+                    tempStack.pop();
                 if (!closeTagMatcher.group(1).toLowerCase().equals(tempStack.getFirst().tagText)
                         &&
                         tempStack.getFirst().tag.requiresClosing()
@@ -129,10 +145,10 @@ public class HTMLParser {
                     textTagLocation.endTagBegin = start;
                     textTagLocation.endTagEnd = minStart - 1;
                     textTagLocation.tagText = remainingText;
-                    if (tagLocationToAdd != null)
-                        tagLocationList.add(tagLocationList.size() - 1, textTagLocation);
-                    else
-                        tagLocationList.add(textTagLocation);
+//                    if (tagLocationToAdd != null)
+//                        tagLocationList.add(tagLocationList.size() - 1, textTagLocation);
+//                    else
+                    tagLocationList.add(textTagLocation);
                 }
             } catch (Exception ignored) {
             }
@@ -177,7 +193,8 @@ public class HTMLParser {
             tagLocation.father = top;
             if (tagLocation.tag != null) {
                 top.tag.addChildren(tagLocation.tag);
-                stack.push(tagLocation);
+                if (tagLocation.endTagBegin != null)
+                    stack.push(tagLocation);
             } else
                 top.tag.addChildren(tagLocation.tagText);
         }

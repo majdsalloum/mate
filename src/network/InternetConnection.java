@@ -45,11 +45,12 @@ public class InternetConnection {
                     "<head>" +
                     "</head>" +
                     "<body>" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/> hi" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/> hi" +
-                    "<a href=\"asdas\">" +
-                    "click me" +
-                    "</a>" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
+
                     "</body>" +
                     "</html>";
 
