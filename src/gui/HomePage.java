@@ -48,20 +48,6 @@ public class HomePage extends Page{
             if (textSearch.getText()!=null)
             window.search(textSearch.getText());
         });
-
-
-        GridPane gridPane =new GridPane();
-        Label label1=new Label("lab1");
-        Label label2=new Label("lab2");
-        Label label3=new Label("lab3");
-        Label label4=new Label("lab4");
-        gridPane.add(label1,0,0);
-        gridPane.add(label2,0,1);
-        gridPane.add(label3,1,0);
-        gridPane.add(label4,1,1);
-        gridPane.setPadding(new Insets(2,2,2,10));
-        gridPane.setTranslateX(32);
-        homePage.getChildren().add(gridPane);
     }
     @Override
     public Node getContent()

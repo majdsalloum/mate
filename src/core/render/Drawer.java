@@ -2,7 +2,6 @@ package core.render;
 
 
 import core.render.actions.Action;
-import javafx.scene.image.Image;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -44,6 +43,12 @@ public abstract class Drawer {
 
     public void unUseAction() {
         actions.removeLast();
+    }
+
+    public boolean hasAction(Class<? extends Action> action) {
+        for (Action action1 : actions)
+            if (action.isInstance(action1)) return true;
+        return false;
     }
 
     public void useEffect(Effect effect) {

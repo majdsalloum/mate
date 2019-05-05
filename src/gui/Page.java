@@ -2,7 +2,10 @@ package gui;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import javax.swing.*;
 import java.util.regex.Matcher;
@@ -15,10 +18,6 @@ public class Page {
 
     protected FlowPane flowPane = new FlowPane();
 
-    public void setFlowPane(FlowPane flowPane) {
-        this.flowPane = flowPane;
-    }
-
     public void setWindow(Window window) {
         this.window = window;
     }
@@ -28,9 +27,11 @@ public class Page {
     }
 
     public Node
-    getContent()
-    {
-       return new ScrollPane(flowPane);
+    getContent() {
+        return new ScrollPane(flowPane) {{
+            VBox.setVgrow(this, Priority.ALWAYS);
+            this.setFitToHeight(true);
+        }};
     }
 
     public void setPath(String URL) {
