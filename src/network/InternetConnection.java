@@ -45,8 +45,8 @@ public class InternetConnection {
                     "<head>" +
                     "</head>" +
                     "<body>" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/>" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/>" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/> hi" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/> hi" +
                     "</body>" +
                     "</html>";
 
@@ -73,7 +73,7 @@ public class InternetConnection {
 //        }
 //        catch (MalformedURLException e)
 //        {
-//            url = new URL("http://"+urlPath);
+//            url = new URL("https://"+urlPath);
 //        }
     }
 
