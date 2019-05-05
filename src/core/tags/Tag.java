@@ -7,10 +7,8 @@ import core.render.Drawer;
 
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 abstract public class Tag {
 
@@ -35,8 +33,10 @@ abstract public class Tag {
 
     public void setAttributes(Map<String, Object> attributes) throws InvalidContentException {
         try {
+            List<String> SupportedAttributes = Arrays.asList(((String[]) getClass().getDeclaredField("SUPPORTED_ATTRIBUTES").get(this)));
+//            SupportedAttributes = SupportedAttributes.stream().map(String::toLowerCase).collect(Collectors.toList());
             for (String key : attributes.keySet()) {
-                if (Arrays.asList(((String[]) getClass().getDeclaredField("SUPPORTED_ATTRIBUTES").get(this))).contains(key.toLowerCase())) {
+                if (SupportedAttributes.contains(key.toLowerCase())) {
                     final Object value = attributes.get(key);
                     try {
                         Field field = getClass().getDeclaredField(key.toLowerCase());
@@ -60,7 +60,8 @@ abstract public class Tag {
 
     public void addChildren(Tag tag) throws InvalidContentException {
         try {
-            if (!Arrays.asList(((String[]) getClass().getDeclaredField("CHILDREN_TYPES").get(this))).contains(tag.getClass().getSimpleName().toLowerCase()))
+            List<String> SupportedChildren = Arrays.asList(((String[]) getClass().getDeclaredField("CHILDREN_TYPES").get(this))).stream().map(String::toLowerCase).collect(Collectors.toList());
+            if (!SupportedChildren.contains(tag.getClass().getSimpleName().toLowerCase()))
                 throw new UnsupportedChildrenTag(tag.getClass().getName(), getClass().getName());
             children.add(tag);
         } catch (Exception e) {

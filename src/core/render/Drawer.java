@@ -2,16 +2,37 @@ package core.render;
 
 
 import core.render.actions.Action;
+import javafx.scene.image.Image;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.LinkedList;
 
 public abstract class Drawer {
-    final Integer LIST_TRANSLATE_X=32;
-
+    final Integer LIST_TRANSLATE_X = 32;
 
     protected int[] effectsUsages = new int[Effect.values().length];
     protected LinkedList<Action> actions = new LinkedList<>();
     protected LinkedList<Alignment> alignments = new LinkedList<>();
+
+    protected String baseUrl;
+
+    public String getRelativePath(String relativePath) {
+        if (URI.create(relativePath).getScheme() == null) {
+            try {
+                return (new URL(new URL(baseUrl), relativePath)).toString();
+            } catch (MalformedURLException exception) {
+                return "";
+            }
+        } else
+            return relativePath;
+    }
+
+    public Drawer(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
 
     public Boolean hasEffect(Effect effect) {
         return effectsUsages[effect.ordinal()] > 0;
@@ -52,6 +73,8 @@ public abstract class Drawer {
     abstract public void drawText(String text);
 
     abstract public void setTitle(String text);
+
+    abstract public void drawImage(String path);
 
     abstract public void drawTable();
 

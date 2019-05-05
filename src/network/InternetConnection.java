@@ -45,24 +45,8 @@ public class InternetConnection {
                     "<head>" +
                     "</head>" +
                     "<body>" +
-                    "<a href=\"www.html.com\">" +
-                    "<table>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<td> H1 </td>" +
-                    "<td> H2 </td>" +
-                    "</tr>"+
-                    "</thead>" +
-                    "<tr>" +
-                    "<td>shadi</td>" +
-                    "<td>majd</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<td><table><tr><td>reem</td><td>reeeeem</td></tr></table></td>" +
-                    "<td>rita</td>" +
-                    "</tr>" +
-                    "</table>" +
-                    "</a>" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/>" +
+                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'/>" +
                     "</body>" +
                     "</html>";
 

@@ -21,6 +21,7 @@ public class HTMLParser {
         Tag tag;
         TagLocation father;
         String tagText = null;
+        String originalTag = null;
 
         public boolean includes(TagLocation tagLocation) {
             return this.startTagEnd < tagLocation.startTagBegin &&
@@ -53,7 +54,7 @@ public class HTMLParser {
     private static LinkedList<TagLocation> detectTagsLocations(String text) throws InvalidSyntaxException {//todo : make it return tag location list
         final Pattern openTag = Pattern.compile("<(\\w+)\\s?(?:\\w+(?:=(['\"])(?:.|\\s)+?\\2)?\\s?)*?\\s*?>");
         final Pattern closeTag = Pattern.compile("</(\\w+)\\s*>");
-        final Pattern openAndCloseTag = Pattern.compile("<\\w+\\s?(?:\\w+=(['\"])(?:.|\\s)+\\1\\s?)*\\s*?/>");
+        final Pattern openAndCloseTag = Pattern.compile("<(\\w+)\\s?(?:\\w+=(['\"])(?:.|\\s)+?\\2\\s?)*\\s*?/>");
         LinkedList<TagLocation> tagLocationList = new LinkedList<>();
         LinkedList<TagLocation> tempStack = new LinkedList<>();
         // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
@@ -84,6 +85,7 @@ public class HTMLParser {
                     tag = (Tag) Class.forName("core.tags." + openTagMatcher.group(1).toUpperCase()).getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
                     tag = new DIV();
+                    tagLocation.originalTag = openTagMatcher.group(1);
                 }
                 tagLocation.tag = tag;
                 tagLocationToAdd = tagLocation;
@@ -103,16 +105,17 @@ public class HTMLParser {
                 newEnd = closeTagMatcher.end();
             } else {
                 Tag tag;
+                TagLocation tagLocation = new TagLocation();
                 try {
-                    tag = (Tag) Class.forName("core.tags." + openTagMatcher.group(1).toUpperCase()).getDeclaredConstructor().newInstance();
+                    tag = (Tag) Class.forName("core.tags." + openAndCloseMatcher.group(1).toUpperCase()).getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
                     tag = new DIV();
+                    tagLocation.originalTag = openAndCloseMatcher.group(1);
                 }
-                TagLocation tagLocation = new TagLocation();
-                tagLocation.startTagBegin = openTagMatcher.start();
-                tagLocation.endTagBegin = openTagMatcher.start();
-                tagLocation.startTagEnd = openTagMatcher.end() - 1;
-                tagLocation.endTagEnd = openTagMatcher.end() - 1;
+                tagLocation.startTagBegin = openAndCloseMatcher.start();
+                tagLocation.endTagBegin = openAndCloseMatcher.start();
+                tagLocation.startTagEnd = openAndCloseMatcher.end() - 1;
+                tagLocation.endTagEnd = openAndCloseMatcher.end() - 1;
                 tagLocation.tag = tag;
                 tagLocationToAdd = tagLocation;
                 newEnd = openAndCloseMatcher.end();
@@ -142,10 +145,10 @@ public class HTMLParser {
 
 
     private static void setAttributes(LinkedList<TagLocation> list, String text) throws InvalidContentException {
-        final Pattern attributePattern = Pattern.compile("(\\w+)(?:=(['\"])((?:.|\\s)+?)\\2)?(\\s+|>)");
+        final Pattern attributePattern = Pattern.compile("(\\w+)(?:=(['\"])((?:.|\\s)+?)\\2)?(\\s|>|/>)");
         for (TagLocation tagLocation : list) {
             if (tagLocation.tag == null) continue;
-            String tagStartText = text.substring(tagLocation.startTagBegin + tagLocation.tagText.length() + 1, tagLocation.startTagEnd + 1);
+            String tagStartText = text.substring(tagLocation.startTagBegin + (tagLocation.tagText != null ? tagLocation.tagText.length() + 1 : 0), tagLocation.startTagEnd + 1);
             final Matcher matcher = attributePattern.matcher(tagStartText);
             HashMap<String, Object> attributes = new HashMap<>();
             while (matcher.find()) {

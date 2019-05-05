@@ -10,10 +10,13 @@ import core.render.fx.panes.GridDrawerPane;
 import core.render.fx.panes.ListDrawPane;
 import gui.UserInterface;
 import gui.Window;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 
 import gui.Page;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -26,10 +29,18 @@ public class FXDrawer extends Drawer {
     UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
 
-    public FXDrawer(Tab tab, Page page, UserInterface userInterface) {
+    public FXDrawer(Tab tab, Page page, UserInterface userInterface, String baseUrl) {
+        super(baseUrl);
         this.tab = tab;
         this.page = page;
         this.ui = userInterface;
+    }
+
+    private void drawNode(Node node) {
+        if (parents.size() > 0) {
+            parents.getLast().add(node);
+        } else
+            page.getFlowPane().getChildren().add(node);
     }
 
     @Override
@@ -38,15 +49,18 @@ public class FXDrawer extends Drawer {
         label.setText(text);
         if (hasEffect(Effect.FONT_BOLD))
             label.setStyle("-fx-font-weight: bold;");
-        if (parents.size() > 0) {
-            parents.getLast().add(label);
-        } else
-            page.getFlowPane().getChildren().add(label);
+        drawNode(label);
     }
 
     @Override
     public void setTitle(String text) {
         tab.setText(text);
+    }
+
+    @Override
+    public void drawImage(String path) {
+        Image image = new Image(path);
+        drawNode(new ImageView(image));
     }
 
     private void usePane(DrawerPane drawerPane) {
@@ -55,11 +69,7 @@ public class FXDrawer extends Drawer {
 
     private void unUsePane() {
         DrawerPane drawerPane = parents.pollLast();
-        if (parents.isEmpty())
-            page.getFlowPane().getChildren().add(drawerPane.getParent());
-        else {
-            parents.getLast().add(drawerPane.getParent());
-        }
+        drawNode(drawerPane.getParent());
     }
 
     @Override
@@ -105,7 +115,7 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawUnOrderedList(String symbol) {
         VBox vBox = new VBox();
-        ListDrawPane listDrawPane = new ListDrawPane(vBox , symbol);
+        ListDrawPane listDrawPane = new ListDrawPane(vBox, symbol);
         usePane(listDrawPane);
     }
 
