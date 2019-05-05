@@ -13,16 +13,16 @@ import gui.Page;
 import gui.UserInterface;
 import gui.Window;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 import java.util.LinkedList;
 
@@ -46,6 +46,14 @@ public class FXDrawer extends Drawer {
         } else
             page.getFlowPane().getChildren().add(node);
     }
+
+    private Pane getParent() {
+        if (parents.size() > 0) {
+            return parents.getLast().getParent();
+        } else
+            return page.getFlowPane();
+    }
+
 
     @Override
     public void drawText(String text) {
@@ -159,6 +167,14 @@ public class FXDrawer extends Drawer {
     @Override
     public void endDrawListItem() {
         unUsePane();
+    }
+
+    @Override
+    public void drawNewLine() {
+        Region region = new Region();
+        region.setPrefWidth(Double.MAX_VALUE);
+        FlowPane.clearConstraints(region);
+        drawNode(region);
     }
 
 

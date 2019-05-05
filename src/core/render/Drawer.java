@@ -108,4 +108,6 @@ public abstract class Drawer {
     abstract public void drawListItem();
 
     abstract public void endDrawListItem();
+
+    abstract public void drawNewLine();
 }

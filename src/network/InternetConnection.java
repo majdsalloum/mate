@@ -45,12 +45,7 @@ public class InternetConnection {
                     "<head>" +
                     "</head>" +
                     "<body>" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
-                    "<img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'> hi" +
-
+                    "hi bye <br> hello <br> <br> a7la zalameh" +
                     "</body>" +
                     "</html>";
 

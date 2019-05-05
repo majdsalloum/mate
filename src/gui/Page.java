@@ -35,6 +35,7 @@ public class Page {
         return new ScrollPane(flowPane) {{
             VBox.setVgrow(this, Priority.ALWAYS);
             this.setFitToHeight(true);
+            this.setFitToWidth(true);
         }};
     }
 
