@@ -6,6 +6,9 @@ import core.render.actions.Action;
 import java.util.LinkedList;
 
 public abstract class Drawer {
+    final Integer LIST_TRANSLATE_X=32;
+
+
     protected int[] effectsUsages = new int[Effect.values().length];
     protected LinkedList<Action> actions = new LinkedList<>();
     protected LinkedList<Alignment> alignments = new LinkedList<>();
@@ -18,7 +21,7 @@ public abstract class Drawer {
         actions.add(action);
     }
 
-    public void unUssAction() {
+    public void unUseAction() {
         actions.removeLast();
     }
 
@@ -70,5 +73,7 @@ public abstract class Drawer {
 
     abstract public void endDrawTableRow();
 
+    abstract public void drawUnOrderedList(String symbol);
 
+    abstract public void endDrawUnOrderedList();
 }

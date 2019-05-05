@@ -7,16 +7,14 @@ import core.render.actions.Action;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.GridDrawerPane;
+import core.render.fx.panes.ListDrawPane;
 import gui.UserInterface;
 import gui.Window;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 
 import gui.Page;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
@@ -85,12 +83,12 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawTableColumn() {
+        ((GridDrawerPane) parents.getLast()).setCol(((GridDrawerPane) parents.getLast()).getCol() + 1);
 
     }
 
     @Override
     public void endDraTableColumn() {
-        ((GridDrawerPane) parents.getLast()).setCol(((GridDrawerPane) parents.getLast()).getCol() + 1);
     }
 
     @Override
@@ -102,6 +100,18 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawTableRow() {
+    }
+
+    @Override
+    public void drawUnOrderedList(String symbol) {
+        VBox vBox = new VBox();
+        ListDrawPane listDrawPane = new ListDrawPane(vBox , symbol);
+        usePane(listDrawPane);
+    }
+
+    @Override
+    public void endDrawUnOrderedList() {
+        unUsePane();
     }
 
     @Override
@@ -137,8 +147,9 @@ public class FXDrawer extends Drawer {
     }
 
     @Override
-    public void unUssAction() {
-        super.unUssAction();
+    public void unUseAction() {
+        super.unUseAction();
         unUsePane();
     }
+
 }

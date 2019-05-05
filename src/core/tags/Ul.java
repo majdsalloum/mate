@@ -12,7 +12,6 @@ public class Ul extends Tag {
             return;
        // throw new InvalidContentException("UL TAG MUST HAVE AT LEAST ONE CHILDREN (LI )");
     }
-
     @Override
     public void draw(Drawer drawer) {
 

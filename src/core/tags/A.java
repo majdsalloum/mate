@@ -1,7 +1,6 @@
 package core.tags;
 
 import core.render.Drawer;
-import core.render.actions.Action;
 import core.render.actions.HrefAction;
 
 public class A extends Tag {
@@ -18,6 +17,6 @@ public class A extends Tag {
                 ((Tag) i).draw(drawer);
             else
                 drawer.drawText(i.toString());
-        drawer.unUssAction();
+        drawer.unUseAction();
     }
 }

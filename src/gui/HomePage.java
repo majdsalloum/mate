@@ -7,11 +7,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+
+import java.awt.*;
 
 public class HomePage extends Page{
     private Label matteLabel;
@@ -44,6 +48,8 @@ public class HomePage extends Page{
             if (textSearch.getText()!=null)
             window.search(textSearch.getText());
         });
+
+
         GridPane gridPane =new GridPane();
         Label label1=new Label("lab1");
         Label label2=new Label("lab2");
@@ -53,8 +59,8 @@ public class HomePage extends Page{
         gridPane.add(label2,0,1);
         gridPane.add(label3,1,0);
         gridPane.add(label4,1,1);
-        gridPane.setGridLinesVisible(true);
         gridPane.setPadding(new Insets(2,2,2,10));
+        gridPane.setTranslateX(32);
         homePage.getChildren().add(gridPane);
     }
     @Override
