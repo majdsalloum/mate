@@ -3,11 +3,13 @@ package core.render.fx;
 import core.render.Alignment;
 import core.render.Drawer;
 import core.render.Effect;
+import core.render.Symbols.UnOrderedSymbol;
 import core.render.actions.Action;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.GridDrawerPane;
-import core.render.fx.panes.ListDrawPane;
+import core.render.fx.panes.ListItem;
+import core.render.fx.panes.UnOrderedListDrawPane;
 import gui.UserInterface;
 import gui.Window;
 import javafx.scene.Node;
@@ -115,7 +117,8 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawUnOrderedList(String symbol) {
         VBox vBox = new VBox();
-        ListDrawPane listDrawPane = new ListDrawPane(vBox, symbol);
+        vBox.setTranslateX(32);
+        UnOrderedListDrawPane listDrawPane = new UnOrderedListDrawPane(vBox, symbol);
         usePane(listDrawPane);
     }
 
@@ -123,6 +126,24 @@ public class FXDrawer extends Drawer {
     public void endDrawUnOrderedList() {
         unUsePane();
     }
+
+    @Override
+    public void drawListItem() {
+        HBox hBox = new HBox();
+        String string = "";
+        if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class))
+            string = ((UnOrderedListDrawPane) parents.getLast()).getSymbol().getNext();
+        //todo : else if ()
+        hBox.getChildren().add(new Label(string));
+        ListItem listItem = new ListItem(hBox);
+        usePane(listItem);
+    }
+
+    @Override
+    public void endDrawListItem() {
+        unUsePane();
+    }
+
 
     @Override
     public void endDrawTable() {

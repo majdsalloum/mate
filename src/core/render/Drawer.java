@@ -99,4 +99,8 @@ public abstract class Drawer {
     abstract public void drawUnOrderedList(String symbol);
 
     abstract public void endDrawUnOrderedList();
+
+    abstract public void drawListItem();
+
+    abstract public void endDrawListItem();
 }
