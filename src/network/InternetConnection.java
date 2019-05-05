@@ -45,6 +45,11 @@ public class InternetConnection {
                     "<head>" +
                     "</head>" +
                     "<body>" +
+                    "<ul>" +
+                    "<li> shadi</li>" +
+                    "<li> majd </li>" +
+                    "<li> <ul> <li> reem</li><li>rita</li></ul></li>" +
+                    "</ul>" +
                     "<a href=\"www.html.com\">" +
                     "<table>" +
                     "<thead>" +
