@@ -112,4 +112,5 @@ public abstract class Drawer {
     abstract public void drawOrderedList(String start , String symbol);
     abstract public void endDrawOrderedList();
 
+    abstract public void drawNewLine();
 }
