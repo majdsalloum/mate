@@ -56,7 +56,6 @@ public class InternetConnection {
                     "<td>bye</td>" +
                     "</tr>" +
                     "</table>" +
-                    "hi bye <br> hello <br> <br> a7la zalameh" +
                     "</body>" +
                     "</html>";
 

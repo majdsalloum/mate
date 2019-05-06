@@ -6,6 +6,7 @@ import core.render.Effect;
 import core.render.actions.Action;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.*;
+import core.tags.P;
 import gui.Page;
 import gui.UserInterface;
 import gui.Window;
@@ -29,7 +30,6 @@ public class FXDrawer extends Drawer {
     Page page;
     UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
-
     public FXDrawer(Tab tab, Page page, UserInterface userInterface, String baseUrl) {
         super(baseUrl);
         this.tab = tab;
@@ -39,9 +39,11 @@ public class FXDrawer extends Drawer {
 
     private void drawNode(Node node) {
         if (parents.size() > 0) {
+            System.out.println(node + " ON " + parents.getLast());
             parents.getLast().add(node);
-        } else
-            page.getFlowPane().getChildren().add(node);
+        } else{
+            System.out.println("draw on basic pane");
+            page.getFlowPane().getChildren().add(node);}
     }
 
     private Pane getParent() {
@@ -88,10 +90,13 @@ public class FXDrawer extends Drawer {
     }
 
     private void usePane(DrawerPane drawerPane) {
-        parents.add(drawerPane);
+        parents.addLast(drawerPane);
     }
 
     private void unUsePane() {
+        for (int i=0;i<parents.size();i++)
+        System.out.println(parents.get(i));
+        System.out.println("--------------------------");
         DrawerPane drawerPane = parents.pollLast();
         drawNode(drawerPane.getParent());
     }
@@ -139,14 +144,12 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawUnOrderedList(String symbol) {
         VBox vBox = new VBox();
-        vBox.setTranslateX(32);
         UnOrderedListDrawPane listDrawPane = new UnOrderedListDrawPane(vBox, symbol);
         usePane(listDrawPane);
     }
     @Override
     public void drawOrderedList(String start , String symbol) {
         VBox vBox = new VBox();
-        vBox.setTranslateX(32);
         OrderedListDrawPane listDrawPane = new OrderedListDrawPane(vBox,Integer.parseInt(start),symbol);
         usePane(listDrawPane);
     }
@@ -164,6 +167,9 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawListItem() {
         HBox hBox = new HBox();
+        Label space = new Label();
+        space.setPrefWidth(16);
+        hBox.getChildren().add(space);
         hBox.setSpacing(4);
         String string = "";
         if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class) )
