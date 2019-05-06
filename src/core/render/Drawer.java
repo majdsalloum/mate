@@ -108,4 +108,8 @@ public abstract class Drawer {
     abstract public void drawListItem();
 
     abstract public void endDrawListItem();
+
+    abstract public void drawOrderedList(String start , String symbol);
+    abstract public void endDrawOrderedList();
+
 }

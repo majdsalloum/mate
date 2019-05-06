@@ -5,10 +5,7 @@ import core.render.Drawer;
 import core.render.Effect;
 import core.render.actions.Action;
 import core.render.actions.HrefAction;
-import core.render.fx.panes.DrawerPane;
-import core.render.fx.panes.GridDrawerPane;
-import core.render.fx.panes.ListItem;
-import core.render.fx.panes.UnOrderedListDrawPane;
+import core.render.fx.panes.*;
 import gui.Page;
 import gui.UserInterface;
 import gui.Window;
@@ -138,6 +135,18 @@ public class FXDrawer extends Drawer {
         UnOrderedListDrawPane listDrawPane = new UnOrderedListDrawPane(vBox, symbol);
         usePane(listDrawPane);
     }
+    @Override
+    public void drawOrderedList(String start , String symbol) {
+        VBox vBox = new VBox();
+        vBox.setTranslateX(32);
+        OrderedListDrawPane listDrawPane = new OrderedListDrawPane(vBox,Integer.parseInt(start),symbol);
+        usePane(listDrawPane);
+    }
+
+    @Override
+    public void endDrawOrderedList() {
+        unUsePane();
+    }
 
     @Override
     public void endDrawUnOrderedList() {
@@ -147,10 +156,12 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawListItem() {
         HBox hBox = new HBox();
+        hBox.setSpacing(4);
         String string = "";
-        if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class))
+        if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class) )
             string = ((UnOrderedListDrawPane) parents.getLast()).getSymbol().getNext();
-        //todo : else if ()
+        else if(parents.getLast().getClass().equals(OrderedListDrawPane.class))
+            string = ((OrderedListDrawPane) parents.getLast()).getSymbol().getNext();
         hBox.getChildren().add(new Label(string));
         ListItem listItem = new ListItem(hBox);
         usePane(listItem);

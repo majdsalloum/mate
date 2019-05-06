@@ -8,6 +8,11 @@ public class OrderedSymbol extends Symbol {
         this.start=start;
         this.type=type;
     }
+    public OrderedSymbol(String type)
+    {
+        this.start=1;
+        this.type=type;
+    }
     public String getNext()
     {
         switch (type)
