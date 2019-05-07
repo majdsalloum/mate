@@ -7,7 +7,8 @@ final public class CommonAttributes {
 
 
     // ACCORDING TO W3 Specification
-    static final String[] GLOBAL_HTML_ATTRIBUTES = {"class","accessKey","dir","hidden","id","lang","style","title"};
+    static final String[] GLOBAL_HTML_ATTRIBUTES = {"class", "accessKey", "dir", "hidden", "id", "lang", "style", "title", "name"};
+
     static <T> T[] joinArrays(T[] a, T[] b) {
         final int alen = a.length;
         final int blen = b.length;

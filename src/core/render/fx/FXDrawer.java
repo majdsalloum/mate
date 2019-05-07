@@ -4,25 +4,24 @@ import core.render.Alignment;
 import core.render.Drawer;
 import core.render.Effect;
 import core.render.actions.Action;
+import core.render.actions.FormAction;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.GridDrawerPane;
 import core.render.fx.panes.ListItem;
 import core.render.fx.panes.UnOrderedListDrawPane;
+import core.tags.P;
 import gui.Page;
 import gui.UserInterface;
 import gui.Window;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.util.LinkedList;
 
@@ -171,9 +170,13 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawNewLine() {
-        Region region = new Region();
-        region.setPrefWidth(Double.MAX_VALUE);
-        FlowPane.clearConstraints(region);
+        Label region = new Label();
+        Node lastChild = getParent().getChildren().get(getParent().getChildren().size() - 1);
+        region.setPrefWidth(Stage.getWindows().get(0).getWidth() - lastChild.getLayoutX());
+
+        Stage.getWindows().get(0).widthProperty().addListener((obs, oldVal, newVal) -> {
+            region.setPrefWidth(newVal.doubleValue() - lastChild.getLayoutX());
+        });
         drawNode(region);
     }
 
@@ -199,13 +202,15 @@ public class FXDrawer extends Drawer {
     public void useAction(Action action) {
         super.useAction(action);
         DrawerPane drawerPane = new DrawerPane(new FlowPane());
-        drawerPane.getParent().setCursor(Cursor.HAND);
         if (action instanceof HrefAction) {
+            drawerPane.getParent().setCursor(Cursor.HAND);
             HrefAction hrefAction = (HrefAction) action;
             drawerPane.getParent().setOnMouseClicked((event) -> {
                 Window window = this.ui.createNewWindow();
                 window.search(hrefAction.getLink());
             });
+        } else if (action instanceof FormAction) {
+
         }
         parents.addLast(drawerPane);
     }
@@ -214,6 +219,27 @@ public class FXDrawer extends Drawer {
     public void unUseAction() {
         super.unUseAction();
         unUsePane();
+    }
+
+    @Override
+    public void drawInput(String type, String name, String value, String placeHolder) {
+        TextInputControl textField;
+        switch (type) {
+            case "password":
+                textField = new PasswordField() {{
+                    this.setText(value);
+                }};
+                break;
+            default:
+                textField = new TextField(value);
+
+        }
+        textField.setPromptText(placeHolder);
+        final FormAction action = getLastAction(FormAction.class);
+        action.setAttribute(name, value);
+        textField.textProperty().addListener((o, old, newVal) -> action.setAttribute(name, newVal));
+        drawNode(textField);
+
     }
 
 }

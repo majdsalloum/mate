@@ -1,5 +1,6 @@
 package core.tags;
 
+import core.exceptions.InvalidContentException;
 import core.render.Drawer;
 import core.render.actions.HrefAction;
 
@@ -9,9 +10,20 @@ public class A extends Tag {
 
     protected String href = null;
 
+    protected String target = "_blank";
+
+    @Override
+    void validate() throws InvalidContentException {
+        try {
+            HrefAction.Target.valueOf(target.toLowerCase());
+        } catch (Exception e) {
+            throw new InvalidContentException("target is set to " + target + " which is not supported !");
+        }
+    }
+
     @Override
     public void draw(Drawer drawer) {
-        drawer.useAction(new HrefAction(href, HrefAction.Target._blank));
+        drawer.useAction(new HrefAction(href, HrefAction.Target.valueOf(target.toLowerCase())));
         for (Object i : children)
             if (i instanceof Tag)
                 ((Tag) i).draw(drawer);
