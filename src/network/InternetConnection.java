@@ -47,8 +47,8 @@ public class InternetConnection {
                     "<body>" +
                     "<h1>Nice!</h1>" +
                     "<form>" +
-                    "<input type='text' name='user' placeholder='Username'>" +
-                    "<input type='text' name='password' placeholder='password'>" +
+                    "<input type='text' name=user placeholder='Username'>" +
+                    "<input type='text' name=password placeholder='password'>" +
                     "</form>" +
                     "</body>" +
                     "</html>";
