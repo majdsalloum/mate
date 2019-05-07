@@ -12,6 +12,7 @@ import gui.UserInterface;
 import gui.Window;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -123,11 +124,13 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawTableColumn() {
         ((GridDrawerPane) parents.getLast()).setCol(((GridDrawerPane) parents.getLast()).getCol() + 1);
+        usePane(new DrawerPane(new FlowPane()));
 
     }
 
     @Override
     public void endDraTableColumn() {
+        unUsePane();
     }
 
     @Override
@@ -166,18 +169,18 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawListItem() {
-        HBox hBox = new HBox();
+        FlowPane flowPane = new FlowPane();
         Label space = new Label();
         space.setPrefWidth(16);
-        hBox.getChildren().add(space);
-        hBox.setSpacing(4);
+        flowPane.getChildren().add(space);
+        flowPane.setHgap(5);
         String string = "";
         if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class) )
             string = ((UnOrderedListDrawPane) parents.getLast()).getSymbol().getNext();
         else if(parents.getLast().getClass().equals(OrderedListDrawPane.class))
             string = ((OrderedListDrawPane) parents.getLast()).getSymbol().getNext();
-        hBox.getChildren().add(new Label(string));
-        ListItem listItem = new ListItem(hBox);
+        flowPane.getChildren().add(new Label(string));
+        ListItem listItem = new ListItem(flowPane);
         usePane(listItem);
     }
 

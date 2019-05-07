@@ -49,7 +49,6 @@ public class InternetConnection {
                     "<li> shadi</li>" +
                     "<li> fadi </li>" +
                     "</ol>" +
-
                     "<table>" +
                     "<tr>" +
                     "<td>hey</td>" +
@@ -58,7 +57,6 @@ public class InternetConnection {
                     "</table>" +
                     "</body>" +
                     "</html>";
-
             Platform.runLater(() -> window.onLoad(data));
         } catch (Exception e) {
             Platform.runLater(
