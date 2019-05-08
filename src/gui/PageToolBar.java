@@ -1,9 +1,13 @@
 package gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -11,7 +15,7 @@ public class PageToolBar {
     private ToolBar toolBar;
     private Button backward, forward, refresh, home, search, newTabButton, disconnect;
     private TextField textSearch;
-    private MenuItem setting, newTab, downloads, newWindow, exit;
+    private MenuItem setting, newTab, downloads, newWindow, exit , loadPage , savePage;
     private MenuBar menuBar;
     private Menu file;
     private final Integer ICON_SIZE = 15;
@@ -75,9 +79,11 @@ public class PageToolBar {
         newTab = new MenuItem("NewTab");
         newWindow = new MenuItem("NewWindow");
         downloads = new MenuItem("Downloads");
+        savePage = new MenuItem("Save page");
+        loadPage =new MenuItem("Load page");
         setting = new MenuItem("Setting");
         exit = new MenuItem("Exit");
-        file.getItems().addAll(newTab, newWindow, downloads, setting, exit);
+        file.getItems().addAll(newTab, newWindow, downloads,savePage,loadPage, setting, exit);
         menuBar.getMenus().addAll(file);
 
         newTabButton = new Button();
@@ -86,6 +92,9 @@ public class PageToolBar {
 
         toolBar.getItems().add(new Separator());
         toolBar.getItems().addAll(backward, forward, refresh, home, textSearch, search, newTabButton, menuBar);
+
+        updateAppearance();
+        setActions();
     }
 
     private void insertImage(String imagePath, Button button) {
@@ -159,5 +168,72 @@ public class PageToolBar {
 
     void setWindow(Window window) {
         this.window = window;
+    }
+
+    public MenuItem getLoadPage() { return loadPage;}
+
+    public MenuItem getSavePage() { return savePage; }
+    public void updateAppearance()
+    {
+        if (window.getPageIndexInSearchLog() == window.getSearchLog().size()-1)
+            forward.setDisable(true);
+        else forward.setDisable(false);
+
+        if(window.getPageIndexInSearchLog() ==0 )
+            backward.setDisable(true);
+        else backward.setDisable(false);
+    }
+
+    private void setActions()
+
+    {
+        //todo : replace to set on right click
+        savePage.setOnAction((e)->
+        {
+            window.savePage();
+        });
+        loadPage.setOnAction((e)->{
+            window.loadPageInNewTab();
+        });
+        newTabButton.setOnAction((e)->
+        {
+            window.getUi().createNewWindow();
+        });
+        newTab.setOnAction((e)->{
+            window.getUi().createNewWindow();
+        });
+        search.setOnAction((e) -> {
+            String urlPath = textSearch.getText();
+            window.search(urlPath);
+        });
+        home.setOnAction((e)->
+        {
+            window.setPage(new HomePage(window));
+            window.updateTabContent();
+        });
+        refresh.setOnAction((e)->{
+            //todo: reload data from internet
+            //todo :make it in new page
+            window.updateTabContent();
+        });
+        exit.setOnAction((e)->{
+            window.getUi().getMainStage().close();
+        });
+        forward.setOnAction((e)->{
+            System.out.println("hello");
+        });
+
+        //todo: make sure if this correct
+        textSearch.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent ke)
+            {
+                if (ke.getCode().equals(KeyCode.ENTER))
+                {
+                    search.getOnAction().handle(new ActionEvent());
+                }
+            }
+        });
     }
 }

@@ -2,7 +2,6 @@ package gui;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -12,10 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserInterface {
+
     private Stage mainStage;
     private Scene scene;
     private TabPane tabPane;
     private List<Window> windows;
+
+    public Stage getMainStage() {
+        return mainStage;
+    }
 
 
     public void initializeUserInterface() {
@@ -43,6 +47,17 @@ public class UserInterface {
         mainStage.setScene(scene);
         mainStage.show();
     }
+    public Window createNewWindow() {
+        Window newWindow = new Window(tabPane, this);
+        windows.add(newWindow);
+        //setActions
+        setTabCloseAction(newWindow);
+
+        //Select the new tab to show it
+        SingleSelectionModel singleSelectionModel = tabPane.getSelectionModel();
+        singleSelectionModel.select(newWindow.getTab());
+        return newWindow;
+    }
 
     private void setTabCloseAction(Window window) {
         window.getTab().setOnClosed((e) ->
@@ -53,29 +68,4 @@ public class UserInterface {
                 mainStage.close();
         });
     }
-
-    private void setAddTabAction(Window window) {
-        Button button = window.getPageToolBar().getNewTabButton();
-        button.setOnAction((e) -> {
-            createNewWindow();
-        });
-        MenuItem menuItem = window.getPageToolBar().getNewTab();
-        menuItem.setOnAction((e) -> {
-            createNewWindow();
-        });
-    }
-
-    public Window createNewWindow() {
-        Window newWindow = new Window(tabPane, this);
-        windows.add(newWindow);
-        //setActions
-        setTabCloseAction(newWindow);
-        setAddTabAction(newWindow);
-
-        //Select the new tab to show it
-        SingleSelectionModel singleSelectionModel = tabPane.getSelectionModel();
-        singleSelectionModel.select(newWindow.getTab());
-        return newWindow;
-    }
-
 }

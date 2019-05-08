@@ -1,5 +1,6 @@
 package gui;
 
+import Storage.StorageManger;
 import core.parser.HTMLParser;
 import core.render.fx.FXDrawer;
 import core.tags.*;
@@ -10,11 +11,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import network.InternetConnection;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Window {
     private LinkedList<String> searchLog;
@@ -30,16 +32,17 @@ public class Window {
         searchLog = new LinkedList<>();
         searchLog.add("matte:\\home");
         pageToolBar = new PageToolBar(this, tabPane);
-        //set Actions
-        setActions();
-        page = new HomePage();
+
+
+        page = new HomePage(this);
         page.setWindow(this);
         searchLog.add(page.getPath());
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
-        Integer pageCounter = 0;
         createNewTab();
         tabPane.getTabs().add(tab);
+
+        //todo add actions to buttons
     }
 
     public void changeContent(Page page) {
@@ -57,7 +60,7 @@ public class Window {
     public void openNewPage(String path) {
         /**send path to url connection and get page*/
         /**get page type */
-        page = new HomePage();
+        page = new HomePage(this);
         searchLog.add(path);
         pageIndexInSearchLog++;
 
@@ -80,6 +83,7 @@ public class Window {
 
     public void updateTabContent() {
         tab.setContent(getContent());
+        pageToolBar.updateAppearance();
 
     }
 
@@ -111,21 +115,6 @@ public class Window {
         this.tab = tab;
     }
 
-    public void setActions() {
-
-        pageToolBar.getSearch().setOnAction((e) -> {
-            String urlPath = pageToolBar.getTextSearch().getText();
-            search(urlPath);
-        });
-
-        pageToolBar.getHome().setOnAction((e) -> {
-            page = new HomePage();
-            page.setWindow(this);
-            updateTabContent();
-
-        });
-    }
-
     private int loading = 0;
 
     public void showLoading() {
@@ -152,20 +141,47 @@ public class Window {
         if (loading > 0) return;
         searchLog.add(path);
         showLoading();
-        page = new Page();
-        page.setWindow(this);
+        searchLog.add(path);
+        page = new Page(this);
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
+        searchLog.add(path);
     }
 
     public void onLoad(String string) {
+        page.setData(string);
         hideLoading();
         FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
-
         Tag head = (Tag) HTMLParser.compile(string);
         head.draw(fxDrawer);
         updateTabContent();
-
     }
 
+    public void loadPageInNewTab() {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(ui.getMainStage());
+        if (file != null) {
+            String s = file.toString();
+            try {
+                String data = StorageManger.loadPage(s);
+                Window window = ui.createNewWindow();
+                window.page =new Page(window);
+                window.onLoad(data);
+            } catch (IOException e) {
+                //todo alert error messsage
+            }
+        }
+    }
+    public void savePage()
+    {
+        FileChooser fileChooser =new FileChooser();
+        File file = fileChooser.showSaveDialog(ui.getMainStage());
+        if(file!=null)
+            StorageManger.savePage(page.getData(),file.toString());
+
+    }
+    public UserInterface getUi()
+    {
+        return ui;
+    }
 }

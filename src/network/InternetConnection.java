@@ -43,6 +43,7 @@ public class InternetConnection {
             final String data;// = dataBuilder.toString();
             data = "<html>" +
                     "<head>" +
+                    "<title> shadi</title>" +
                     "</head>" +
                     "<body>" +
                     "<h1>Nice!</h1>" +
@@ -54,9 +55,19 @@ public class InternetConnection {
                     "reset" +
                     "</button>" +
                     "</form>" +
+                    "<ol start='20'>" +
+                    "<li> shadi</li>" +
+                    "<li> fadi </li>" +
+                    "</ol>" +
+                    "<table>" +
+                    "<tr>" +
+                    "<td>hey</td>" +
+                    "<td>bye</td>" +
+                    "</tr>" +
+                    "</table>" +
+                    "i love you" +
                     "</body>" +
                     "</html>";
-
             Platform.runLater(() -> window.onLoad(data));
         } catch (Exception e) {
             Platform.runLater(

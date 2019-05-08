@@ -1,13 +1,13 @@
 package tests;
 
+import Storage.StorageManger;
 import core.parser.HTMLParser;
 import core.tags.Tag;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+
 
 public class ParsingTest {
     // Passed
@@ -47,11 +47,11 @@ public class ParsingTest {
     }
 
     public static void main(String... args) throws Exception {
+       simpleTest();
 
-        //simpleTest();
 
 
-        simpleTestTable();
+//        simpleTestTable();
 
     }
 }

@@ -16,7 +16,6 @@ public class FORM extends Tag {
     void validate() throws InvalidContentException {
         // TODO VALIDATE THAT NO NESTED FORMS
     }
-
     @Override
     public void draw(Drawer drawer) {
         drawer.useAction(new FormAction(method, action, drawer));
@@ -30,5 +29,6 @@ public class FORM extends Tag {
 
         drawer.unUseAction();
     }
+
 
 }

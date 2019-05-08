@@ -6,7 +6,8 @@ import core.render.Drawer;
 public class OL extends Tag {
     protected final static String[] CHILDREN_TYPES = {"LI"};
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES,new String[]{"start", "reversed","type"});
-
+    String start ="1";
+    String type="1";
     void validate() throws InvalidContentException {
         for(int i=0;i<children.size();i++)
         if ( children.get(i).getClass() == LI.class)
@@ -16,7 +17,16 @@ public class OL extends Tag {
 
     @Override
     public void draw(Drawer drawer) {
+        drawer.drawOrderedList(start,type);
+        for (Object  item : children)
+        {
+            if (!(item instanceof Tag))
+                drawer.drawText((String) item);
+            else
+                ((Tag)item).draw(drawer);
 
+        }
+        drawer.endDrawOrderedList();
     }
 
 }
