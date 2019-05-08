@@ -30,13 +30,11 @@ public class Window {
     public Window(TabPane tabPane, UserInterface ui) {
         this.ui = ui;
         searchLog = new LinkedList<>();
-        searchLog.add("matte:\\home");
+       // searchLog.add("matte:\\home");
         pageToolBar = new PageToolBar(this, tabPane);
 
 
         page = new HomePage(this);
-        page.setWindow(this);
-        searchLog.add(page.getPath());
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
         createNewTab();
@@ -61,7 +59,7 @@ public class Window {
         /**send path to url connection and get page*/
         /**get page type */
         page = new HomePage(this);
-        searchLog.add(path);
+        //searchLog.add(path);
         pageIndexInSearchLog++;
 
     }
@@ -82,9 +80,9 @@ public class Window {
     }
 
     public void updateTabContent() {
-        tab.setContent(getContent());
         pageToolBar.updateAppearance();
-
+        pageToolBar.getTextSearch().setText(page.path);
+        tab.setContent(getContent());
     }
 
     public LinkedList<String> getSearchLog() {
@@ -139,17 +137,15 @@ public class Window {
 
     public void search(String path) {
         if (loading > 0) return;
-        searchLog.add(path);
+       // searchLog.add(path);
         showLoading();
-        searchLog.add(path);
-        page = new Page(this);
+       // searchLog.add(path);
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
-        searchLog.add(path);
     }
 
-    public void onLoad(String string) {
-        page.setData(string);
+    public void onLoad(String string , String path) {
+        page=new Page(this,path,string);
         hideLoading();
         FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
         Tag head = (Tag) HTMLParser.compile(string);
@@ -165,8 +161,7 @@ public class Window {
             try {
                 String data = StorageManger.loadPage(s);
                 Window window = ui.createNewWindow();
-                window.page =new Page(window);
-                window.onLoad(data);
+                window.onLoad(data,file.toString());
             } catch (IOException e) {
                 //todo alert error messsage
             }
@@ -183,5 +178,9 @@ public class Window {
     public UserInterface getUi()
     {
         return ui;
+    }
+
+    public void setPageIndexInSearchLog(Integer pageIndexInSearchLog) {
+        this.pageIndexInSearchLog = pageIndexInSearchLog;
     }
 }

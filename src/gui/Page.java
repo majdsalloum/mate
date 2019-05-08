@@ -18,9 +18,11 @@ public class Page {
     protected Window window;
     protected String data;
     protected FlowPane flowPane = new FlowPane();
-    public Page(Window window)
+    public Page(Window window ,String path , String data)
     {
         this.window=window;
+        window.getSearchLog().add(path);
+        window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()+1);
         flowPane.setHgap(2);
         flowPane.setVgap(2);
     }

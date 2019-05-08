@@ -32,17 +32,13 @@ public class PageToolBar {
         backward.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//backward.png", backward);
         backward.setAccessibleHelp("backward");
-//        if (window.getSearchLog().size()<=1)
-//            backward.setDisable(true);
-//        else backward.setDisable(false);
+
 
         forward = new Button();
         forward.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//forward.png", forward);
         forward.setAccessibleHelp("forward");
-//        if (window.getPageIndexInSearchLog()==window.getSearchLog().size()-1)
-//            forward.setDisable(true);
-//        else forward.setDisable(false);
+
 
         refresh = new Button();
         refresh.setPrefSize(ICON_SIZE, ICON_SIZE);
@@ -92,7 +88,6 @@ public class PageToolBar {
 
         toolBar.getItems().add(new Separator());
         toolBar.getItems().addAll(backward, forward, refresh, home, textSearch, search, newTabButton, menuBar);
-
         updateAppearance();
         setActions();
     }
@@ -182,6 +177,7 @@ public class PageToolBar {
         if(window.getPageIndexInSearchLog() ==0 )
             backward.setDisable(true);
         else backward.setDisable(false);
+
     }
 
     private void setActions()
@@ -220,12 +216,15 @@ public class PageToolBar {
             window.getUi().getMainStage().close();
         });
         forward.setOnAction((e)->{
-            System.out.println("hello");
+        });
+
+        backward.setOnAction((e)->{
+            window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()-1);
+            window.search(window.getSearchLog().get(window.getPageIndexInSearchLog()));
         });
 
         //todo: make sure if this correct
-        textSearch.setOnKeyPressed(new EventHandler<KeyEvent>()
-        {
+        textSearch.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke)
             {

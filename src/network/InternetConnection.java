@@ -50,7 +50,7 @@ public class InternetConnection {
                     "<li> shadi</li>" +
                     "<li> fadi </li>" +
                     "</ol>" +
-                    "<table>" +
+                    "<table border='10'>" +
                     "<tr>" +
                     "<td>hey</td>" +
                     "<td>bye</td>" +
@@ -59,13 +59,13 @@ public class InternetConnection {
                     "i love you" +
                     "</body>" +
                     "</html>";
-            Platform.runLater(() -> window.onLoad(data));
+            Platform.runLater(() -> window.onLoad(data,urlPath));
         } catch (Exception e) {
             Platform.runLater(
                     () -> {
                         //TODO MAKE THIS FUNCTION
                         //window.errorHappened(e);
-                        window.onLoad("Error in Page");
+                        window.onLoad("Error in Page",urlPath);
                     }
             );
         }
