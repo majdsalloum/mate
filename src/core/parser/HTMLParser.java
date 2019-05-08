@@ -161,7 +161,7 @@ public class HTMLParser {
 
 
     private static void setAttributes(LinkedList<TagLocation> list, String text) throws InvalidContentException {
-        final Pattern attributePattern = Pattern.compile("(\\w+)(?:=(['\"])((?:.|\\s)+?)\\2)?(\\s|>|/>)");
+        final Pattern attributePattern = Pattern.compile("(\\w+)(?:=(['\"]?)((?:.|\\s)+?)\\2)?(\\s|>|/>)");
         for (TagLocation tagLocation : list) {
             if (tagLocation.tag == null) continue;
             String tagStartText = text.substring(tagLocation.startTagBegin + (tagLocation.tagText != null ? tagLocation.tagText.length() + 1 : 0), tagLocation.startTagEnd + 1);

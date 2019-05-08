@@ -2,11 +2,14 @@ package core.render;
 
 
 import core.render.actions.Action;
+import core.render.actions.FormAction;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Drawer {
     final Integer LIST_TRANSLATE_X = 32;
@@ -51,6 +54,26 @@ public abstract class Drawer {
         return false;
     }
 
+    public <T extends Action> List<T> getAllActions(Class<T> action) {
+        return (List<T>) actions.stream().filter(x -> x.getClass() == action).collect(Collectors.toList());
+    }
+
+    public <T extends Action> T getFirstAction(Class<T> action) {
+        List<T> allActions = getAllActions(action);
+        if (allActions.size() > 0)
+            return allActions.get(0);
+        else
+            return null;
+    }
+
+    public <T extends Action> T getLastAction(Class<T> action) {
+        List<T> allActions = getAllActions(action);
+        if (allActions.size() > 0)
+            return allActions.get(allActions.size() - 1);
+        else
+            return null;
+    }
+
     public void useEffect(Effect effect) {
         effectsUsages[effect.ordinal()]++;
     }
@@ -74,6 +97,18 @@ public abstract class Drawer {
         }
         alignments.pop();
     }
+
+    abstract protected void resetForm(FormAction formAction);
+
+    abstract protected void submitForm(FormAction formAction);
+
+    abstract public void drawFileInput(String name,String accept, Boolean multiple);
+
+    abstract public void drawInput(String type, String name, String value, String placeHolder);
+
+    abstract public void beginDrawButton(String type);
+
+    abstract public void endDrawButton();
 
     abstract public void drawText(String text);
 

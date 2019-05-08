@@ -46,6 +46,15 @@ public class InternetConnection {
                     "<title> shadi</title>" +
                     "</head>" +
                     "<body>" +
+                    "<h1>Nice!</h1>" +
+                    "<form>" +
+                    "<input type='text' name=user placeholder='Username'>" +
+                    "<input type='text' name=password placeholder='password'>" +
+                    "<input type='file' name='hello' accept='*.jpg,*.gif,*.png' >" +
+                    "<button type='reset'>" +
+                    "reset" +
+                    "</button>" +
+                    "</form>" +
                     "<ol start='20'>" +
                     "<li> shadi</li>" +
                     "<li> fadi </li>" +
