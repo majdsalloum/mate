@@ -31,6 +31,7 @@ public class FXDrawer extends Drawer {
     Page page;
     UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
+
     public FXDrawer(Tab tab, Page page, UserInterface userInterface, String baseUrl) {
         super(baseUrl);
         this.tab = tab;
@@ -40,11 +41,10 @@ public class FXDrawer extends Drawer {
 
     private void drawNode(Node node) {
         if (parents.size() > 0) {
-            System.out.println(node + " ON " + parents.getLast());
             parents.getLast().add(node);
-        } else{
-            System.out.println("draw on basic pane");
-            page.getFlowPane().getChildren().add(node);}
+        } else {
+            page.getFlowPane().getChildren().add(node);
+        }
     }
 
     private Pane getParent() {
@@ -95,9 +95,6 @@ public class FXDrawer extends Drawer {
     }
 
     private void unUsePane() {
-        for (int i=0;i<parents.size();i++)
-        System.out.println(parents.get(i));
-        System.out.println("--------------------------");
         DrawerPane drawerPane = parents.pollLast();
         drawNode(drawerPane.getParent());
     }
@@ -125,7 +122,6 @@ public class FXDrawer extends Drawer {
     public void drawTableColumn() {
         ((GridDrawerPane) parents.getLast()).setCol(((GridDrawerPane) parents.getLast()).getCol() + 1);
         usePane(new DrawerPane(new FlowPane()));
-
     }
 
     @Override
@@ -150,10 +146,11 @@ public class FXDrawer extends Drawer {
         UnOrderedListDrawPane listDrawPane = new UnOrderedListDrawPane(vBox, symbol);
         usePane(listDrawPane);
     }
+
     @Override
-    public void drawOrderedList(String start , String symbol) {
+    public void drawOrderedList(String start, String symbol) {
         VBox vBox = new VBox();
-        OrderedListDrawPane listDrawPane = new OrderedListDrawPane(vBox,Integer.parseInt(start),symbol);
+        OrderedListDrawPane listDrawPane = new OrderedListDrawPane(vBox, Integer.parseInt(start), symbol);
         usePane(listDrawPane);
     }
 
@@ -175,9 +172,9 @@ public class FXDrawer extends Drawer {
         flowPane.getChildren().add(space);
         flowPane.setHgap(5);
         String string = "";
-        if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class) )
+        if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class))
             string = ((UnOrderedListDrawPane) parents.getLast()).getSymbol().getNext();
-        else if(parents.getLast().getClass().equals(OrderedListDrawPane.class))
+        else if (parents.getLast().getClass().equals(OrderedListDrawPane.class))
             string = ((OrderedListDrawPane) parents.getLast()).getSymbol().getNext();
         flowPane.getChildren().add(new Label(string));
         ListItem listItem = new ListItem(flowPane);

@@ -43,6 +43,7 @@ public class InternetConnection {
             final String data;// = dataBuilder.toString();
             data = "<html>" +
                     "<head>" +
+                    "<title> shadi</title>" +
                     "</head>" +
                     "<body>" +
                     "<ol start='20'>" +
@@ -55,6 +56,7 @@ public class InternetConnection {
                     "<td>bye</td>" +
                     "</tr>" +
                     "</table>" +
+                    "i love you" +
                     "</body>" +
                     "</html>";
             Platform.runLater(() -> window.onLoad(data));

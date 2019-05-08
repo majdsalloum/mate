@@ -16,8 +16,10 @@ public class HomePage extends Page{
     private TextField textSearch;
     private Button search;
     private VBox homePage;
-    public HomePage()
+    public HomePage(Window window)
     {
+        super(window);
+        data = "<html>Home page</html>";//todo : edit this or creat new way to Know how to open new page (page , homePage , setting ,etc...)
         path = "matte://home";
         homePage=new VBox();
         homePage.setSpacing(10);

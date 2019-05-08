@@ -82,35 +82,30 @@ public abstract class Drawer {
     abstract public void drawImage(String path);
 
     abstract public void drawTable();
-
     abstract public void endDrawTable();
 
     abstract public void drawCaption();
-
     abstract public void endDrawCaption();
 
     abstract public void drawTableHeader();
-
     abstract public void endDrawTableHeader();
 
     abstract public void drawTableColumn();
-
     abstract public void endDraTableColumn();
 
     abstract public void drawTableRow();
-
     abstract public void endDrawTableRow();
 
     abstract public void drawUnOrderedList(String symbol);
-
     abstract public void endDrawUnOrderedList();
 
     abstract public void drawListItem();
-
     abstract public void endDrawListItem();
 
     abstract public void drawOrderedList(String start , String symbol);
     abstract public void endDrawOrderedList();
 
     abstract public void drawNewLine();
+
+
 }
