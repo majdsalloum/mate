@@ -2,12 +2,11 @@ package core.render;
 
 
 import core.render.actions.Action;
+import core.render.actions.FormAction;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,7 +98,17 @@ public abstract class Drawer {
         alignments.pop();
     }
 
-    abstract public void drawInput(String type, String name, String value,String placeHolder);
+    abstract protected void resetForm(FormAction formAction);
+
+    abstract protected void submitForm(FormAction formAction);
+
+    abstract public void drawFileInput(String name,String accept, Boolean multiple);
+
+    abstract public void drawInput(String type, String name, String value, String placeHolder);
+
+    abstract public void beginDrawButton(String type);
+
+    abstract public void endDrawButton();
 
     abstract public void drawText(String text);
 

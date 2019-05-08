@@ -10,20 +10,29 @@ import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.GridDrawerPane;
 import core.render.fx.panes.ListItem;
 import core.render.fx.panes.UnOrderedListDrawPane;
-import core.tags.P;
 import gui.Page;
 import gui.UserInterface;
 import gui.Window;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 public class FXDrawer extends Drawer {
@@ -209,8 +218,6 @@ public class FXDrawer extends Drawer {
                 Window window = this.ui.createNewWindow();
                 window.search(hrefAction.getLink());
             });
-        } else if (action instanceof FormAction) {
-
         }
         parents.addLast(drawerPane);
     }
@@ -222,6 +229,44 @@ public class FXDrawer extends Drawer {
     }
 
     @Override
+    public void drawFileInput(String name, String accept, Boolean multiple) {
+        usePane(new DrawerPane(new HBox()));
+        FormAction formAction = getLastAction(FormAction.class);
+        Button button = new Button("Browser");
+        Text text = new Text();
+        text.setUserData("No File Chosen");
+        text.setText(text.getUserData().toString());
+        FileChooser fileChooser = new FileChooser();
+        if (accept != null) {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(accept, accept.split(",")));
+        }
+        if (formAction != null) {
+            button.setOnAction(
+                    e -> {
+                        FormEntry formEntry = new FormEntry(text, null);
+                        boolean hasFiles;
+                        if (multiple) {
+                            formEntry.value = fileChooser.showOpenMultipleDialog(Stage.getWindows().get(0));
+                            hasFiles = !((List<File>) formEntry.value).isEmpty();
+                        } else {
+                            formEntry.value = fileChooser.showOpenDialog(Stage.getWindows().get(0));
+                            hasFiles = formEntry.value != null;
+                        }
+                        if (!hasFiles)
+                            text.setText(text.getUserData().toString());
+                        else
+                            text.setText(formEntry.value.toString());
+                        formAction.setAttribute(name, formEntry);
+                    }
+            );
+        }
+        drawNode(button);
+        drawNode(text);
+        unUsePane();
+    }
+
+
+    @Override
     public void drawInput(String type, String name, String value, String placeHolder) {
         TextInputControl textField;
         switch (type) {
@@ -230,16 +275,78 @@ public class FXDrawer extends Drawer {
                     this.setText(value);
                 }};
                 break;
+            case "hidden":
+                textField = null;
+                break;
             default:
                 textField = new TextField(value);
 
         }
-        textField.setPromptText(placeHolder);
         final FormAction action = getLastAction(FormAction.class);
-        action.setAttribute(name, value);
-        textField.textProperty().addListener((o, old, newVal) -> action.setAttribute(name, newVal));
+        action.setAttribute(name, new FormEntry(textField, value));
+        if (textField == null)
+            return;
+        textField.setPromptText(placeHolder);
+        textField.textProperty().addListener((o, old, newVal) -> action.setAttribute(name, new FormEntry(textField, value)));
         drawNode(textField);
 
+    }
+
+    static private class FormEntry {
+        public Node node;
+        public Object value;
+
+        public FormEntry() {
+            this(null, null);
+        }
+
+        public FormEntry(Node node, Object value) {
+            this.node = node;
+            this.value = value;
+        }
+    }
+
+    protected void resetForm(FormAction formAction) {
+        Map<String, Object> fields = formAction.getFields();
+        for (Map.Entry<String, Object> field : fields.entrySet()) {
+            FormEntry formEntry = (FormEntry) field.getValue();
+            if (formEntry.node != null) {
+                if (formEntry.node instanceof TextInputControl) {
+                    ((TextInputControl) formEntry.node).clear();
+                } else if (formEntry.node instanceof Text) {
+                    if (formEntry.node.getUserData() != null)
+                        ((Text) formEntry.node).setText(formEntry.node.getUserData().toString());
+                }
+            }
+        }
+    }
+
+    protected void submitForm(FormAction formAction) {
+        // TODO
+    }
+
+
+    @Override
+    public void beginDrawButton(String type) {
+        final FormAction formAction = getLastAction(FormAction.class);
+        StackPane buttonPane = new StackPane();
+        buttonPane.setEffect(new DropShadow(10, Color.GRAY));
+        buttonPane.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
+        buttonPane.setPadding(new Insets(2, 2, 2, 2));
+        buttonPane.setCursor(Cursor.HAND);
+        if (formAction != null && type != null && !type.equals("button"))
+            buttonPane.setOnMouseClicked(e -> {
+                if (type.equals("submit"))
+                    submitForm(formAction);
+                else
+                    resetForm(formAction);
+            });
+        usePane(new DrawerPane(buttonPane));
+    }
+
+    @Override
+    public void endDrawButton() {
+        unUsePane();
     }
 
 }

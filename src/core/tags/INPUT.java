@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class INPUT extends Tag {
     protected final static String[] CHILDREN_TYPES = {};
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES,
-            new String[]{"type", "value", "placeholder"});
+            new String[]{"type", "value", "placeholder", "accept", "multiple"});
 
     @Override
     public boolean requiresClosing() {
@@ -25,10 +25,15 @@ public class INPUT extends Tag {
     protected String name = null;
     protected String value = null;
     protected String placeholder = null;
+    protected String accept = null;
+    protected Boolean multiple = false;
 
     @Override
     public void draw(Drawer drawer) {
-        drawer.drawInput(type, name, value, placeholder);
+        if (type.equals("file"))
+            drawer.drawFileInput(name, accept, multiple);
+        else
+            drawer.drawInput(type, name, value, placeholder);
     }
 
     @Override

@@ -2,6 +2,7 @@ package core.render.actions;
 
 import core.render.Drawer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,14 +21,13 @@ public class FormAction implements Action {
 
     public void setAttribute(String key, Object value) {
         fields.put(key, value);
-        System.out.println(getFields());
     }
 
     public Object getAttribute(String key) {
         return fields.get(key);
     }
 
-    public Map getFields() {
+    public Map<String, Object> getFields() {
         return fields;
     }
 

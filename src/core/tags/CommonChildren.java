@@ -1,11 +1,11 @@
 package core.tags;
 
-final public class CommonChildren {
+final class CommonChildren {
     private CommonChildren() {
 
     }
 
-    static public String[] FLOW_CONTENT = {
+    static String[] FLOW_CONTENT = {
             "a", "abbr", "address", "article", "aside", "audio", "b", "bdi", "bdo"
             , "blockquote", "br", "button", "canvas", "cite", "code", "command",
             "datalist", "del", "details", "dfn", "div", "dl", "em", "embed", "fieldset",
@@ -14,5 +14,14 @@ final public class CommonChildren {
             "nav", "noscript", "object", "ol", "output", "p", "pre", "progress", "q", "ruby", "s", "samp", "script",
             "section", "select", "small", "span", "strong", "style", "sub", "sup", "svg", "table", "textarea", "time",
             "u", "ul", "var", "video", "wbr", "text"
+    };
+
+    static String[] PHRASING_CONTENT = {
+            "a", "abbr", "audio", "b", "bdi", "bdo", "br", "button", "canvas", "cite",
+            "code", "command", "datalist", "del", "dfn", "em", "embed", "i", "iframe",
+            "img", "input", "ins", "kbd", "keygen", "label", "map", "mark", "math",
+            "meter", "noscript", "object", "output", "progress", "q", "ruby", "s",
+            "samp", "script", "select", "small", "span", "strong", "sub", "sup",
+            "svg", "textarea", "time", "u", "var", "video", "wbr", "text"
     };
 }
