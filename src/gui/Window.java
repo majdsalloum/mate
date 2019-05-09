@@ -14,8 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import network.InternetConnection;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.FileNameMap;
 import java.util.LinkedList;
 
 public class Window {
@@ -31,10 +34,11 @@ public class Window {
         this.ui = ui;
         searchLog = new LinkedList<>();
        // searchLog.add("matte:\\home");
-        pageToolBar = new PageToolBar(this, tabPane);
 
 
         page = new HomePage(this);
+        pageToolBar = new PageToolBar(this, tabPane);
+
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
         createNewTab();
@@ -50,6 +54,7 @@ public class Window {
 
     public Node getContent() {
         //changeContent();
+        pageToolBar.updateAppearance();
         content = new VBox();
         content.getChildren().addAll(pageToolBar.getToolBar(), page.getContent());
         return content;
@@ -153,19 +158,42 @@ public class Window {
         updateTabContent();
     }
 
-    public void loadPageInNewTab() {
+    public void loadPage() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(ui.getMainStage());
-        if (file != null) {
+        if (file == null) return;
+        String ext = null;
+        int i=file.toString().lastIndexOf(".");
+        if(i==-1){}
+        else ext=file.toString().substring(i);
+        System.out.println(ext);
+        if(ext.equals(".htm")){
             String s = file.toString();
+            String data = "page not found";
             try {
-                String data = StorageManger.loadPage(s);
-                Window window = ui.createNewWindow();
-                window.onLoad(data,file.toString());
-            } catch (IOException e) {
-                //todo alert error messsage
+                data = StorageManger.loadPage(s);
+                onLoad(data,file.toString());
+            } catch (Exception e) {
+                page = new TextPage(this,file.toString(),data);
             }
         }
+        else if(ext.equals(".pdf"))
+        {
+            page = new PDFPage(this,file.toString(),"non");
+            updateTabContent();
+        }
+        else {
+            String s = file.toString();
+            String data = "page cannot open ";
+            try {
+                data = StorageManger.loadPage(s);
+            } catch (IOException e) {
+            }
+            if(data ==null)data = "page cannot open  ";
+            page=new TextPage(this,file.toString(),data);
+            updateTabContent();
+        }
+
     }
     public void savePage()
     {

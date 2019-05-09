@@ -88,8 +88,9 @@ public class PageToolBar {
 
         toolBar.getItems().add(new Separator());
         toolBar.getItems().addAll(backward, forward, refresh, home, textSearch, search, newTabButton, menuBar);
-        updateAppearance();
         setActions();
+        updateAppearance();
+
     }
 
     private void insertImage(String imagePath, Button button) {
@@ -178,6 +179,17 @@ public class PageToolBar {
             backward.setDisable(true);
         else backward.setDisable(false);
 
+        if (window.getPage() instanceof Page)
+            savePage.setDisable(false);
+        if(window.getPage() instanceof HomePage)
+            savePage.setDisable(true);
+        if (window.getPage() instanceof TextPage)
+            savePage.setDisable(true);
+        if (window.getPage() instanceof PDFPage)
+            savePage.setDisable(true);
+
+
+        textSearch.setText(window.getPage().path);
     }
 
     private void setActions()
@@ -186,10 +198,11 @@ public class PageToolBar {
         //todo : replace to set on right click
         savePage.setOnAction((e)->
         {
+            if(!savePage.isDisable())
             window.savePage();
         });
         loadPage.setOnAction((e)->{
-            window.loadPageInNewTab();
+            window.loadPage();
         });
         newTabButton.setOnAction((e)->
         {

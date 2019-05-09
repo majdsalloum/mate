@@ -59,7 +59,7 @@ public class InternetConnection {
                     "<li> shadi</li>" +
                     "<li> fadi </li>" +
                     "</ol>" +
-                    "<table border='10'>" +
+                    "<table>" +
                     "<tr>" +
                     "<td>hey</td>" +
                     "<td>bye</td>" +
