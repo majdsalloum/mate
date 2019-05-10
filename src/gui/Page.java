@@ -18,11 +18,17 @@ public class Page {
     protected Window window;
     protected String data;
     protected FlowPane flowPane = new FlowPane();
-    public Page(Window window)
+    public Page(Window window ,String path , String data)
     {
         this.window=window;
+        this.data =data;
+        this.path=path;
+        window.getSearchLog().add(path);
+        window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()+1);
         flowPane.setHgap(2);
         flowPane.setVgap(2);
+      //  window.updateTabContent();
+
     }
     public void setWindow(Window window) {
         this.window = window;

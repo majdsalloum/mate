@@ -18,9 +18,9 @@ public class HomePage extends Page{
     private VBox homePage;
     public HomePage(Window window)
     {
-        super(window);
-        data = "<html>Home page</html>";//todo : edit this or creat new way to Know how to open new page (page , homePage , setting ,etc...)
-        path = "matte://home";
+        super(window,"matte://home","<html>Home page</html>");
+        //todo : edit this or creat new way to Know how to open new page (page , homePage , setting ,etc...)
+
         homePage=new VBox();
         homePage.setSpacing(10);
         homePage.setAlignment(Pos.CENTER);

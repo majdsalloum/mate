@@ -14,8 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import network.InternetConnection;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.FileNameMap;
 import java.util.LinkedList;
 
 public class Window {
@@ -30,13 +33,12 @@ public class Window {
     public Window(TabPane tabPane, UserInterface ui) {
         this.ui = ui;
         searchLog = new LinkedList<>();
-        searchLog.add("matte:\\home");
-        pageToolBar = new PageToolBar(this, tabPane);
+       // searchLog.add("matte:\\home");
 
 
         page = new HomePage(this);
-        page.setWindow(this);
-        searchLog.add(page.getPath());
+        pageToolBar = new PageToolBar(this, tabPane);
+
         pageToolBar.getTextSearch().setText(page.getPath());
         content = new VBox();
         createNewTab();
@@ -52,6 +54,7 @@ public class Window {
 
     public Node getContent() {
         //changeContent();
+        pageToolBar.updateAppearance();
         content = new VBox();
         content.getChildren().addAll(pageToolBar.getToolBar(), page.getContent());
         return content;
@@ -61,7 +64,7 @@ public class Window {
         /**send path to url connection and get page*/
         /**get page type */
         page = new HomePage(this);
-        searchLog.add(path);
+        //searchLog.add(path);
         pageIndexInSearchLog++;
 
     }
@@ -82,9 +85,9 @@ public class Window {
     }
 
     public void updateTabContent() {
-        tab.setContent(getContent());
         pageToolBar.updateAppearance();
-
+        pageToolBar.getTextSearch().setText(page.path);
+        tab.setContent(getContent());
     }
 
     public LinkedList<String> getSearchLog() {
@@ -139,17 +142,15 @@ public class Window {
 
     public void search(String path) {
         if (loading > 0) return;
-        searchLog.add(path);
+       // searchLog.add(path);
         showLoading();
-        searchLog.add(path);
-        page = new Page(this);
+       // searchLog.add(path);
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
-        searchLog.add(path);
     }
 
-    public void onLoad(String string) {
-        page.setData(string);
+    public void onLoad(String string , String path) {
+        page=new Page(this,path,string);
         hideLoading();
         FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
         Tag head = (Tag) HTMLParser.compile(string);
@@ -157,20 +158,42 @@ public class Window {
         updateTabContent();
     }
 
-    public void loadPageInNewTab() {
+    public void loadPage() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(ui.getMainStage());
-        if (file != null) {
+        if (file == null) return;
+        String ext = null;
+        int i=file.toString().lastIndexOf(".");
+        if(i==-1){}
+        else ext=file.toString().substring(i);
+        System.out.println(ext);
+        if(ext.equals(".htm")){
             String s = file.toString();
+            String data = "page not found";
             try {
-                String data = StorageManger.loadPage(s);
-                Window window = ui.createNewWindow();
-                window.page =new Page(window);
-                window.onLoad(data);
-            } catch (IOException e) {
-                //todo alert error messsage
+                data = StorageManger.loadPage(s);
+                onLoad(data,file.toString());
+            } catch (Exception e) {
+                page = new TextPage(this,file.toString(),data);
             }
         }
+        else if(ext.equals(".pdf"))
+        {
+            page = new PDFPage(this,file.toString(),"non");
+            updateTabContent();
+        }
+        else {
+            String s = file.toString();
+            String data = "page cannot open ";
+            try {
+                data = StorageManger.loadPage(s);
+            } catch (IOException e) {
+            }
+            if(data ==null)data = "page cannot open  ";
+            page=new TextPage(this,file.toString(),data);
+            updateTabContent();
+        }
+
     }
     public void savePage()
     {
@@ -183,5 +206,9 @@ public class Window {
     public UserInterface getUi()
     {
         return ui;
+    }
+
+    public void setPageIndexInSearchLog(Integer pageIndexInSearchLog) {
+        this.pageIndexInSearchLog = pageIndexInSearchLog;
     }
 }
