@@ -12,6 +12,7 @@ import gui.UserInterface;
 import gui.Window;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -20,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -60,20 +62,28 @@ public class FXDrawer extends Drawer {
             return page.getFlowPane();
     }
 
-
     @Override
-    public void drawText(String text) {
-        Label label = new Label(text);
-        label.setText(text);
+    public void drawText(String text)
+    {
+        drawText(text , Font.getDefault().getSize(), Font.getDefault().getName());
+    }
+    @Override
+    public void drawText(String text  , double fontSize , String fontName) {
+        Label fxText = new Label(text);
+        fxText.setFont(new Font(fontName,fontSize));
         if (hasEffect(Effect.FONT_BOLD))
-            label.setStyle("-fx-font-weight: bold;");
+            fxText.setStyle("-fx-font-weight: bold;");
+        if (hasEffect(Effect.FONT_ITALIC))
+            fxText.setStyle(fxText.getStyle() + " fx-font-style : italic;");
+        if(hasEffect((Effect.FONT_UNDERLINE)))
+            fxText.setUnderline(true);
         if (hasAction(HrefAction.class)) {
-            label.setStyle(label.getStyle() + "-fx-font-style: italic;");
-            Styler.changeColorToPassiveLink(label);
-            label.setOnMouseEntered(Styler::changeColorToActiveLink);
-            label.setOnMouseExited(Styler::changeColorToPassiveLink);
+            fxText.setStyle(fxText.getStyle() + "-fx-font-style: italic;");
+            Styler.changeColorToPassiveLink(fxText);
+            fxText.setOnMouseEntered(Styler::changeColorToActiveLink);
+            fxText.setOnMouseExited(Styler::changeColorToPassiveLink);
         }
-        drawNode(label);
+        drawNode(fxText);
     }
 
     @Override
@@ -202,6 +212,8 @@ public class FXDrawer extends Drawer {
             region.setPrefWidth(newVal.doubleValue() - lastChild.getLayoutX());
         });
         drawNode(region);
+//        Separator separator = new Separator(Orientation.HORIZONTAL);
+//        drawNode(separator);
     }
 
 

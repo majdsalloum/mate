@@ -2,6 +2,7 @@ package core.tags;
 
 import core.exceptions.InvalidContentException;
 import core.render.Drawer;
+import core.render.Effect;
 import core.render.actions.HrefAction;
 
 public class A extends Tag {
