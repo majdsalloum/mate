@@ -4,15 +4,21 @@ import java.io.*;
 
 public class StorageManger {
     static public void savePage(String fileData, String path) {
-        FileWriter fileWriter;
+        FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(path);
             fileWriter.write(fileData);
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try
+            {
+                fileWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     static public String loadPage(String path) throws IOException {

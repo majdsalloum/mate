@@ -1,11 +1,12 @@
 package tests;
 
 import Storage.StorageManger;
+import core.exceptions.InvalidContentException;
+import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
 import core.tags.Tag;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 
 
 public class ParsingTest {
@@ -20,7 +21,13 @@ public class ParsingTest {
             builder.append(line);
         }
         System.out.println("Done reading");
-        Tag a = HTMLParser.compile(builder.toString());
+        try {
+            Tag a = HTMLParser.compile(builder.toString());
+        } catch (InvalidSyntaxException e) {
+            e.printStackTrace();
+        } catch (InvalidContentException e) {
+            e.printStackTrace();
+        }
         int b = 1;
     }
 
@@ -42,15 +49,19 @@ public class ParsingTest {
                 "</table>" +
                 "</body>" +
                 "</html>";
-        Tag a = HTMLParser.compile(html);
+        try {
+            Tag a = HTMLParser.compile(html);
+        } catch (InvalidSyntaxException e) {
+            e.printStackTrace();
+        } catch (InvalidContentException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String... args) throws Exception {
-       simpleTest();
+//       simpleTest();
+//      simpleTestTable();
 
-
-
-//        simpleTestTable();
 
     }
 }

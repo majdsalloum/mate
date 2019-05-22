@@ -1,6 +1,8 @@
 package gui;
 
 import Storage.StorageManger;
+import core.exceptions.InvalidContentException;
+import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
 import core.render.fx.FXDrawer;
 import core.tags.*;
@@ -149,7 +151,7 @@ public class Window {
         internetConnection.getPage(path);
     }
 
-    public void onLoad(String string , String path) {
+    public void onLoad(String string , String path) throws InvalidContentException, InvalidSyntaxException {
         page=new Page(this,path,string);
         hideLoading();
         FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
@@ -175,6 +177,7 @@ public class Window {
                 onLoad(data,file.toString());
             } catch (Exception e) {
                 page = new TextPage(this,file.toString(),data);
+                updateTabContent();
             }
         }
         else if(ext.equals(".pdf"))

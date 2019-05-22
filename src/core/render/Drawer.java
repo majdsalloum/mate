@@ -111,6 +111,7 @@ public abstract class Drawer {
     abstract public void endDrawButton();
 
     abstract public void drawText(String text);
+    abstract public void drawText(String text  , double fontSize , String fontName );
 
     abstract public void setTitle(String text);
 

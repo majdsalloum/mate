@@ -1,6 +1,8 @@
 package network;
 
 
+import core.exceptions.InvalidContentException;
+import core.exceptions.InvalidSyntaxException;
 import gui.Window;
 import javafx.application.Platform;
 
@@ -46,15 +48,8 @@ public class InternetConnection {
                     "<title> shadi</title>" +
                     "</head>" +
                     "<body>" +
-                    "<h1>Nice!</h1>" +
-                    "<form>" +
-                    "<input type='text' name=user placeholder='Username'>" +
-                    "<input type='password' name=password placeholder='password'>" +
-                    "<input type='file' name='hello' accept='*.jpg,*.gif,*.png' >" +
-                    "<button type='reset'>" +
-                    "reset" +
-                    "</button>" +
-                    "</form>" +
+                    "<a>Nice!</a>" +
+                    "<br>" +
                     "<ol start='20'>" +
                     "<li> shadi</li>" +
                     "<li> fadi </li>" +
@@ -68,13 +63,27 @@ public class InternetConnection {
                     "i love you" +
                     "</body>" +
                     "</html>";
-            Platform.runLater(() -> window.onLoad(data,urlPath));
+            Platform.runLater(() -> {
+                try {
+                    window.onLoad(data,urlPath);
+                } catch (InvalidContentException e) {
+                    e.printStackTrace();
+                } catch (InvalidSyntaxException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception e) {
             Platform.runLater(
                     () -> {
                         //TODO MAKE THIS FUNCTION
                         //window.errorHappened(e);
-                        window.onLoad("Error in Page",urlPath);
+                        try {
+                            window.onLoad("Error in Page",urlPath);
+                        } catch (InvalidContentException e1) {
+                            e1.printStackTrace();
+                        } catch (InvalidSyntaxException e1) {
+                            e1.printStackTrace();
+                        }
                     }
             );
         }
