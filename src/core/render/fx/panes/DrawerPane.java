@@ -24,5 +24,5 @@ public class DrawerPane {
         parent = new VBox(parent);
     }
 
-    public void addInnewLine(Node node) {}
+    public void addInNewLine(Node node) {}
 }

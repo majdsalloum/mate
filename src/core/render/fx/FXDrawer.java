@@ -14,7 +14,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -48,14 +47,14 @@ public class FXDrawer extends Drawer {
         if (parents.size() > 0) {
             parents.getLast().add(node);
         } else {
-            page.getFlowPane().getChildren().add(node);
+            page.getDrawerPane().getParent().getChildren().add(node);
         }
     }
     private Pane getParent() {
         if (parents.size() > 0) {
             return parents.getLast().getParent();
         } else
-            return page.getFlowPane();
+            return page.getDrawerPane().getParent();
     }
 
     @Override
@@ -179,20 +178,18 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawListItem() {
-        FlowPane flowPane = new FlowPane();
+        VBoxFlowPane flowPane = new VBoxFlowPane();
         Label space = new Label();
         space.setPrefWidth(16);
-        flowPane.getChildren().add(space);
-        flowPane.setHgap(5);
+        Label space2=  new Label();
+        space2.setPrefWidth(4);
+        flowPane.getParent().getChildren().add(space);
         String string = "";
         if (parents.getLast().getClass().equals(UnOrderedListDrawPane.class))
             string = ((UnOrderedListDrawPane) parents.getLast()).getSymbol().getNext();
         else if (parents.getLast().getClass().equals(OrderedListDrawPane.class))
             string = ((OrderedListDrawPane) parents.getLast()).getSymbol().getNext();
-        flowPane.getChildren().add(new Label(string));
-        flowPane.getChildren().add(new Label(string));
-        ListItem listItem = new ListItem(flowPane);
-        usePane(listItem);
+        usePane(new ListItem(space,space2 , new Label(string)));
     }
 
     @Override
@@ -202,14 +199,16 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawNewLine() {
-
+        if (!parents.isEmpty())
+        parents.getLast().drawLine();
+        else page.getDrawerPane().drawLine();
 //        if(parents.size()>0) {
 //            Node node = parents.peekLast().getParent();
 //            parents.addLast(new DrawerPane(new VBox(node)));
 //        }else{
-//            Node node= page.getFlowPane();
+//            Node node= page.getDrawerPane();
 //            parents.addLast(new DrawerPane(new VBox(node)));
-//            page.setFlowPane(new FlowPane(parents.getFirst().getParent()));
+//            page.setDrawerPane(new FlowPane(parents.getFirst().getParent()));
 //        }
 //        Label region = new Label();
 //        Node lastChild = getParent().getChildren().get(getParent().getChildren().size() - 1);

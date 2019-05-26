@@ -8,6 +8,10 @@ import javafx.scene.layout.VBox;
 
 public class VBoxFlowPane extends DrawerPane {
     public VBoxFlowPane(Pane parent) {
+        super(new VBox(new FlowPane(parent)));
+    }
+    public VBoxFlowPane()
+    {
         super(new VBox(new FlowPane()));
     }
     @Override
@@ -16,8 +20,13 @@ public class VBoxFlowPane extends DrawerPane {
     }
 
     @Override
-    public void addInnewLine(Node node) {
-        ((VBox)parent).getChildren().add(new FlowPane());
+    public void addInNewLine(Node node) {
+        (parent).getChildren().add(new FlowPane());
         add(node);
+    }
+
+    @Override
+    public void drawLine() {
+        parent.getChildren().add(new FlowPane());
     }
 }

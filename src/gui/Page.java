@@ -1,23 +1,18 @@
 package gui;
 
-import javafx.geometry.Insets;
+import core.render.fx.panes.DrawerPane;
+import core.render.fx.panes.VBoxFlowPane;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import javax.swing.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class Page {
     protected String path;
     protected Window window;
     protected String data;
-    protected FlowPane flowPane = new FlowPane();
+    protected DrawerPane drawerPane = new VBoxFlowPane();
     public Page(Window window ,String path , String data)
     {
         this.window=window;
@@ -25,8 +20,6 @@ public class Page {
         this.path=path;
         window.getSearchLog().add(path);
         window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()+1);
-        flowPane.setHgap(2);
-        flowPane.setVgap(2);
       //  window.updateTabContent();
 
     }
@@ -38,13 +31,13 @@ public class Page {
         return window;
     }
 
-    public FlowPane getFlowPane() {
-        return flowPane;
+    public DrawerPane getDrawerPane() {
+        return drawerPane;
     }
 
     public Node getContent() {
         int x;
-        return new ScrollPane(flowPane) {{
+        return new ScrollPane(drawerPane.getParent()) {{
             VBox.setVgrow(this, Priority.ALWAYS);
             this.setFitToHeight(true);
             this.setFitToWidth(true);
@@ -66,7 +59,7 @@ public class Page {
         return path;
     }
 
-    public void setFlowPane(FlowPane flowPane) {
-        this.flowPane = flowPane;
+    public void setDrawerPane(DrawerPane drawerPane) {
+        this.drawerPane = drawerPane;
     }
 }

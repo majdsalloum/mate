@@ -58,16 +58,16 @@ public class InternetConnection {
 //                    "</form>" +
 //                    "<a>Nice!</a>" +
 //                    "<br>" +
-//                    "<ol start='20'>" +
-//                    "<li> shadi</li>" +
-//                    "<li> fadi </li>" +
-//                    "</ol>" +
-//                    "<table>" +
-//                    "<tr>" +
-//                    "<td>hey</td>" +
-//                    "<td>bye</td>" +
-//                    "</tr>" +
-//                    "</table>" +
+                    "<ol start='20'>" +
+                    "<li> hii<br>shadi<br>erere<br>ytytyt</li>" +
+                    "<li> fadi </li>" +
+                    "</ol>" +
+                    "<table>" +
+                    "<tr>" +
+                    "<td>hey<br>ferqr</td>" +
+                    "<td>bye</td>" +
+                    "</tr>" +
+                    "</table>" +
 //                    "i love you" +
                     "</body>" +
                     "</html>";
