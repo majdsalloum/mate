@@ -12,9 +12,9 @@ import gui.UserInterface;
 import gui.Window;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -25,10 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Pair;
-
 import java.io.File;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +36,7 @@ public class FXDrawer extends Drawer {
     Page page;
     UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
-
+    LinkedList<SelectionList> selectionLists = new LinkedList<>();
     public FXDrawer(Tab tab, Page page, UserInterface userInterface, String baseUrl) {
         super(baseUrl);
         this.tab = tab;
@@ -54,7 +51,6 @@ public class FXDrawer extends Drawer {
             page.getFlowPane().getChildren().add(node);
         }
     }
-
     private Pane getParent() {
         if (parents.size() > 0) {
             return parents.getLast().getParent();
@@ -85,6 +81,7 @@ public class FXDrawer extends Drawer {
         }
         drawNode(fxText);
     }
+
 
     @Override
     public void setTitle(String text) {
@@ -193,6 +190,7 @@ public class FXDrawer extends Drawer {
         else if (parents.getLast().getClass().equals(OrderedListDrawPane.class))
             string = ((OrderedListDrawPane) parents.getLast()).getSymbol().getNext();
         flowPane.getChildren().add(new Label(string));
+        flowPane.getChildren().add(new Label(string));
         ListItem listItem = new ListItem(flowPane);
         usePane(listItem);
     }
@@ -204,18 +202,65 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawNewLine() {
-        Label region = new Label();
-        Node lastChild = getParent().getChildren().get(getParent().getChildren().size() - 1);
-        region.setPrefWidth(Stage.getWindows().get(0).getWidth() - lastChild.getLayoutX());
 
-        Stage.getWindows().get(0).widthProperty().addListener((obs, oldVal, newVal) -> {
-            region.setPrefWidth(newVal.doubleValue() - lastChild.getLayoutX());
-        });
-        drawNode(region);
-//        Separator separator = new Separator(Orientation.HORIZONTAL);
-//        drawNode(separator);
+//        if(parents.size()>0) {
+//            Node node = parents.peekLast().getParent();
+//            parents.addLast(new DrawerPane(new VBox(node)));
+//        }else{
+//            Node node= page.getFlowPane();
+//            parents.addLast(new DrawerPane(new VBox(node)));
+//            page.setFlowPane(new FlowPane(parents.getFirst().getParent()));
+//        }
+//        Label region = new Label();
+//        Node lastChild = getParent().getChildren().get(getParent().getChildren().size() - 1);
+//        region.setBackground(new Background(new BackgroundFill(Color.BLUE,null,null)));
+//        ui.getMainStage().setOnShown((e)->{
+//            region.setPrefWidth(Stage.getWindows().get(0).getWidth() - lastChild.getBoundsInLocal().getWidth());
+//        });
+//        ui.getMainStage().show();
+//        Stage.getWindows().get(0).widthProperty().addListener((obs, oldVal, newVal) -> {
+//            region.setPrefWidth(newVal.doubleValue() - lastChild.getLayoutX());
+//            double i = Stage.getWindows().get(0).getWidth() - lastChild.getBoundsInLocal().getWidth();
+//            System.out.println(i);
+//            System.out.println(lastChild.getBoundsInLocal().getWidth());
+//            System.out.println(Stage.getWindows().get(0).getWidth());
+//        });
+        //drawNode(region);
     }
 
+    @Override
+    public void drawSelectionList(Boolean multiple, String name, Integer size) {
+        SelectionList selectionList = new SelectionList(multiple);
+        selectionList.setSize(size);
+        FormEntry formEntry = new FormEntry(selectionList.getContent() , name);
+        selectionLists.addLast(selectionList);
+
+    }
+
+    @Override
+    public void endDrawSelectionList() {
+        drawNode(selectionLists.pop().getContent());
+    }
+
+    @Override
+    public void drawOptionGroup(String optionGroup) {
+        selectionLists.getLast().addGroup(optionGroup);
+    }
+
+    @Override
+    public void endDrawOptionGroup() {
+
+    }
+
+    @Override
+    public void addOption(String text, String value, Boolean disabled, Boolean selected) {
+        Button button =  new Button(text);
+        button.setUserData(value);
+        button.setDisable(disabled);
+       selectionLists.getLast().addItem(button);
+       if(selected)
+           selectionLists.getLast().select(button);
+    }
 
     @Override
     public void endDrawTable() {
@@ -316,7 +361,6 @@ public class FXDrawer extends Drawer {
         textField.setPromptText(placeHolder);
         textField.textProperty().addListener((o, old, newVal) -> action.setAttribute(name, new FormEntry(textField, value)));
         drawNode(textField);
-
     }
 
     static private class FormEntry {
@@ -331,6 +375,7 @@ public class FXDrawer extends Drawer {
             this.node = node;
             this.value = value;
         }
+
     }
 
     protected void resetForm(FormAction formAction) {
@@ -341,8 +386,8 @@ public class FXDrawer extends Drawer {
                 if (formEntry.node instanceof TextInputControl) {
                     ((TextInputControl) formEntry.node).clear();
                 } else if (formEntry.node instanceof Text) {
-                    if (formEntry.node.getUserData() != null)
-                        ((Text) formEntry.node).setText(formEntry.node.getUserData().toString());
+                    if ((formEntry.node).getUserData()!= null)
+                        ((Text) formEntry.node).setText((formEntry.node).getUserData().toString());
                 }
             }
         }
@@ -351,7 +396,6 @@ public class FXDrawer extends Drawer {
     protected void submitForm(FormAction formAction) {
         // TODO
     }
-
 
     @Override
     public void beginDrawButton(String type) {
@@ -376,4 +420,32 @@ public class FXDrawer extends Drawer {
         unUsePane();
     }
 
+    @Override
+    public void drawRadioInput(String name, String value,Boolean checked){
+        RadioButton radioButton = new RadioButton();
+        radioButton.setUserData(value);
+        radioButton.setSelected(checked);
+        FormAction formAction = getLastAction(FormAction.class);
+        if (formAction.getFields().keySet().contains(name)){
+            if (formAction.getFields().get(name) instanceof ToggleGroup) {
+                radioButton.setToggleGroup((ToggleGroup) formAction.getFields().get(name));
+            }
+        } else{
+            ToggleGroup toggleGroup = new ToggleGroup();
+            //FormEntry formEntry = new FormEntry(toggleGroup , null);
+            formAction.setAttribute(name , toggleGroup);
+            radioButton.setToggleGroup(toggleGroup);
+        }
+        drawNode(radioButton);
+    }
+    @Override
+    public void drawCheckBoxInput(String name , String value  ,Boolean checked)
+    {
+        CheckBox checkBox = new CheckBox();
+        checkBox.setUserData(value);
+        checkBox.setSelected(checked);
+        FormAction formAction = getLastAction(FormAction.class);
+        formAction.setAttribute(name , checkBox);
+        drawNode(checkBox);
+    }
 }

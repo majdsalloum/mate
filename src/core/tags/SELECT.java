@@ -6,6 +6,9 @@ import core.render.Drawer;
 public class SELECT extends Tag {
     protected final static String[] CHILDREN_TYPES = {"OPTGROUP","OPTION"};
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES,new String[]{"size,multiple"});
+    String size;
+    String name;
+    Boolean multiple = false;
 
     void validate() throws InvalidContentException {
         for(int i=0;i<children.size();i++)
@@ -16,7 +19,12 @@ public class SELECT extends Tag {
 
     @Override
     public void draw(Drawer drawer) {
-
+        drawer.drawSelectionList(multiple,name,size!=null?Integer.valueOf(size):null);
+        for (Object item : children) {
+            if (item instanceof Tag)
+                ((Tag)item).draw(drawer);
+        }
+        drawer.endDrawSelectionList();
     }
 
 }

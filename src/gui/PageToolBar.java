@@ -247,5 +247,9 @@ public class PageToolBar {
                 }
             }
         });
+
+        downloads.setOnAction((e)->{
+            window.showHistory();
+        });
     }
 }

@@ -143,6 +143,7 @@ public class Window {
     }
 
     public void search(String path) {
+        StorageManger.addToHistory(path);
         if (loading > 0) return;
        // searchLog.add(path);
         showLoading();
@@ -213,5 +214,12 @@ public class Window {
 
     public void setPageIndexInSearchLog(Integer pageIndexInSearchLog) {
         this.pageIndexInSearchLog = pageIndexInSearchLog;
+    }
+    public void showHistory()
+    {
+        Window window = ui.createNewWindow();
+        window.setPage(new HistoryPage(window , "history" ,null));
+        window.updateTabContent();
+
     }
 }

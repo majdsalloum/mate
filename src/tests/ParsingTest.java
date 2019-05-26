@@ -7,6 +7,7 @@ import core.parser.HTMLParser;
 import core.tags.Tag;
 
 import java.io.*;
+import java.util.LinkedList;
 
 
 public class ParsingTest {
@@ -61,7 +62,11 @@ public class ParsingTest {
     public static void main(String... args) throws Exception {
 //       simpleTest();
 //      simpleTestTable();
-
-
+        StorageManger.addToHistory("www.wrer.com");
+        StorageManger.addToHistory("www.wrer.com");
+        StorageManger.addToHistory("www.wrer.com");
+        LinkedList<String> his = StorageManger.getHistory();
+        for(int i=0;i<his.size();i++)
+            System.out.println(his.get(i));
     }
 }

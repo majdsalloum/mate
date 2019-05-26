@@ -48,19 +48,27 @@ public class InternetConnection {
                     "<title> shadi</title>" +
                     "</head>" +
                     "<body>" +
-                    "<a>Nice!</a>" +
-                    "<br>" +
-                    "<ol start='20'>" +
-                    "<li> shadi</li>" +
-                    "<li> fadi </li>" +
-                    "</ol>" +
-                    "<table>" +
-                    "<tr>" +
-                    "<td>hey</td>" +
-                    "<td>bye</td>" +
-                    "</tr>" +
-                    "</table>" +
-                    "i love you" +
+                    "hi<br>bye<br>asf" +
+//                    "<form>" +
+//                    "<input type='radio' name='oo' value='kook'>radio" +
+//                    "<input type='radio' name='oo' value='kook2'>radio2" +
+//                    "<input type='radio' name='ooo' value='kook'>radio" +
+//                    "<input type='checkbox' name='n' value='3' >check" +
+//                    "<button type='reset'>reset</button>" +
+//                    "</form>" +
+//                    "<a>Nice!</a>" +
+//                    "<br>" +
+//                    "<ol start='20'>" +
+//                    "<li> shadi</li>" +
+//                    "<li> fadi </li>" +
+//                    "</ol>" +
+//                    "<table>" +
+//                    "<tr>" +
+//                    "<td>hey</td>" +
+//                    "<td>bye</td>" +
+//                    "</tr>" +
+//                    "</table>" +
+//                    "i love you" +
                     "</body>" +
                     "</html>";
             Platform.runLater(() -> {

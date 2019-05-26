@@ -2,6 +2,7 @@ package core.render.fx.panes;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class DrawerPane {
     Pane parent;
@@ -18,4 +19,10 @@ public class DrawerPane {
         parent.getChildren().add(node);
     }
 
+    public void drawLine()
+    {
+        parent = new VBox(parent);
+    }
+
+    public void addInnewLine(Node node) {}
 }

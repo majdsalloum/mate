@@ -12,6 +12,6 @@ public class ListItem extends DrawerPane {
 
     @Override
     public void add(Node node) {
-        ((FlowPane)parent).getChildren().add(node);
+        (parent).getChildren().add(node);
     }
 }

@@ -27,11 +27,15 @@ public class INPUT extends Tag {
     protected String placeholder = null;
     protected String accept = null;
     protected Boolean multiple = false;
-
+    protected Boolean checked=false;
     @Override
     public void draw(Drawer drawer) {
         if (type.equals("file"))
             drawer.drawFileInput(name, accept, multiple);
+        else if (type.equals("radio"))
+            drawer.drawRadioInput(name,value,checked);
+        else if (type.equals("checkbox"))
+            drawer.drawCheckBoxInput(name ,value ,checked);
         else
             drawer.drawInput(type, name, value, placeholder);
     }

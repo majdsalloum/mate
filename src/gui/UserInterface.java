@@ -1,5 +1,6 @@
 package gui;
 
+import core.tags.P;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Priority;

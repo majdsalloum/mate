@@ -1,6 +1,7 @@
 package Storage;
 
 import java.io.*;
+import java.util.LinkedList;
 
 public class StorageManger {
     static public void savePage(String fileData, String path) {
@@ -30,5 +31,37 @@ public class StorageManger {
             stringBuilder.append(line);
         }
         return stringBuilder.toString();
+    }
+
+    static public void addToHistory(String url)
+    {
+        if(url == null)return;//todo : edit this later
+        LinkedList<String> history  = new LinkedList<>();
+        File file = new File("history.bin");
+        try{
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+            history = (LinkedList<String>) objectInputStream.readObject();
+        } catch (IOException e) {
+          //  e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+
+        }
+        history.addFirst(url);
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+            objectOutputStream.writeObject(history);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    static public LinkedList<String> getHistory()
+    {
+        File file = new File("history.bin");
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+            return (LinkedList<String>) objectInputStream.readObject();
+        }catch (Exception e) {
+            return null;
+        }
     }
 }

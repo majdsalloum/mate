@@ -103,7 +103,8 @@ public abstract class Drawer {
     abstract protected void submitForm(FormAction formAction);
 
     abstract public void drawFileInput(String name,String accept, Boolean multiple);
-
+    abstract public void drawRadioInput(String name, String value,Boolean checked);
+    abstract public void drawCheckBoxInput(String name , String value  ,Boolean checked);
     abstract public void drawInput(String type, String name, String value, String placeHolder);
 
     abstract public void beginDrawButton(String type);
@@ -142,6 +143,14 @@ public abstract class Drawer {
     abstract public void endDrawOrderedList();
 
     abstract public void drawNewLine();
+
+    abstract public void drawSelectionList(Boolean multiple , String name , Integer size);
+    abstract public void endDrawSelectionList();
+
+    abstract public void drawOptionGroup(String optionGroup);
+    abstract public void endDrawOptionGroup();
+
+    abstract public void addOption(String label , String value ,Boolean disabled ,Boolean selected );
 
 
 }

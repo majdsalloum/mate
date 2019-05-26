@@ -65,4 +65,8 @@ public class Page {
     public String getPath() {
         return path;
     }
+
+    public void setFlowPane(FlowPane flowPane) {
+        this.flowPane = flowPane;
+    }
 }

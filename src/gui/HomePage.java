@@ -3,9 +3,8 @@ package gui;
 import javafx.animation.*;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -44,6 +43,11 @@ public class HomePage extends Page{
             if (textSearch.getText()!=null)
             window.search(textSearch.getText());
         });
+
+        FlowPane flowPane = new FlowPane();
+        flowPane.getChildren().add(new Label("hello world!"));
+        flowPane.getChildren().add(new Label("bye bye world!"));
+        homePage.getChildren().add(flowPane);
     }
     @Override
     public Node getContent()
