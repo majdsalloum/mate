@@ -43,7 +43,8 @@ public class InternetConnection {
 //                    dataBuilder.append("\n");
 //            }
             final String data;// = dataBuilder.toString();
-            data = "<html>\n" +
+            data = "<!DOCTYPE HTML>" +
+                    "<html>\n" +
                     "<head>\n" +
                     "    <title>hello world!</title>\n" +
                     "</head>\n" +

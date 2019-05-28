@@ -5,14 +5,15 @@ import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.exceptions.MoreThanOneRootException;
 import core.tags.*;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import tests.ParsingTest;
 
 
 public class HTMLParser {
-
     public static class TagLocation {
         Integer startTagBegin;
         Integer startTagEnd;
@@ -65,13 +66,14 @@ public class HTMLParser {
     }
 
     private static LinkedList<TagLocation> detectTagsLocations(String text) throws InvalidSyntaxException {//todo : make it return tag location list
-        final Pattern openTag = Pattern.compile("<(\\w+)\\s?(?:\\w+(?:=(['\"])(?:.|\\s)+?\\2)?\\s?)*?\\s*?>");
+        final Pattern openTag = Pattern.compile("<(!?\\w+)\\s?(?:\\w+(?:=(['\"])(?:.|\\s)+?\\2)?\\s?)*?\\s*?>");
         final Pattern closeTag = Pattern.compile("</(\\w+)\\s*>");
         final Pattern openAndCloseTag = Pattern.compile("<(\\w+)\\s?(?:\\w+=(['\"])(?:.|\\s)+?\\2\\s?)*\\s*?/>");
         LinkedList<TagLocation> tagLocationList = new LinkedList<>();
         LinkedList<TagLocation> tempStack = new LinkedList<>();
         // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
         int start = 0;
+        boolean usingHtml5 = false;
         while (true) {
             ParsingTest.log("i am in get tag location");
             int newEnd;
@@ -102,8 +104,14 @@ public class HTMLParser {
                     tagLocation.originalTag = openTagMatcher.group(1);
                 }
                 tagLocation.tag = tag;
-                tagLocationToAdd = tagLocation;
-                tempStack.push(tagLocation);
+                if (tagLocation.originalTag == null || tagLocation.originalTag.charAt(0) != '!') {
+                    tagLocationToAdd = tagLocation;
+                    tempStack.push(tagLocation);
+                }
+                else {
+                    System.out.println(openTagMatcher.group(1));
+                    usingHtml5 = true;
+                }
                 newEnd = openTagMatcher.end();
             } else if (minStart.equals(closeTagStart)) {
                 while (!tempStack.peek().tag.requiresClosing() &&
@@ -207,11 +215,11 @@ public class HTMLParser {
 
     public static Tag compile(String text) throws InvalidSyntaxException, InvalidContentException {
 
-            String textWithoutComments = removeComments(text);
-            LinkedList<TagLocation> tagsLocations = detectTagsLocations(textWithoutComments);
-            getTree(tagsLocations);
-            setAttributes(tagsLocations, textWithoutComments);
-            return tagsLocations.getFirst().tag;
+        String textWithoutComments = removeComments(text);
+        LinkedList<TagLocation> tagsLocations = detectTagsLocations(textWithoutComments);
+        getTree(tagsLocations);
+        setAttributes(tagsLocations, textWithoutComments);
+        return tagsLocations.getFirst().tag;
 
     }
 
