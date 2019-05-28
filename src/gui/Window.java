@@ -155,8 +155,13 @@ public class Window {
     public void onLoad(String string , String path) throws InvalidContentException, InvalidSyntaxException {
         page=new Page(this,path,string);
         hideLoading();
+
         FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
+        System.out.println("parsing...");
+
         Tag head = (Tag) HTMLParser.compile(string);
+        System.out.println("rendering...");
+
         head.draw(fxDrawer);
         updateTabContent();
     }

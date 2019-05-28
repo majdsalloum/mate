@@ -43,33 +43,45 @@ public class InternetConnection {
 //                    dataBuilder.append("\n");
 //            }
             final String data;// = dataBuilder.toString();
-            data = "<html>" +
-                    "<head>" +
-                    "<title> shadi</title>" +
-                    "</head>" +
-                    "<body>" +
-                    "hi<br>bye<br>asf" +
-//                    "<form>" +
-//                    "<input type='radio' name='oo' value='kook'>radio" +
-//                    "<input type='radio' name='oo' value='kook2'>radio2" +
-//                    "<input type='radio' name='ooo' value='kook'>radio" +
-//                    "<input type='checkbox' name='n' value='3' >check" +
-//                    "<button type='reset'>reset</button>" +
-//                    "</form>" +
-//                    "<a>Nice!</a>" +
-//                    "<br>" +
-                    "<ol start='20'>" +
-                    "<li> hii<br>shadi<br>erere<br>ytytyt</li>" +
-                    "<li> fadi </li>" +
-                    "</ol>" +
-                    "<table>" +
-                    "<tr>" +
-                    "<td>hey<br>ferqr</td>" +
-                    "<td>bye</td>" +
-                    "</tr>" +
-                    "</table>" +
-//                    "i love you" +
-                    "</body>" +
+            data = "<html>\n" +
+                    "<head>\n" +
+                    "    <title>hello world!</title>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "<b><u>uyuyuuy</u></b>" +
+                    "    <table>\n" +
+                    "        <tr>\n" +
+                    "            <td>shadi</td>\n" +
+                    "            <td>20</td>\n" +
+                    "            <td>0991431726</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>majd</td>\n" +
+                    "            <td>21</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>reem</td>\n" +
+                    "            <td>20</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>rita</td>\n" +
+                    "            <td>20</td>\n" +
+                    "        </tr>\n" +
+                    "    </table>\n" +
+                    "       <br><br><br>" +
+                    "    <ul>\n" +
+                    "        <li>Internet<br> connection</li>\n" +
+                    "        <li>Html viewer\n" +
+                    "        <ol>\n" +
+                    "            <li>get html text</li>\n" +
+                    "            <li>parse text to tree of nodes</li>\n" +
+                    "            <li>render Tags tree to javaFX application</li>\n" +
+                    "        </ol></li>\n" +
+                    "        <li>Save and load Html pages</li>\n" +
+                    "        <li>PDF viewer</li>\n" +
+                    "        <li>Multitab</li>\n" +
+                    "    </ul>\n" +
+                    "</body>\n" +
                     "</html>";
             Platform.runLater(() -> {
                 try {

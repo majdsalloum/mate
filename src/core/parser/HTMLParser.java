@@ -5,10 +5,10 @@ import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.exceptions.MoreThanOneRootException;
 import core.tags.*;
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import tests.ParsingTest;
 
 
 public class HTMLParser {
@@ -73,6 +73,7 @@ public class HTMLParser {
         // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
         int start = 0;
         while (true) {
+            ParsingTest.log("i am in get tag location");
             int newEnd;
             Matcher openTagMatcher = openTag.matcher(text);
             Matcher closeTagMatcher = closeTag.matcher(text);
@@ -168,6 +169,8 @@ public class HTMLParser {
             final Matcher matcher = attributePattern.matcher(tagStartText);
             HashMap<String, Object> attributes = new HashMap<>();
             while (matcher.find()) {
+                ParsingTest.log("i am in set attr");
+
                 if (matcher.groupCount() == 1)
                     attributes.put(matcher.group(1), true);
                 else
@@ -185,6 +188,7 @@ public class HTMLParser {
             if (stack.isEmpty())
                 throw new MoreThanOneRootException("");
             while (!stack.peek().includes(tagLocation)) {
+                ParsingTest.log("i am in get tree");
                 stack.poll();
                 if (stack.isEmpty())
                     throw new MoreThanOneRootException("");

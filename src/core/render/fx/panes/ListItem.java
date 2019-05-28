@@ -14,6 +14,7 @@ public class ListItem extends DrawerPane {
     public ListItem(Node space1 ,Node space2 , Node symbol )
     {
         super(new HBox(space1,symbol, space2, new VBox(new FlowPane())));
+
     }
     @Override
     public void add(Node node) {
@@ -25,6 +26,8 @@ public class ListItem extends DrawerPane {
     @Override
     public void drawLine() {
         VBox vbox = (VBox)parent.getChildren().get(3);
-        vbox.getChildren().add(new FlowPane());
+        FlowPane flowPane = new FlowPane();
+        flowPane.setMinHeight(10);
+        vbox.getChildren().add(flowPane);
     }
 }

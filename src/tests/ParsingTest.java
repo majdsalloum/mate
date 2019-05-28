@@ -58,7 +58,11 @@ public class ParsingTest {
             e.printStackTrace();
         }
     }
-
+    static boolean b= true;
+    public static void log(String string)
+    {
+        if(b) System.out.println(string);
+    }
     public static void main(String... args) throws Exception {
 //       simpleTest();
 //      simpleTestTable();

@@ -26,7 +26,10 @@ public class VBoxFlowPane extends DrawerPane {
     }
 
     @Override
-    public void drawLine() {
-        parent.getChildren().add(new FlowPane());
+    public void drawLine()
+    {
+        FlowPane flowPane = new FlowPane();
+        flowPane.setMinHeight(10);
+        parent.getChildren().add(flowPane);
     }
 }

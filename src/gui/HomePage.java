@@ -44,10 +44,6 @@ public class HomePage extends Page{
             window.search(textSearch.getText());
         });
 
-        FlowPane flowPane = new FlowPane();
-        flowPane.getChildren().add(new Label("hello world!"));
-        flowPane.getChildren().add(new Label("bye bye world!"));
-        homePage.getChildren().add(flowPane);
     }
     @Override
     public Node getContent()
