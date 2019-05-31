@@ -62,4 +62,5 @@ public class Page {
     public void setDrawerPane(DrawerPane drawerPane) {
         this.drawerPane = drawerPane;
     }
+
 }

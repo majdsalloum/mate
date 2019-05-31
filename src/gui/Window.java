@@ -6,21 +6,19 @@ import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
 import core.render.fx.FXDrawer;
 import core.tags.*;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import network.InternetConnection;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
+import tests.ParsingTest;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.FileNameMap;
 import java.util.LinkedList;
 
 public class Window {
@@ -157,10 +155,10 @@ public class Window {
         hideLoading();
 
         FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
-        System.out.println("parsing...");
+        ParsingTest.log("parsing...");
 
-        Tag head = (Tag) HTMLParser.compile(string);
-        System.out.println("rendering...");
+        Tag head =  HTMLParser.compile(string);
+        ParsingTest.log("rendering...");
 
         head.draw(fxDrawer);
         updateTabContent();
@@ -172,35 +170,40 @@ public class Window {
         if (file == null) return;
         String ext = null;
         int i=file.toString().lastIndexOf(".");
-        if(i==-1){}
+        if(i==-1){
+            ext = "txt";
+        }
         else ext=file.toString().substring(i);
-        System.out.println(ext);
-        if(ext.equals(".htm")){
-            String s = file.toString();
-            String data = "page not found";
-            try {
-                data = StorageManger.loadPage(s);
-                onLoad(data,file.toString());
-            } catch (Exception e) {
-                page = new TextPage(this,file.toString(),data);
+        ParsingTest.log(ext);
+        switch (ext) {
+            case ".htm": {
+                String s = file.toString();
+                String data = "page not found";
+                try {
+                    data = StorageManger.loadPage(s);
+                    onLoad(data, file.toString());
+                } catch (Exception e) {
+                    page = new TextPage(this, file.toString(), data);
+                    updateTabContent();
+                }
+                break;
+            }
+            case ".pdf":
+                page = new PDFPage(this, file.toString(), "non");
                 updateTabContent();
+                break;
+            default: {
+                String s = file.toString();
+                String data = "page cannot open ";
+                try {
+                    data = StorageManger.loadPage(s);
+                } catch (IOException e) {
+                }
+                if (data == null) data = "page cannot open  ";
+                page = new TextPage(this, file.toString(), data);
+                updateTabContent();
+                break;
             }
-        }
-        else if(ext.equals(".pdf"))
-        {
-            page = new PDFPage(this,file.toString(),"non");
-            updateTabContent();
-        }
-        else {
-            String s = file.toString();
-            String data = "page cannot open ";
-            try {
-                data = StorageManger.loadPage(s);
-            } catch (IOException e) {
-            }
-            if(data ==null)data = "page cannot open  ";
-            page=new TextPage(this,file.toString(),data);
-            updateTabContent();
         }
 
     }
@@ -222,9 +225,26 @@ public class Window {
     }
     public void showHistory()
     {
-        Window window = ui.createNewWindow();
-        window.setPage(new HistoryPage(window , "history" ,null));
-        window.updateTabContent();
+//        Window window = ui.createNewWindow();
+//        window.setPage(new HistoryPage(window , "history" ,null));
+//        window.updateTabContent();
+//
+        Window window1=ui.createNewWindow();
+        window1.setPage(new EditorModePage(window1,"editor",null));
+        window1.updateTabContent();
+    }
 
+    public void showErrorMessage(String string )
+    {
+        Stage stage = new Stage();
+        stage.setTitle("Error");
+        Label label = new Label(string);
+        Button button = new Button("Ok");
+        VBox vBox = new VBox(label,button);
+        vBox.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(vBox);
+        stage.setScene(scene);
+        stage.show();
+        button.setOnAction((e)-> stage.close());
     }
 }

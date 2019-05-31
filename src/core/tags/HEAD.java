@@ -19,9 +19,7 @@ public class HEAD extends Tag {
     @Override
     public void draw(Drawer drawer) {
         for (Object element : children)
-            if (element instanceof String)
-                drawer.drawText((String) element);
-            else
+            if (element instanceof Tag)
                 ((Tag) element).draw(drawer);
     }
 }
