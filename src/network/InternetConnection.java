@@ -21,7 +21,6 @@ public class InternetConnection {
     }
 
     private void getPageLogic() {
-        try {
 //            try {
 //                url = new URL(urlPath);
 //            } catch (Exception e) {
@@ -42,87 +41,16 @@ public class InternetConnection {
 //                if (line != null)
 //                    dataBuilder.append("\n");
 //            }
-            final String data;// = dataBuilder.toString();
-            data = "<!DOCTYPE HTML>" +
-                    "<html>\n" +
-                    "<head>\n" +
-                    "    <title>hello world!</title>\n" +
-                    "</head>\n" +
-                    "<body>\n" +
-                    "    <p>\n" +
-                    "        <b>mate browser</b>\n" +
-                    "    </p>\n" +
-                    "    <b><u>Students info:</u></b>\n" +
-                    "    <table>\n" +
-                    "        <!--<th >name</th>-->\n" +
-                    "        <!--<th>age</th>-->\n" +
-                    "        <!--<th>phone number</th>-->\n" +
-                    "        <tr>\n" +
-                    "            <td>shadi<br>shadi</td>\n" +
-                    "            <td>20</td>\n" +
-                    "            <td>0991431726</td>\n" +
-                    "        </tr>\n" +
-                    "        <tr>\n" +
-                    "            <td>majd</td>\n" +
-                    "            <td>21</td>\n" +
-                    "        </tr>\n" +
-                    "        <tr>\n" +
-                    "            <td>reem</td>\n" +
-                    "            <td>20</td>\n" +
-                    "        </tr>\n" +
-                    "        <tr>\n" +
-                    "            <td>rita</td>\n" +
-                    "            <td>20</td>\n" +
-                    "        </tr>\n" +
-                    "    </table>\n" +
-                    "    <br>\n" +
-                    "    <br>\n" +
-                    "<form>" +
-                    "<select>" +
-                    "<option>a1</option>" +
-                    "<option>a2</option>" +
-                    "</select>" +
-                    "</form>" +
-                    "    <br>\n" +
-                    "    <b><u>project tasks:</u></b>\n" +
-                    "    <ul>\n" +
-                    "        <li>Internet<br> connection</li>\n" +
-                    "        <li>Html viewer\n" +
-                    "        <ol>\n" +
-                    "            <li>get html text</li>\n" +
-                    "            <li>parse text to tree of nodes</li>\n" +
-                    "            <li>render Tags tree to javaFX application</li>\n" +
-                    "        </ol></li>\n" +
-                    "        <li>Save and load Html pages</li>\n" +
-                    "        <li>PDF viewer</li>\n" +
-                    "        <l>Multitab</li>\n" +
-                    "    </ul>\n" +
-                    "</body>\n" +
-                    "</html>";
-            Platform.runLater(() -> {
-                try {
-                    window.onLoad(data,urlPath);
-                } catch (InvalidContentException e) {
-                    window.showErrorMessage("Page Parsing error\nInvalid content exception\n"+e.getMessage());
-                } catch (InvalidSyntaxException e) {
-                    window.showErrorMessage("Page Parsing error\nInvalid syntax exception\n"+e.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            Platform.runLater(
-                    () -> {
-                        //TODO MAKE THIS FUNCTION
-                        //window.errorHappened(e);
-                        try {
-                            window.onLoad("Error in Page",urlPath);
-                        } catch (InvalidContentException e1) {
-                            e1.printStackTrace();
-                        } catch (InvalidSyntaxException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-            );
-        }
+        final String data;// = dataBuilder.toString();
+        data = "<!DOCTYPE HTML>" +
+                "<html>\n" +
+                "<body>" +
+                "Hello" +
+                "</body>" +
+                "</html>";
+        Platform.runLater(() -> {
+            window.onLoad(data, urlPath);
+        });
     }
 
     public void getPage(String urlPath) {
@@ -139,6 +67,7 @@ public class InternetConnection {
 //            url = new URL("https://"+urlPath);
 //        }
     }
+
     private void tryInSearchEngine() throws UnsupportedEncodingException, MalformedURLException {
         String google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";
         String search = urlPath;
