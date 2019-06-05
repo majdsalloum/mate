@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.css.Match;
 import tests.ParsingTest;
 
 
@@ -44,6 +45,7 @@ public class HTMLParser {
         }
     }
 
+
     private static String removeExtraSpaces(String text) {
         return text.replaceAll("\\s+", " ");
     }
@@ -65,88 +67,139 @@ public class HTMLParser {
         return min;
     }
 
+    private static class MatchSummary implements Comparable<MatchSummary> {
+        Integer start;
+        Integer end;
+        String[] groups;
+
+        public MatchSummary(int start, int end, String[] groups) {
+            this.start = start;
+            this.end = end;
+            this.groups = groups;
+        }
+
+        public MatchSummary(int start) {
+            this.start = start;
+        }
+
+        @Override
+        public int compareTo(MatchSummary o) {
+            return start.compareTo(o.start);
+        }
+    }
+
+    private static MatchSummary matcherToSummary(Matcher matcher) {
+        String[] groups = new String[matcher.groupCount() + 1];
+        for (int i = 0; i < groups.length; i++)
+            groups[i] = matcher.group(i);
+        return new MatchSummary(matcher.start(), matcher.end(), groups);
+    }
+
+    private static Integer closestSummaryIndex(LinkedList<MatchSummary> summaries, int start) {
+        Integer idx = Arrays.binarySearch(summaries.toArray(), new MatchSummary(start));
+        if (idx < 0) idx = -1 * (idx + 1);
+        if (idx + 1 > summaries.size() || summaries.isEmpty())
+            idx = null;
+        return idx;
+    }
+
     private static LinkedList<TagLocation> detectTagsLocations(String text) throws InvalidSyntaxException {
-        final Pattern openTag = Pattern.compile("<(!?\\w+)(?:\\s(?:\\w+(?:=(['\"]?)(?:.|\\s)+?\\2)?\\s?)*?)?\\s*>");
+
+        final Pattern openTag = Pattern.compile("<(!?\\w+)(?:\\s(?:\\w+(?:=(['\"]?).+?\\2)?\\s?)*?)?\\s*>");
         final Pattern closeTag = Pattern.compile("</(\\w+)\\s*>");
-        final Pattern openAndCloseTag = Pattern.compile("<(!?\\w+)(?:\\s(?:\\w+(?:=(['\"]?)(?:.|\\s)+?\\2)?\\s?)*?)?\\s*/>");
+        final Pattern openAndCloseTag = Pattern.compile("<(!?\\w+)(?:\\s(?:\\w+(?:=(['\"]?).+?\\2)?\\s?)*?)?\\s*/>");
         LinkedList<TagLocation> tagLocationList = new LinkedList<>();
         LinkedList<TagLocation> tempStack = new LinkedList<>();
-        // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
-        int start = 0;
-        boolean usingHtml5 = false;
+        LinkedList<MatchSummary> openTagSummaries = new LinkedList<>();
+        LinkedList<MatchSummary> closeTagSummaries = new LinkedList<>();
+        LinkedList<MatchSummary> openAndCloseTagSummaries = new LinkedList<>();
         ParsingTest.log("i am in get tag location");
-        while (true) {
-            int newEnd;
+        {
             Matcher openTagMatcher = openTag.matcher(text);
             Matcher closeTagMatcher = closeTag.matcher(text);
             Matcher openAndCloseMatcher = openAndCloseTag.matcher(text);
-            Integer openTagStart = null, closeTagStart = null, openAndCloseTagStart = null;
-            if (openTagMatcher.find(start))
-                openTagStart = openTagMatcher.start();
-            if (closeTagMatcher.find(start))
-                closeTagStart = closeTagMatcher.start();
-            if (openAndCloseMatcher.find(start))
-                openAndCloseTagStart = openAndCloseMatcher.start();
-            Integer minStart = min(openTagStart, closeTagStart, openAndCloseTagStart);
+            // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
+
+            while (openTagMatcher.find())
+                openTagSummaries.add(matcherToSummary(openTagMatcher));
+            while (closeTagMatcher.find())
+                closeTagSummaries.add(matcherToSummary(closeTagMatcher));
+            while (openAndCloseMatcher.find())
+                openAndCloseTagSummaries.add(matcherToSummary(openAndCloseMatcher));
+        }
+        int start = 0;
+        boolean usingHtml5 = false;
+        while (true) {
+            int newEnd;
+            Integer openTagStart = closestSummaryIndex(openTagSummaries, start);
+            Integer closeTagStart = closestSummaryIndex(closeTagSummaries, start);
+            Integer openAndCloseTagStart = closestSummaryIndex(openAndCloseTagSummaries, start);
+            Integer minStart = min(
+                    openTagStart == null ? null : openTagSummaries.get(openTagStart).start,
+                    closeTagStart == null ? null : closeTagSummaries.get(closeTagStart).start,
+                    openAndCloseTagStart == null ? null : openAndCloseTagSummaries.get(openAndCloseTagStart).start
+            );
             if (minStart == null)
                 break;
+            MatchSummary matchSummary;
             TagLocation tagLocationToAdd = null;
-            if (minStart.equals(openTagStart)) {
-                ParsingTest.log(openTagMatcher.group());
+            if (openTagStart != null && minStart.equals(openTagSummaries.get(openTagStart).start)) {
+                matchSummary = openTagSummaries.get(openTagStart);
+                ParsingTest.log(matchSummary.groups[0]);
                 TagLocation tagLocation = new TagLocation();
-                tagLocation.startTagBegin = openTagMatcher.start();
-                tagLocation.startTagEnd = openTagMatcher.end() - 1;
-                tagLocation.tagText = openTagMatcher.group(1).toLowerCase();
+                tagLocation.startTagBegin = matchSummary.start;
+                tagLocation.startTagEnd = matchSummary.end - 1;
+                tagLocation.tagText = matchSummary.groups[1].toLowerCase();
                 Tag tag;
                 try {
-                    tag = (Tag) Class.forName("core.tags." + openTagMatcher.group(1).toUpperCase()).getDeclaredConstructor().newInstance();
+                    tag = (Tag) Class.forName("core.tags." + matchSummary.groups[1].toUpperCase()).getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
                     tag = new DIV();
-                    tagLocation.originalTag = openTagMatcher.group(1);
+                    tagLocation.originalTag = matchSummary.groups[1];
                 }
                 tagLocation.tag = tag;
                 if (tagLocation.originalTag == null || tagLocation.originalTag.charAt(0) != '!') {
                     tagLocationToAdd = tagLocation;
                     tempStack.push(tagLocation);
-                }
-                else {
-                    System.out.println(openTagMatcher.group(1));
+                } else {
                     usingHtml5 = true;
                 }
-                newEnd = openTagMatcher.end();
-            } else if (minStart.equals(closeTagStart)) {
-                ParsingTest.log(closeTagMatcher.group());
+                newEnd = matchSummary.end;
+            } else if (closeTagStart != null && minStart.equals(closeTagSummaries.get(closeTagStart).start)) {
+                matchSummary = closeTagSummaries.get(closeTagStart);
+                ParsingTest.log(matchSummary.groups[0]);
                 while (!tempStack.peek().tag.requiresClosing() &&
-                        !tempStack.peek().tag.toString().toLowerCase().equals(closeTagMatcher.group(1).toLowerCase()))
+                        !tempStack.peek().tag.toString().toLowerCase().equals(matchSummary.groups[1].toLowerCase()))
                     tempStack.pop();
-                if (!closeTagMatcher.group(1).toLowerCase().equals(tempStack.getFirst().tagText)
+                if (!matchSummary.groups[1].toLowerCase().equals(tempStack.getFirst().tagText)
                         &&
                         tempStack.getFirst().tag.requiresClosing()
                 )
                     throw new InvalidSyntaxException(tempStack.getFirst().tag.toString() + " not closed correctly");
                 else {
                     TagLocation tagLocation = tempStack.pop();
-                    tagLocation.endTagBegin = closeTagMatcher.start();
-                    tagLocation.endTagEnd = closeTagMatcher.end() - 1;
+                    tagLocation.endTagBegin = matchSummary.start;
+                    tagLocation.endTagEnd = matchSummary.end - 1;
                 }
-                newEnd = closeTagMatcher.end();
+                newEnd = matchSummary.end;
             } else {
-                ParsingTest.log(openAndCloseMatcher.group());
+                matchSummary = openAndCloseTagSummaries.get(openAndCloseTagStart);
+                ParsingTest.log(matchSummary.groups[0]);
                 Tag tag;
                 TagLocation tagLocation = new TagLocation();
                 try {
-                    tag = (Tag) Class.forName("core.tags." + openAndCloseMatcher.group(1).toUpperCase()).getDeclaredConstructor().newInstance();
+                    tag = (Tag) Class.forName("core.tags." + matchSummary.groups[1].toUpperCase()).getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
                     tag = new DIV();
-                    tagLocation.originalTag = openAndCloseMatcher.group(1);
+                    tagLocation.originalTag = matchSummary.groups[1];
                 }
-                tagLocation.startTagBegin = openAndCloseMatcher.start();
-                tagLocation.endTagBegin = openAndCloseMatcher.start();
-                tagLocation.startTagEnd = openAndCloseMatcher.end() - 1;
-                tagLocation.endTagEnd = openAndCloseMatcher.end() - 1;
+                tagLocation.startTagBegin = matchSummary.start;
+                tagLocation.endTagBegin = matchSummary.start;
+                tagLocation.startTagEnd = matchSummary.end - 1;
+                tagLocation.endTagEnd = matchSummary.end - 1;
                 tagLocation.tag = tag;
                 tagLocationToAdd = tagLocation;
-                newEnd = openAndCloseMatcher.end();
+                newEnd = matchSummary.end;
             }
             try {
                 String remainingText = text.substring(start, minStart).trim();
