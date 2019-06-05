@@ -1,5 +1,6 @@
 package core.render.fx.panes;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -24,5 +25,5 @@ public class DrawerPane {
         parent = new VBox(parent);
     }
 
-    public void addInNewLine(Node node) {}
+    public void setMarign(double x1, double x2 ,double x3 ,double x4){}
 }

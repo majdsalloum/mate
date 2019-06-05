@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -24,6 +25,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import tests.ParsingTest;
+
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,8 +117,6 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawTable() {
         GridPane gridPane = new GridPane();
-        gridPane.setVgap(2);
-        gridPane.setHgap(2);
         gridPane.setGridLinesVisible(true);
         usePane(new GridDrawerPane(gridPane));
     }
@@ -133,7 +134,9 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawTableColumn() {
         ((GridDrawerPane) parents.getLast()).setCol(((GridDrawerPane) parents.getLast()).getCol() + 1);
-        usePane(new DrawerPane(new FlowPane()));
+        VBoxFlowPane vBoxFlowPane = new VBoxFlowPane();
+        vBoxFlowPane.setMarign(2,2,2,2);
+        usePane(vBoxFlowPane);
     }
 
     @Override
@@ -165,6 +168,7 @@ public class FXDrawer extends Drawer {
         OrderedListDrawPane listDrawPane = new OrderedListDrawPane(vBox, Integer.parseInt(start), symbol);
         usePane(listDrawPane);
     }
+
 
     @Override
     public void endDrawOrderedList() {
@@ -202,29 +206,6 @@ public class FXDrawer extends Drawer {
         if (!parents.isEmpty())
         parents.getLast().drawLine();
         else page.getDrawerPane().drawLine();
-//        if(parents.size()>0) {
-//            Node node = parents.peekLast().getParent();
-//            parents.addLast(new DrawerPane(new VBox(node)));
-//        }else{
-//            Node node= page.getDrawerPane();
-//            parents.addLast(new DrawerPane(new VBox(node)));
-//            page.setDrawerPane(new FlowPane(parents.getFirst().getParent()));
-//        }
-//        Label region = new Label();
-//        Node lastChild = getParent().getChildren().get(getParent().getChildren().size() - 1);
-//        region.setBackground(new Background(new BackgroundFill(Color.BLUE,null,null)));
-//        ui.getMainStage().setOnShown((e)->{
-//            region.setPrefWidth(Stage.getWindows().get(0).getWidth() - lastChild.getBoundsInLocal().getWidth());
-//        });
-//        ui.getMainStage().show();
-//        Stage.getWindows().get(0).widthProperty().addListener((obs, oldVal, newVal) -> {
-//            region.setPrefWidth(newVal.doubleValue() - lastChild.getLayoutX());
-//            double i = Stage.getWindows().get(0).getWidth() - lastChild.getBoundsInLocal().getWidth();
-//            System.out.println(i);
-//            System.out.println(lastChild.getBoundsInLocal().getWidth());
-//            System.out.println(Stage.getWindows().get(0).getWidth());
-//        });
-        //drawNode(region);
     }
 
     @Override
@@ -233,7 +214,7 @@ public class FXDrawer extends Drawer {
         selectionList.setSize(size);
         FormEntry formEntry = new FormEntry(selectionList.getContent() , name);
         selectionLists.addLast(selectionList);
-
+        //todo fix the size of list
     }
 
     @Override
@@ -252,6 +233,18 @@ public class FXDrawer extends Drawer {
     }
 
     @Override
+    public void drawParagraph() {
+        VBoxFlowPane vBoxFlowPane = new VBoxFlowPane();
+        vBoxFlowPane.setMarign(10,0,10,0);
+        usePane(vBoxFlowPane);
+    }
+
+    @Override
+    public void endDrawParagraph() {
+        unUsePane();
+    }
+
+    @Override
     public void addOption(String text, String value, Boolean disabled, Boolean selected) {
         Button button =  new Button(text);
         button.setUserData(value);
@@ -263,6 +256,8 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawTable() {
+       Parent parent =  parents.getLast().getParent();
+       ((Pane) parent).setMaxWidth(parent.getBaselineOffset());//todo make sure if this correct
         unUsePane();
     }
 

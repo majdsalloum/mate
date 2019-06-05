@@ -1,5 +1,6 @@
 package core.render.fx.panes;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.FlowPane;
@@ -14,15 +15,14 @@ public class VBoxFlowPane extends DrawerPane {
     {
         super(new VBox(new FlowPane()));
     }
+
+    @Override
+    public void setMarign(double x1, double x2 ,double x3 ,double x4){
+        VBox.setMargin(parent , new Insets(x1,x2,x3,x4));
+    }
     @Override
     public void add (Node node) {
         ((FlowPane)parent.getChildren().get(parent.getChildren().size()-1)).getChildren().add(node);
-    }
-
-    @Override
-    public void addInNewLine(Node node) {
-        (parent).getChildren().add(new FlowPane());
-        add(node);
     }
 
     @Override
@@ -32,4 +32,5 @@ public class VBoxFlowPane extends DrawerPane {
         flowPane.setMinHeight(10);
         parent.getChildren().add(flowPane);
     }
+
 }

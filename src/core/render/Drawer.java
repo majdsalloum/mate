@@ -150,7 +150,8 @@ public abstract class Drawer {
     abstract public void drawOptionGroup(String optionGroup);
     abstract public void endDrawOptionGroup();
 
+    abstract public void drawParagraph();
+    abstract public void endDrawParagraph();
+
     abstract public void addOption(String label , String value ,Boolean disabled ,Boolean selected );
-
-
 }

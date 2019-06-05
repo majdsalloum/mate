@@ -49,10 +49,16 @@ public class InternetConnection {
                     "    <title>hello world!</title>\n" +
                     "</head>\n" +
                     "<body>\n" +
-                    "<b><u>uyuyuuy</u></b>" +
+                    "    <p>\n" +
+                    "        <b>mate browser</b>\n" +
+                    "    </p>\n" +
+                    "    <b><u>Students info:</u></b>\n" +
                     "    <table>\n" +
+                    "        <!--<th >name</th>-->\n" +
+                    "        <!--<th>age</th>-->\n" +
+                    "        <!--<th>phone number</th>-->\n" +
                     "        <tr>\n" +
-                    "            <td>shadi</td>\n" +
+                    "            <td>shadi<br>shadi</td>\n" +
                     "            <td>20</td>\n" +
                     "            <td>0991431726</td>\n" +
                     "        </tr>\n" +
@@ -69,7 +75,16 @@ public class InternetConnection {
                     "            <td>20</td>\n" +
                     "        </tr>\n" +
                     "    </table>\n" +
-                    "       <br><br><br>" +
+                    "    <br>\n" +
+                    "    <br>\n" +
+                    "<form>" +
+                    "<select>" +
+                    "<option>a1</option>" +
+                    "<option>a2</option>" +
+                    "</select>" +
+                    "</form>" +
+                    "    <br>\n" +
+                    "    <b><u>project tasks:</u></b>\n" +
                     "    <ul>\n" +
                     "        <li>Internet<br> connection</li>\n" +
                     "        <li>Html viewer\n" +
@@ -80,7 +95,7 @@ public class InternetConnection {
                     "        </ol></li>\n" +
                     "        <li>Save and load Html pages</li>\n" +
                     "        <li>PDF viewer</li>\n" +
-                    "        <li>Multitab</li>\n" +
+                    "        <l>Multitab</li>\n" +
                     "    </ul>\n" +
                     "</body>\n" +
                     "</html>";
@@ -88,9 +103,9 @@ public class InternetConnection {
                 try {
                     window.onLoad(data,urlPath);
                 } catch (InvalidContentException e) {
-                    e.printStackTrace();
+                    window.showErrorMessage("Page Parsing error\nInvalid content exception\n"+e.getMessage());
                 } catch (InvalidSyntaxException e) {
-                    e.printStackTrace();
+                    window.showErrorMessage("Page Parsing error\nInvalid syntax exception\n"+e.getMessage());
                 }
             });
         } catch (Exception e) {
@@ -124,7 +139,6 @@ public class InternetConnection {
 //            url = new URL("https://"+urlPath);
 //        }
     }
-
     private void tryInSearchEngine() throws UnsupportedEncodingException, MalformedURLException {
         String google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";
         String search = urlPath;
