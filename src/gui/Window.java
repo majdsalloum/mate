@@ -123,7 +123,7 @@ public class Window {
     private int loading = 0;
 
     public void showLoading() {
-        if (loading++ > 0) {
+        if (loading++ == 0) {
             ProgressIndicator progressIndicator = new ProgressIndicator();
             progressIndicator.setPrefSize(20, 20);
             tab.setGraphic(progressIndicator);
@@ -165,7 +165,7 @@ public class Window {
                     updateTabContent();
                 });
             } catch (InvalidSyntaxException | InvalidContentException e) {
-                this.onLoad("Error in Page", path);
+                e.printStackTrace();
             } finally {
                 Platform.runLater(this::hideLoading);
             }
@@ -201,7 +201,7 @@ public class Window {
                 page = new PDFPage(this, file.toString(), "non");
                 updateTabContent();
                 break;
-            default: {
+            default:
                 String s = file.toString();
                 String data = "page cannot open ";
                 try {
@@ -212,7 +212,6 @@ public class Window {
                 page = new TextPage(this, file.toString(), data);
                 updateTabContent();
                 break;
-            }
         }
 
     }

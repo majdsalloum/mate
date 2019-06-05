@@ -65,17 +65,17 @@ public class HTMLParser {
         return min;
     }
 
-    private static LinkedList<TagLocation> detectTagsLocations(String text) throws InvalidSyntaxException {//todo : make it return tag location list
-        final Pattern openTag = Pattern.compile("<(!?\\w+)\\s?(?:\\w+(?:=(['\"])(?:.|\\s)+?\\2)?\\s?)*?\\s*?>");
+    private static LinkedList<TagLocation> detectTagsLocations(String text) throws InvalidSyntaxException {
+        final Pattern openTag = Pattern.compile("<(!?\\w+)(?:\\s(?:\\w+(?:=(['\"]?)(?:.|\\s)+?\\2)?\\s?)*?)?\\s*>");
         final Pattern closeTag = Pattern.compile("</(\\w+)\\s*>");
-        final Pattern openAndCloseTag = Pattern.compile("<(\\w+)\\s?(?:\\w+=(['\"])(?:.|\\s)+?\\2\\s?)*\\s*?/>");
+        final Pattern openAndCloseTag = Pattern.compile("<(!?\\w+)(?:\\s(?:\\w+(?:=(['\"]?)(?:.|\\s)+?\\2)?\\s?)*?)?\\s*/>");
         LinkedList<TagLocation> tagLocationList = new LinkedList<>();
         LinkedList<TagLocation> tempStack = new LinkedList<>();
         // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
         int start = 0;
         boolean usingHtml5 = false;
+        ParsingTest.log("i am in get tag location");
         while (true) {
-            ParsingTest.log("i am in get tag location");
             int newEnd;
             Matcher openTagMatcher = openTag.matcher(text);
             Matcher closeTagMatcher = closeTag.matcher(text);
@@ -92,6 +92,7 @@ public class HTMLParser {
                 break;
             TagLocation tagLocationToAdd = null;
             if (minStart.equals(openTagStart)) {
+                ParsingTest.log(openTagMatcher.group());
                 TagLocation tagLocation = new TagLocation();
                 tagLocation.startTagBegin = openTagMatcher.start();
                 tagLocation.startTagEnd = openTagMatcher.end() - 1;
@@ -114,6 +115,7 @@ public class HTMLParser {
                 }
                 newEnd = openTagMatcher.end();
             } else if (minStart.equals(closeTagStart)) {
+                ParsingTest.log(closeTagMatcher.group());
                 while (!tempStack.peek().tag.requiresClosing() &&
                         !tempStack.peek().tag.toString().toLowerCase().equals(closeTagMatcher.group(1).toLowerCase()))
                     tempStack.pop();
@@ -129,6 +131,7 @@ public class HTMLParser {
                 }
                 newEnd = closeTagMatcher.end();
             } else {
+                ParsingTest.log(openAndCloseMatcher.group());
                 Tag tag;
                 TagLocation tagLocation = new TagLocation();
                 try {
@@ -188,7 +191,7 @@ public class HTMLParser {
         }
     }
 
-    private static void getTree(LinkedList<TagLocation> list) throws InvalidContentException, MoreThanOneRootException {
+    private static void getTree(LinkedList<TagLocation> list) throws InvalidContentException {
         LinkedList<TagLocation> stack = new LinkedList<>();
         stack.push(list.getFirst());
         for (TagLocation tagLocation : list) {
