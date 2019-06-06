@@ -29,6 +29,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -262,7 +263,8 @@ public class FXDrawer extends Drawer<Node> {
         visibleItems.add(button);
     }
 
-    private void recursiveDrawDOM(Tag tag, TreeItem<String> parent) {
+    private void recursiveDrawDOM(Tag tag, TreeItem<String> parent, Map<TreeItem, Tag> treeItemTagMap) {
+        treeItemTagMap.put(parent, tag);
         for (Object element : tag.getChildren()) {
             if (element instanceof String)
                 parent.getChildren().add(new TreeItem<>(element.toString()));
@@ -272,7 +274,7 @@ public class FXDrawer extends Drawer<Node> {
                 if (((Tag) element).getChildren().isEmpty())
                     continue;
                 newParent.setExpanded(true);
-                recursiveDrawDOM((Tag) element, newParent);
+                recursiveDrawDOM((Tag) element, newParent, treeItemTagMap);
             }
         }
     }
@@ -280,16 +282,33 @@ public class FXDrawer extends Drawer<Node> {
 
     @Override
     public void drawDOM(Tag rootTag) {
+        final Map<TreeItem, Tag> treeItemTagMap = new HashMap<>();
         TreeView<String> treeView = new TreeView<>();
         TreeItem<String> root = new TreeItem("Document");
         root.setExpanded(true);
         treeView.setRoot(root);
-        recursiveDrawDOM(rootTag, root);
+        recursiveDrawDOM(rootTag, root, treeItemTagMap);
         Stage DOMStage = new Stage();
         DOMStage.setTitle("DOM Tree View");
         DOMStage.setScene(new Scene(new VBox() {{
             this.getChildren().add(treeView);
         }}));
+        treeView.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((_1, oldVal, val) -> {
+
+                    Tag meantTag = treeItemTagMap.get(val);
+                    List<Node> meantNodes = tagBaseVisibleItemsMap.get(meantTag);
+                    if (meantNodes != null) {
+                        for (Node node : visibleItems) {
+                            node.setOpacity(0.1);
+                        }
+                        for (Node node :
+                                meantNodes) {
+                            node.setOpacity(0.9);
+                        }
+                    }
+                });
         DOMStage.show();
     }
 
