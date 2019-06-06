@@ -15,7 +15,7 @@ public class TABLE extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawTable();
         for (Object item : children) {
             if (!(item instanceof Tag))

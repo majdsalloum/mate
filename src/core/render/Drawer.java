@@ -107,9 +107,6 @@ public abstract class Drawer<BaseVisibleItem> {
         if (visibleItems.isEmpty())
             return;
         tagBaseVisibleItemsMap.put(tag, visibleItems);
-        for (BaseVisibleItem item : visibleItems) {
-            visibleItems.add(item);
-        }
     }
 
     public void linkTagAndVisibleItem(Tag tag, BaseVisibleItem visibleItems) {

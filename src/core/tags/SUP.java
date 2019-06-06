@@ -8,7 +8,7 @@ public class SUP extends Tag
         protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.GLOBAL_HTML_ATTRIBUTES;
 
         @Override
-        public void draw(Drawer drawer) {
+        public void actualDraw(Drawer drawer) {
 
         }
 }

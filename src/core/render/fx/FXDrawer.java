@@ -157,12 +157,10 @@ public class FXDrawer extends Drawer<Node> {
         GridDrawerPane p = (GridDrawerPane) parents.getLast();
         p.setRow(p.getRow() + 1);
         p.setCol(0);
-        usePane(new DrawerPane(new FlowPane()));
     }
 
     @Override
     public void endDrawTableRow() {
-        visibleItems.add(unUsePane());
     }
 
     @Override

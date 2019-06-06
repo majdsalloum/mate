@@ -18,7 +18,7 @@ public class SELECT extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawSelectionList(multiple,name,size!=null?Integer.valueOf(size):null);
         for (Object item : children) {
             if (item instanceof Tag)

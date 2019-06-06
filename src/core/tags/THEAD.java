@@ -9,7 +9,7 @@ public class THEAD extends Tag {
     protected final static String[] CHILDREN_TYPES = {"tr"};
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawTableHeader();
 
         for (Object i : children)

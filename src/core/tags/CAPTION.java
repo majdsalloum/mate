@@ -9,7 +9,7 @@ public class CAPTION extends Tag {
 
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawCaption();
         for (Object item2 : children) {
             if (!(item2 instanceof Tag)) {
