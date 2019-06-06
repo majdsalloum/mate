@@ -26,12 +26,12 @@ public class DownloadManger {
     int fileSize = 0;
     String fileName = "";
     File file;
-
+    URLConnection urlConnection;
 
 
     public DownloadManger(String path) throws IOException {
         url = new URL(path);
-        URLConnection urlConnection = url.openConnection();
+        urlConnection = url.openConnection();
         urlConnection.connect();
         fileSize = urlConnection.getContentLength();
         String toGetName = urlConnection.getHeaderField("Content-Disposition");
@@ -42,7 +42,7 @@ public class DownloadManger {
             if(matcher.find())
                 fileName = matcher.group(1).replaceAll("\"","");}
         else
-            fileName = getRandomFileName();//todo : get extension
+            fileName = getRandomFileName()+"."+ getExtension();  //todo : get extension
 
         file = new File(fileName);
     }
@@ -55,7 +55,7 @@ public class DownloadManger {
         fileOutputStream = new FileOutputStream(fileName);
         fileOutputStream.getChannel().transferFrom(readableByteChannel , 0 ,Long.MAX_VALUE);
         finished = true;
-        System.out.println("finished");
+        fileOutputStream.close();
     }
 
 
@@ -86,6 +86,15 @@ public class DownloadManger {
 
     public File getFile() {
         return file;
+    }
+    public String getExtension()
+    {
+        Pattern pattern = Pattern.compile("\\w+/(\\w+)");
+        Matcher matcher = pattern.matcher(urlConnection.getHeaderField("Content-type"));
+        if(matcher.find())
+            return matcher.group(1);
+        else return "txt";
+
     }
 
 }

@@ -2,6 +2,7 @@ package gui;
 
 import com.qoppa.pdf.PDFException;
 import com.qoppa.pdfViewerFX.PDFViewer;
+import core.exceptions.UnSupportedSaveType;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -22,5 +23,10 @@ public class PDFPage extends Page{
     public Node getContent()
     {
         return pane;
+    }
+
+    @Override
+    public String toBeSaved() throws UnSupportedSaveType {
+        throw new UnSupportedSaveType("PDF page");
     }
 }

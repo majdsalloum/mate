@@ -1,5 +1,6 @@
-package storage;
+package Storage;
 
+import javafx.util.Pair;
 import java.io.*;
 import java.util.LinkedList;
 
@@ -41,6 +42,7 @@ public class StorageManger {
         try{
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
             history = (LinkedList<String>) objectInputStream.readObject();
+            objectInputStream.close();
         } catch (IOException e) {
           //  e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -50,6 +52,7 @@ public class StorageManger {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
             objectOutputStream.writeObject(history);
+            objectOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,6 +63,38 @@ public class StorageManger {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
             return (LinkedList<String>) objectInputStream.readObject();
+        }catch (Exception e) {
+            return null;
+        }
+    }
+    static public void addToBookmarks(String title  , String path)
+    {
+        LinkedList<Pair<String , String>> bookmarks  = new LinkedList<>();
+        File file = new File("bookmarks.bin");
+        try{
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+            bookmarks = (LinkedList<Pair<String, String>>) objectInputStream.readObject();
+            objectInputStream.close();
+        } catch (IOException e) {
+            //  e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+
+        }
+        bookmarks.addFirst(new Pair<>(title , path));
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+            objectOutputStream.writeObject(bookmarks);
+            objectOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    static public LinkedList<Pair<String,String>> getBookmarks()
+    {
+        File file = new File("bookmarks.bin");
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
+            return (LinkedList<Pair<String, String>>) objectInputStream.readObject();
         }catch (Exception e) {
             return null;
         }

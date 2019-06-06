@@ -1,5 +1,6 @@
 package gui;
 
+import core.exceptions.UnSupportedSaveType;
 import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.VBoxFlowPane;
 import javafx.scene.Node;
@@ -36,7 +37,6 @@ public class Page {
     }
 
     public Node getContent() {
-        int x;
         return new ScrollPane(drawerPane.getParent()) {{
             VBox.setVgrow(this, Priority.ALWAYS);
             this.setFitToHeight(true);
@@ -59,5 +59,8 @@ public class Page {
         return path;
     }
 
+    public String toBeSaved() throws UnSupportedSaveType {
+        return data;
+    }
 
 }

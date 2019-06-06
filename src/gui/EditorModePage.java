@@ -1,6 +1,7 @@
 package gui;
 
 
+import core.exceptions.UnSupportedSaveType;
 import core.parser.HTMLParser;
 import core.render.Drawer;
 import core.render.fx.FXDrawer;
@@ -92,7 +93,7 @@ public class EditorModePage extends Page{
     }
     private void updateViewSide()
     {
-        Tag root=null;
+        Tag root;
         try {
              root = HTMLParser.compile(textArea.getText());
             Page page =new Page(window , "","");
@@ -162,5 +163,10 @@ public class EditorModePage extends Page{
         HBox hBox = new HBox(editSide ,result);
         //hBox.setPadding(new Insets(10,10,10,10));
         return hBox;
+    }
+
+    @Override
+    public String toBeSaved() throws UnSupportedSaveType {
+        return textArea.getText();
     }
 }

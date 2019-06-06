@@ -16,9 +16,7 @@ public class PageToolBar {
     private Button backward, forward, refresh, home, search, newTabButton, disconnect , bookmark;
     private TextField textSearch;
 
-    private MenuItem setting, newTab, download, newWindow, exit , loadPage , savePage , HTMLEditor , bookmarks , history;
-
-    private MenuItem  showDOM;
+    private MenuItem setting,showDOM, newTab, download, newWindow, exit , loadPage , savePage , HTMLEditor , bookmarks , history ,game;
 
     private MenuBar menuBar;
     private Menu file;
@@ -106,7 +104,9 @@ public class PageToolBar {
         HTMLEditor = new MenuItem("HTML editor");
         history = new MenuItem("history");
         showDOM = new MenuItem("Show DOM Tree");
-        file.getItems().addAll(newTab, newWindow, download,bookmarks,HTMLEditor,history,savePage,loadPage, setting, exit);
+        game = new MenuItem("game");
+
+        file.getItems().addAll(newTab, newWindow, download,bookmarks,showDOM,HTMLEditor,history,game,savePage,loadPage, setting, exit);
 
         menuBar.getMenus().addAll(file);
 
@@ -137,14 +137,14 @@ public class PageToolBar {
             backward.setDisable(true);
         else backward.setDisable(false);
 
-        if (window.getPage() instanceof Page)
-            savePage.setDisable(false);
-        if (window.getPage() instanceof HomePage)
-            savePage.setDisable(true);
-        if (window.getPage() instanceof TextPage)
-            savePage.setDisable(true);
-        if (window.getPage() instanceof PDFPage)
-            savePage.setDisable(true);
+//        if (window.getPage() instanceof Page)
+//            savePage.setDisable(false);
+//        if (window.getPage() instanceof HomePage)
+//            savePage.setDisable(true);
+//        if (window.getPage() instanceof TextPage)
+//            savePage.setDisable(true);
+//        if (window.getPage() instanceof PDFPage)
+//            savePage.setDisable(true);
 
 
         textSearch.setText(window.getPage().path);
@@ -217,6 +217,16 @@ public class PageToolBar {
         history.setOnAction((e)->{
             window.setPageAndUpdate(new HistoryPage(window , "history" ,null));
         });
+        showDOM.setOnAction(e -> window.drawDOM());
+
+        bookmark.setOnAction(e->window.markPage());
+        bookmarks.setOnAction((e)->{
+            window.setPageAndUpdate(new BookmarkPage(window , "bookmark", null));
+        });
+
+        game.setOnAction((e)->{
+            window.setPageAndUpdate(new GamePage(window , null ,null));
+        });
     }
 
     public ToolBar getToolBar() {
@@ -228,7 +238,5 @@ public class PageToolBar {
         download.setOnAction((e) -> {
             window.showHistory();
         });
-        showDOM.setOnAction(e -> window.drawDOM());
-
     }
 }

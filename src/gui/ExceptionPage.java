@@ -1,5 +1,6 @@
 package gui;
 
+import core.exceptions.UnSupportedSaveType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -47,5 +48,10 @@ public class ExceptionPage extends Page {
 
         hBox.getChildren().add(vBox);
         return root;
+    }
+
+    @Override
+    public String toBeSaved() throws UnSupportedSaveType {
+        throw new UnSupportedSaveType("Exception page");
     }
 }

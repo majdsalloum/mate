@@ -1,7 +1,8 @@
 package gui;
 
+import Storage.StorageManger;
+import core.exceptions.UnSupportedSaveType;
 import core.render.Drawer;
-import storage.StorageManger;
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
@@ -235,9 +236,15 @@ public class Window {
 
     public void savePage() {
         FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showSaveDialog(ui.getMainStage());
-        if (file != null)
-            StorageManger.savePage(page.getData(), file.toString());
+        String data;
+        try {
+             data =  page.toBeSaved();
+            File file = fileChooser.showSaveDialog(ui.getMainStage());
+            if (file != null)
+                StorageManger.savePage(data, file.toString());
+        } catch (UnSupportedSaveType unSupportedSaveType) {
+            showErrorMessage("Error in saving" , "this type cannot be saved" , unSupportedSaveType.getMessage());
+        }
 
     }
 
@@ -250,13 +257,10 @@ public class Window {
     }
 
     public void showHistory() {
-//        Window window = ui.createNewWindow();
-//        window.setPage(new HistoryPage(window , "history" ,null));
-//        window.updateTabContent();
-//
-        Window window1 = ui.createNewWindow();
-        window1.setPage(new EditorModePage(window1, "editor", null));
-        window1.updateTabContent();
+        Window window = ui.createNewWindow();
+        window.setPage(new HistoryPage(window , "history" ,null));
+        window.updateTabContent();
+
     }
 
 
@@ -270,7 +274,6 @@ public class Window {
         alert.show();
 
     }
-    public void BookMark (){}
 
     public void showErrorMessage(String string) {
         Stage stage = new Stage();
@@ -284,6 +287,20 @@ public class Window {
         stage.show();
         button.setOnAction((e) -> stage.close());
 
+    }
+
+    public void markPage() {
+        Stage stage = new Stage();
+        stage.setTitle("bookmark");
+        Label label = new Label("type the title :");
+        TextField textField = new TextField();
+        Button button = new Button("Done");
+        button.setOnAction((e)->{
+            stage.close();
+            StorageManger.addToBookmarks(textField.getText()!=null?textField.getText():page.path ,page.path);
+        });
+        stage.setScene(new Scene(new VBox(label,textField,button)));
+        stage.show();
     }
 
 }

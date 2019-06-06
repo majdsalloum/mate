@@ -11,6 +11,10 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ParsingTest {
@@ -85,11 +89,24 @@ public class ParsingTest {
  //       System.out.println(DownloadManger.getFileName("https://www.soundjay.com/nature/rain-01.mp3"));
        // thread.start();
 
-//        StorageManger.addToHistory("www.wrer.com");
-//        StorageManger.addToHistory("www.wrer.com");
-//        StorageManger.addToHistory("www.wrer.com");
-//        LinkedList<String> his = StorageManger.getHistory();
-//        for(int i=0;i<his.size();i++)
-//            System.out.println(his.get(i));
+
+
+        URL url = new URL("https://scontent-frt3-2.xx.fbcdn.net/v/t1.0-9/62056188_1243861369109989_5683586078846484480_n.jpg?_nc_cat=105&_nc_ht=scontent-frt3-2.xx&oh=e23d531b3a0fbe0fb16ef0e2cac948dd&oe=5D86418C");
+        URLConnection urlConnection = url.openConnection();
+        urlConnection.connect();
+//        for (Map.Entry<String,List<String>> entry:urlConnection.getHeaderFields().entrySet()) {
+//            System.out.print(entry.getKey()+ " : ");
+//            for(String s : entry.getValue())
+//                System.out.print(s + " ");
+//            System.out.println();
+//        }
+        Pattern pattern = Pattern.compile("\\w+/(\\w+)");
+        Matcher matcher = pattern.matcher(urlConnection.getHeaderField("Content-type"));
+        matcher.find();
+        System.out.println(urlConnection.getHeaderField("Content-type"));
+        System.out.println("Ext : "+matcher.group(1));
+
+
+
     }
 }

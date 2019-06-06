@@ -1,13 +1,9 @@
 package network;
 
 
-import core.exceptions.InvalidContentException;
-import core.exceptions.InvalidSyntaxException;
-import gui.TextPage;
+
 import gui.Window;
 import javafx.application.Platform;
-import tests.ParsingTest;
-
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +27,6 @@ public class InternetConnection {
 //            } catch (Exception e) {
 //                try {
 //                    tryInSearchEngine();
-//                    System.out.println(url);
 //                    ParsingTest.log("add protocol header");
 //                } catch (Exception e2) {
 //                    tryInSearchEngine();
@@ -117,16 +112,16 @@ public class InternetConnection {
                     }
             );
         }
-        final String data;// = dataBuilder.toString();
-        data = "<!DOCTYPE HTML>" +
-                "<html>\n" +
-                "<body>" +
-                "Hello" +
-                "</body>" +
-                "</html>";
-        Platform.runLater(() -> {
-            window.onLoad(data, urlPath);
-        });
+//        final String data;// = dataBuilder.toString();
+//        data = "<!DOCTYPE HTML>" +
+//                "<html>\n" +
+//                "<body>" +
+//                "Hello" +
+//                "</body>" +
+//                "</html>";
+//        Platform.runLater(() -> {
+//            window.onLoad(data, urlPath);
+//        });
     }
 
     public void getPage(String urlPath) {

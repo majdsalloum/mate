@@ -8,25 +8,27 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.*;
 import javafx.scene.text.Font;
+import javafx.util.Pair;
 
 import java.util.LinkedList;
 
-public class HistoryPage extends Page{
+public class BookmarkPage extends Page{
     VBox vBox = new VBox();
-    public HistoryPage(Window window, String path, String data) {
+    public BookmarkPage(Window window, String path, String data) {
         super(window, path, data);
-        LinkedList<String> history = StorageManger.getHistory();
-        if(history==null) {
-            vBox.getChildren().add(new Label("No History Log"));
+        LinkedList<Pair<String,String>> bookmarks = StorageManger.getBookmarks();
+        if(bookmarks==null) {
+            vBox.getChildren().add(new Label("No Bookmark "));
             return;
         }
-        for (int i=0;i<history.size();i++)
+        for (int i=0;i<bookmarks.size();i++)
         {
-            Label label = new Label(history.get(i));
+            Label label = new Label(bookmarks.get(i).getKey());
+            String link = bookmarks.get(i).getValue();
             label.setFont(new Font(20));
             vBox.getChildren().add(label);
             label.setOnMouseClicked((e)->{
-                window.search(label.getText());
+                window.search(link);
             });
             label.setOnMouseEntered((e)->{
                 label.setTextFill(Color.BLUE);
@@ -44,6 +46,8 @@ public class HistoryPage extends Page{
 
     @Override
     public String toBeSaved() throws UnSupportedSaveType {
-        throw new UnSupportedSaveType("history page");
+        throw new UnSupportedSaveType("bookmark page");
     }
 }
+
+

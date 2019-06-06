@@ -63,7 +63,7 @@ public class DownloadWindow {
         Label label2 = new Label("downloaded "+ 0 + "KB from " +size/1024 + "KB");
         Button cancel = new Button("cancel");
         VBox vBox= new VBox(label1,label2,progressBar,cancel);
-        vBox.setMinSize(100,100);
+        vBox.setMinSize(200,100);
         Scene scene = new Scene(vBox);
         vBox.setAlignment(Pos.CENTER);
         cancel.setOnAction((e)->{
