@@ -3,8 +3,10 @@ package network;
 
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
+import gui.TextPage;
 import gui.Window;
 import javafx.application.Platform;
+import tests.ParsingTest;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -15,20 +17,24 @@ public class InternetConnection {
     private Window window;
     private String urlPath;
     private URL url;
-
     public InternetConnection(Window window) {
         this.window = window;
     }
 
     private void getPageLogic() {
         try {
+            Thread.sleep(1000);
 //            try {
 //                url = new URL(urlPath);
+//                ParsingTest.log("url ");
 //            } catch (Exception e) {
 //                try {
-//                    tryAddProtocol();
+//                    tryInSearchEngine();
+//                    System.out.println(url);
+//                    ParsingTest.log("add protocol header");
 //                } catch (Exception e2) {
 //                    tryInSearchEngine();
+//                    ParsingTest.log("search in engine");
 //                }
 //            }
 //
@@ -42,7 +48,7 @@ public class InternetConnection {
 //                if (line != null)
 //                    dataBuilder.append("\n");
 //            }
-            final String data;// = dataBuilder.toString();
+            final String data;//= dataBuilder.toString();
             data = "<html>\n" +
                     "<head>\n" +
                     "    <title>hello world!</title>\n" +
@@ -94,7 +100,7 @@ public class InternetConnection {
                     "        </ol></li>\n" +
                     "        <li>Save and load Html pages</li>\n" +
                     "        <li>PDF viewer</li>\n" +
-                    "        <l>Multitab</li>\n" +
+                    "        <li>Multitab</li>\n" +
                     "    </ul>\n" +
                     "</body>\n" +
                     "</html>";
@@ -102,9 +108,16 @@ public class InternetConnection {
                 try {
                     window.onLoad(data,urlPath);
                 } catch (InvalidContentException e) {
-                    window.showErrorMessage("Page Parsing error\nInvalid content exception\n"+e.getMessage());
+                    window.showErrorMessage("Error in showing page",
+                            "Page Parsing error\nInvalid content exception\n",
+                            e.getMessage());
+                    window.setPageAndUpdate(new TextPage(window , urlPath , data));
                 } catch (InvalidSyntaxException e) {
-                    window.showErrorMessage("Page Parsing error\nInvalid syntax exception\n"+e.getMessage());
+                    window.showErrorMessage("Error in showing page",
+                            "Page Parsing error\nInvalid syntax exception\n",
+                            e.getMessage());
+                    window.setPageAndUpdate(new TextPage(window , urlPath , data));
+
                 }
             });
         } catch (Exception e) {
@@ -113,7 +126,7 @@ public class InternetConnection {
                         //TODO MAKE THIS FUNCTION
                         //window.errorHappened(e);
                         try {
-                            window.onLoad("Error in Page",urlPath);
+                            window.onLoad("<html><body>Error in Page loading</body></html>",urlPath);
                         } catch (InvalidContentException e1) {
                             e1.printStackTrace();
                         } catch (InvalidSyntaxException e1) {
@@ -138,10 +151,36 @@ public class InternetConnection {
 //            url = new URL("https://"+urlPath);
 //        }
     }
+    public enum SearchEngine {
+        GOOGLE,
+        YAHOO,
+        BING
+    }
+    SearchEngine defaultSearchEngine =SearchEngine.GOOGLE;
     private void tryInSearchEngine() throws UnsupportedEncodingException, MalformedURLException {
-        String google = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";
+        String website="";
+        switch (defaultSearchEngine)
+        {
+            case BING:
+                website = "https://www.bing.com/search?q=";
+                break;
+            case YAHOO:
+                website ="https://search.yahoo.com/search?p=";
+                break;
+            case GOOGLE:
+                website = "https://www.google.com/search?q=";
+                break;
+        }
         String search = urlPath;
         String charset = "UTF-8";
-        url = new URL(google + URLEncoder.encode(search, charset));
+        url = new URL(website + URLEncoder.encode(search, charset));
+    }
+
+    public SearchEngine getDefaultSearchEngine() {
+        return defaultSearchEngine;
+    }
+
+    public void setDefaultSearchEngine(SearchEngine defaultSearchEngine) {
+        this.defaultSearchEngine = defaultSearchEngine;
     }
 }

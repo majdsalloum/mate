@@ -10,7 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
+import javafx.scene.paint.*;
 
 public class EditorModePage extends Page{
     public enum MOD
@@ -100,7 +100,7 @@ public class EditorModePage extends Page{
             root.draw(drawer);
             result= page.getContent();
         } catch (Exception e) {
-            result = new Label(e+"");
+            result = new ScrollPane(new Label(e+"" ));
         }
         finally {
             this.window.updateTabContent();

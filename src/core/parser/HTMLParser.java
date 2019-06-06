@@ -48,10 +48,11 @@ public class HTMLParser {
     }
 
     private static String removeComments(String text) throws CommentWithoutEndException {
+
         String replacedValidComments = text.replaceAll("<!--(?:.|\\s)*?-->", "");
         if (replacedValidComments.contains("<!--"))
             throw new CommentWithoutEndException("At index" + replacedValidComments.indexOf("<!--"));
-        return replacedValidComments;
+        return replacedValidComments.replaceAll("<!DOCTYPE html>","");
     }
 
     private static Integer min(Integer... list) {

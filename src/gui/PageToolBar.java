@@ -13,9 +13,9 @@ import javafx.scene.layout.Priority;
 
 public class PageToolBar {
     private ToolBar toolBar;
-    private Button backward, forward, refresh, home, search, newTabButton, disconnect;
+    private Button backward, forward, refresh, home, search, newTabButton, disconnect , bookmark;
     private TextField textSearch;
-    private MenuItem setting, newTab, downloads, newWindow, exit , loadPage , savePage;
+    private MenuItem setting, newTab, download, newWindow, exit , loadPage , savePage , HTMLEditor , bookmarks , history;
     private MenuBar menuBar;
     private Menu file;
     private final Integer ICON_SIZE = 15;
@@ -32,28 +32,32 @@ public class PageToolBar {
         backward.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//backward.png", backward);
         backward.setAccessibleHelp("backward");
+        backward.setTooltip(new Tooltip("backward"));
 
 
         forward = new Button();
         forward.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//forward.png", forward);
         forward.setAccessibleHelp("forward");
-
+        forward.setTooltip(new Tooltip("forward"));
 
         refresh = new Button();
         refresh.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//refresh1.png", refresh);
         refresh.setAccessibleHelp("refresh");
+        refresh.setTooltip(new Tooltip("refresh"));
 
         disconnect = new Button();
         disconnect.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//disconnect.png", disconnect);
+        disconnect.setTooltip(new Tooltip("disconnect"));
         //todo: work on this
 
         home = new Button();
         home.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//home1.png", home);
         home.setAccessibleHelp("home");
+        home.setTooltip(new Tooltip("home"));
 
         textSearch = new TextField();
         HBox.setHgrow(textSearch, Priority.ALWAYS);
@@ -64,7 +68,19 @@ public class PageToolBar {
         search.setPrefSize(ICON_SIZE, ICON_SIZE);
         insertImage("..\\img//search1.png", search);
         search.setAccessibleHelp("search");
+        search.setTooltip(new Tooltip("search"));
 
+        bookmark = new Button() ;
+        bookmark.setPrefSize(ICON_SIZE , ICON_SIZE);
+        insertImage("..\\img\\bookmark.png" , bookmark);
+        bookmark.setTooltip(new Tooltip("bookmark"));
+
+        newTabButton = new Button();
+        insertImage("..\\img//newtab.png", newTabButton);
+        newTabButton.setAccessibleHelp("newTabButton");
+        newTabButton.setTooltip(new Tooltip("new tab"));
+
+        //menu stuff
         menuBar = new MenuBar();
         file = new Menu();
         ImageView imageView = new ImageView(Images.menu);
@@ -72,22 +88,24 @@ public class PageToolBar {
         imageView.setFitWidth(ICON_SIZE);
         file.setGraphic(imageView);
 
+        //menu items
+
         newTab = new MenuItem("NewTab");
         newWindow = new MenuItem("NewWindow");
-        downloads = new MenuItem("Downloads");
+        download = new MenuItem("Download");
         savePage = new MenuItem("Save page");
         loadPage =new MenuItem("Load page");
         setting = new MenuItem("Setting");
         exit = new MenuItem("Exit");
-        file.getItems().addAll(newTab, newWindow, downloads,savePage,loadPage, setting, exit);
+        bookmarks = new MenuItem("Bookmarks");
+        HTMLEditor = new MenuItem("HTML editor");
+        history = new MenuItem("history");
+        file.getItems().addAll(newTab, newWindow, download,bookmarks,HTMLEditor,history,savePage,loadPage, setting, exit);
         menuBar.getMenus().addAll(file);
 
-        newTabButton = new Button();
-        insertImage("..\\img//newtab.png", newTabButton);
-        newTabButton.setAccessibleHelp("newTabButton");
-
+        //add all
         toolBar.getItems().add(new Separator());
-        toolBar.getItems().addAll(backward, forward, refresh, home, textSearch, search, newTabButton, menuBar);
+        toolBar.getItems().addAll(backward, forward, refresh, home, textSearch, search,bookmark, newTabButton, menuBar);
         setActions();
         updateAppearance();
 
@@ -101,74 +119,6 @@ public class PageToolBar {
         button.setGraphic(imageView);
     }
 
-    ///Getters/////////////////////////////////////
-    public ToolBar getToolBar() {
-        return toolBar;
-    }
-
-    public Button getBackward() {
-        return backward;
-    }
-
-    public Button getForward() {
-        return forward;
-    }
-
-    public Button getRefresh() {
-        return refresh;
-    }
-
-    public Button getHome() {
-        return home;
-    }
-
-    public Button getSearch() {
-        return search;
-    }
-
-    public Button getNewTabButton() {
-        return newTabButton;
-    }
-
-    public TextField getTextSearch() {
-        return textSearch;
-    }
-
-    public MenuItem getSetting() {
-        return setting;
-    }
-
-    public MenuItem getNewTab() {
-        return newTab;
-    }
-
-    public MenuItem getDownloads() {
-        return downloads;
-    }
-
-    public MenuItem getNewWindow() {
-        return newWindow;
-    }
-
-    public MenuItem getExit() {
-        return exit;
-    }
-
-    public MenuBar getMenuBar() {
-        return menuBar;
-    }
-
-    public Menu getFile() {
-        return file;
-    }
-
-    void setWindow(Window window) {
-        this.window = window;
-    }
-
-    public MenuItem getLoadPage() { return loadPage;}
-
-    public MenuItem getSavePage() { return savePage; }
     public void updateAppearance()
     {
         if (window.getPageIndexInSearchLog() == window.getSearchLog().size()-1)
@@ -248,8 +198,27 @@ public class PageToolBar {
             }
         });
 
-        downloads.setOnAction((e)->{
-            window.showHistory();
+        download.setOnAction((e)->{
+            DownloadWindow downloadWindow = new DownloadWindow();
+            downloadWindow.showDownloadWindow();
         });
+
+        bookmark.setOnAction((e->{
+            //todo
+        }));
+        HTMLEditor.setOnAction((e)->{
+            window.setPageAndUpdate(new EditorModePage(window , "editor" ,null));
+        });
+        history.setOnAction((e)->{
+            window.setPageAndUpdate(new HistoryPage(window , "history" ,null));
+        });
+    }
+
+    public ToolBar getToolBar() {
+        return toolBar;
+    }
+    public TextField getTextSearch(){return textSearch;}
+    public void setWindow(Window window) {
+        this.window = window;
     }
 }

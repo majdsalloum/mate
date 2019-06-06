@@ -39,6 +39,7 @@ public class FXDrawer extends Drawer {
     UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
     LinkedList<SelectionList> selectionLists = new LinkedList<>();
+    
     public FXDrawer(Tab tab, Page page, UserInterface userInterface, String baseUrl) {
         super(baseUrl);
         this.tab = tab;
@@ -63,7 +64,7 @@ public class FXDrawer extends Drawer {
     @Override
     public void drawText(String text)
     {
-        drawText(text , Font.getDefault().getSize(), Font.getDefault().getName());
+        drawText(text , 15, Font.getDefault().getName());
     }
     @Override
     public void drawText(String text  , double fontSize , String fontName) {

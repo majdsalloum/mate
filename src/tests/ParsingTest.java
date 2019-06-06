@@ -5,8 +5,11 @@ import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
 import core.tags.Tag;
+import network.DownloadManger;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.LinkedList;
 
 
@@ -64,13 +67,29 @@ public class ParsingTest {
         if(debug) System.out.println(string);
     }
     public static void main(String... args) throws Exception {
+
 //       simpleTest();
 //      simpleTestTable();
-        StorageManger.addToHistory("www.wrer.com");
-        StorageManger.addToHistory("www.wrer.com");
-        StorageManger.addToHistory("www.wrer.com");
-        LinkedList<String> his = StorageManger.getHistory();
-        for(int i=0;i<his.size();i++)
-            System.out.println(his.get(i));
+//        Thread thread = new Thread(()->{
+//            File file = new File("voice.mp3");
+//            while (true) {
+//                System.out.println(file.length());
+//                try {
+//                    Thread.sleep(500);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+        //System.out.println(DownloadManger.getFileSize("https://www.soundjay.com/nature/rain-01.mp3"));
+ //       System.out.println(DownloadManger.getFileName("https://www.soundjay.com/nature/rain-01.mp3"));
+       // thread.start();
+
+//        StorageManger.addToHistory("www.wrer.com");
+//        StorageManger.addToHistory("www.wrer.com");
+//        StorageManger.addToHistory("www.wrer.com");
+//        LinkedList<String> his = StorageManger.getHistory();
+//        for(int i=0;i<his.size();i++)
+//            System.out.println(his.get(i));
     }
 }

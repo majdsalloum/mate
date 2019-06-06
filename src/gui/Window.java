@@ -20,6 +20,7 @@ import tests.ParsingTest;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 public class Window {
     private LinkedList<String> searchLog;
@@ -109,6 +110,10 @@ public class Window {
     public void setPage(Page page) {
         this.page = page;
     }
+    public void setPageAndUpdate(Page page) {
+        this.page = page;
+        updateTabContent();
+    }
 
     public Tab getTab() {
         return tab;
@@ -121,7 +126,7 @@ public class Window {
     private int loading = 0;
 
     public void showLoading() {
-        if (loading++ > 0) {
+        if (++loading > 0) {
             ProgressIndicator progressIndicator = new ProgressIndicator();
             progressIndicator.setPrefSize(20, 20);
             tab.setGraphic(progressIndicator);
@@ -135,7 +140,6 @@ public class Window {
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(15);
             imageView.setFitWidth(15);
-            tab.setGraphic(imageView);
             tab.setGraphic(imageView);
         }
     }
@@ -234,17 +238,18 @@ public class Window {
         window1.updateTabContent();
     }
 
-    public void showErrorMessage(String string )
+    public void showErrorMessage(String title ,String header , String content )
     {
-        Stage stage = new Stage();
-        stage.setTitle("Error");
-        Label label = new Label(string);
-        Button button = new Button("Ok");
-        VBox vBox = new VBox(label,button);
-        vBox.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(vBox);
-        stage.setScene(scene);
-        stage.show();
-        button.setOnAction((e)-> stage.close());
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add((Images.getImage("..\\img\\failed.png")));
+        alert.show();
+
     }
+    public void BookMark (){
+
+    }
+
 }
