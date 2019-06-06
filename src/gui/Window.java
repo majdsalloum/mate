@@ -1,6 +1,7 @@
 package gui;
 
-import Storage.StorageManger;
+import core.render.Drawer;
+import storage.StorageManger;
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
@@ -31,7 +32,16 @@ public class Window {
     private VBox content;
     private Tab tab;
     private UserInterface ui;
+    private Tag root;
+    private Drawer drawer;
 
+    public void drawDOM() {
+        if (root == null || drawer == null) {
+            // TODO DISPLAY PROPER ERROR CAUSE PAGE ISNT RENDERED YET
+            return;
+        }
+        drawer.drawDOM(root);
+    }
     public Window(TabPane tabPane, UserInterface ui) {
         this.ui = ui;
         searchLog = new LinkedList<>();
@@ -45,7 +55,6 @@ public class Window {
         content = new VBox();
         createNewTab();
         tabPane.getTabs().add(tab);
-
         //todo add actions to buttons
     }
 
@@ -157,15 +166,19 @@ public class Window {
             page = new Page(this, path, string);
             ParsingTest.log("parsing...");
             try {
-                final Tag head = HTMLParser.compile(string);
+                root = HTMLParser.compile(string);
                 ParsingTest.log("rendering...");
                 Platform.runLater(() -> {
-                    FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
-                    head.draw(fxDrawer);
+                    drawer = new FXDrawer(tab, page, ui, searchLog.getLast());
+                    root.draw(drawer);
                     updateTabContent();
                 });
             } catch (InvalidSyntaxException | InvalidContentException e) {
                 e.printStackTrace();
+                page = new ExceptionPage(this,path,string,e);
+                root = null;
+                drawer = null;
+                Platform.runLater(this::updateTabContent);
             } finally {
                 Platform.runLater(this::hideLoading);
             }

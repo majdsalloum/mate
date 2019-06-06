@@ -15,7 +15,7 @@ public class PageToolBar {
     private ToolBar toolBar;
     private Button backward, forward, refresh, home, search, newTabButton, disconnect;
     private TextField textSearch;
-    private MenuItem setting, newTab, downloads, newWindow, exit , loadPage , savePage;
+    private MenuItem setting, newTab, downloads, newWindow, exit, loadPage, savePage, showDOM;
     private MenuBar menuBar;
     private Menu file;
     private final Integer ICON_SIZE = 15;
@@ -76,10 +76,11 @@ public class PageToolBar {
         newWindow = new MenuItem("NewWindow");
         downloads = new MenuItem("Downloads");
         savePage = new MenuItem("Save page");
-        loadPage =new MenuItem("Load page");
+        loadPage = new MenuItem("Load page");
         setting = new MenuItem("Setting");
         exit = new MenuItem("Exit");
-        file.getItems().addAll(newTab, newWindow, downloads,savePage,loadPage, setting, exit);
+        showDOM = new MenuItem("Show DOM Tree");
+        file.getItems().addAll(newTab, newWindow, downloads, showDOM, savePage, loadPage, setting, exit);
         menuBar.getMenus().addAll(file);
 
         newTabButton = new Button();
@@ -166,22 +167,26 @@ public class PageToolBar {
         this.window = window;
     }
 
-    public MenuItem getLoadPage() { return loadPage;}
+    public MenuItem getLoadPage() {
+        return loadPage;
+    }
 
-    public MenuItem getSavePage() { return savePage; }
-    public void updateAppearance()
-    {
-        if (window.getPageIndexInSearchLog() == window.getSearchLog().size()-1)
+    public MenuItem getSavePage() {
+        return savePage;
+    }
+
+    public void updateAppearance() {
+        if (window.getPageIndexInSearchLog() == window.getSearchLog().size() - 1)
             forward.setDisable(true);
         else forward.setDisable(false);
 
-        if(window.getPageIndexInSearchLog() ==0 )
+        if (window.getPageIndexInSearchLog() == 0)
             backward.setDisable(true);
         else backward.setDisable(false);
 
         if (window.getPage() instanceof Page)
             savePage.setDisable(false);
-        if(window.getPage() instanceof HomePage)
+        if (window.getPage() instanceof HomePage)
             savePage.setDisable(true);
         if (window.getPage() instanceof TextPage)
             savePage.setDisable(true);
@@ -192,64 +197,62 @@ public class PageToolBar {
         textSearch.setText(window.getPage().path);
     }
 
-    private void setActions()
-
-    {
+    private void setActions() {
         //todo : replace to set on right click
-        savePage.setOnAction((e)->
+        savePage.setOnAction((e) ->
         {
-            if(!savePage.isDisable())
-            window.savePage();
+            if (!savePage.isDisable())
+                window.savePage();
         });
-        loadPage.setOnAction((e)->{
+        loadPage.setOnAction((e) -> {
             window.loadPage();
         });
-        newTabButton.setOnAction((e)->
+        newTabButton.setOnAction((e) ->
         {
             window.getUi().createNewWindow();
         });
-        newTab.setOnAction((e)->{
+        newTab.setOnAction((e) -> {
             window.getUi().createNewWindow();
         });
         search.setOnAction((e) -> {
             String urlPath = textSearch.getText();
             window.search(urlPath);
         });
-        home.setOnAction((e)->
+        home.setOnAction((e) ->
         {
             window.setPage(new HomePage(window));
             window.updateTabContent();
         });
-        refresh.setOnAction((e)->{
+        refresh.setOnAction((e) -> {
             //todo: reload data from internet
             //todo :make it in new page
             window.updateTabContent();
         });
-        exit.setOnAction((e)->{
+        exit.setOnAction((e) -> {
             window.getUi().getMainStage().close();
         });
-        forward.setOnAction((e)->{
+        forward.setOnAction((e) -> {
         });
 
-        backward.setOnAction((e)->{
-            window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()-1);
+        backward.setOnAction((e) -> {
+            window.setPageIndexInSearchLog(window.getPageIndexInSearchLog() - 1);
             window.search(window.getSearchLog().get(window.getPageIndexInSearchLog()));
         });
 
         //todo: make sure if this correct
         textSearch.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(KeyEvent ke)
-            {
-                if (ke.getCode().equals(KeyCode.ENTER))
-                {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
                     search.getOnAction().handle(new ActionEvent());
                 }
             }
         });
 
-        downloads.setOnAction((e)->{
+        downloads.setOnAction((e) -> {
             window.showHistory();
         });
+        showDOM.setOnAction(e -> window.drawDOM());
+
     }
 }

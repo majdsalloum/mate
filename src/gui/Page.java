@@ -59,8 +59,5 @@ public class Page {
         return path;
     }
 
-    public void setDrawerPane(DrawerPane drawerPane) {
-        this.drawerPane = drawerPane;
-    }
 
 }
