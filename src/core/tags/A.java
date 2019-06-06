@@ -23,7 +23,7 @@ public class A extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.useAction(new HrefAction(href, HrefAction.Target.valueOf(target.toLowerCase())));
         for (Object i : children)
             if (i instanceof Tag)

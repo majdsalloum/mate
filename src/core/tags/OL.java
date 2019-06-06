@@ -16,7 +16,7 @@ public class OL extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawOrderedList(start,type);
         for (Object  item : children)
         {

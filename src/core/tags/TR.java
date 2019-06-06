@@ -10,7 +10,7 @@ public class TR extends Tag {
     protected final static String[] CHILDREN_TYPES = {"td","th"};
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawTableRow();
 
         for (Object item : children)

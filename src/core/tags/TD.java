@@ -9,7 +9,7 @@ public class TD extends Tag {
     protected final static String[] CHILDREN_TYPES = CommonChildren.FLOW_CONTENT;
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawTableColumn();
         for (Object item : children) {
             if (item instanceof Tag)
@@ -17,8 +17,7 @@ public class TD extends Tag {
             else
                 drawer.drawText((String) item);
         }
-        drawer.endDraTableColumn();
-
+        drawer.endDrawTableColumn();
     }
 
 

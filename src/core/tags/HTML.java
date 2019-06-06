@@ -18,7 +18,7 @@ public class HTML extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         for (Object item : children) {
             if (item instanceof Tag)
                 ((Tag) item).draw(drawer);

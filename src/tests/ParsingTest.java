@@ -1,6 +1,6 @@
 package tests;
 
-import Storage.StorageManger;
+import storage.StorageManger;
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;

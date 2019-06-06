@@ -9,7 +9,7 @@ public class OPTGROUP extends Tag {
     String label="";
     Boolean disabled=false;
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawOptionGroup(label);
         for(Object item : children)
             if (item instanceof OPTION)

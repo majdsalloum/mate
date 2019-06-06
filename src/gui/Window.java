@@ -1,11 +1,13 @@
 package gui;
 
-import Storage.StorageManger;
+import core.render.Drawer;
+import storage.StorageManger;
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
 import core.render.fx.FXDrawer;
 import core.tags.*;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -17,6 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import network.InternetConnection;
 import tests.ParsingTest;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -30,11 +33,20 @@ public class Window {
     private VBox content;
     private Tab tab;
     private UserInterface ui;
+    private Tag root;
+    private Drawer drawer;
 
+    public void drawDOM() {
+        if (root == null || drawer == null) {
+            // TODO DISPLAY PROPER ERROR CAUSE PAGE ISNT RENDERED YET
+            return;
+        }
+        drawer.drawDOM(root);
+    }
     public Window(TabPane tabPane, UserInterface ui) {
         this.ui = ui;
         searchLog = new LinkedList<>();
-       // searchLog.add("matte:\\home");
+        // searchLog.add("matte:\\home");
 
 
         page = new HomePage(this);
@@ -44,7 +56,6 @@ public class Window {
         content = new VBox();
         createNewTab();
         tabPane.getTabs().add(tab);
-
         //todo add actions to buttons
     }
 
@@ -147,25 +158,36 @@ public class Window {
     public void search(String path) {
         StorageManger.addToHistory(path);
         if (loading > 0) return;
-       // searchLog.add(path);
+        // searchLog.add(path);
         showLoading();
-       // searchLog.add(path);
+        // searchLog.add(path);
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
     }
 
-    public void onLoad(String string , String path) throws InvalidContentException, InvalidSyntaxException {
-        page=new Page(this,path,string);
-        hideLoading();
+    public void onLoad(String string, String path) {
+        (new Thread(() -> {
+            page = new Page(this, path, string);
+            ParsingTest.log("parsing...");
+            try {
+                root = HTMLParser.compile(string);
+                ParsingTest.log("rendering...");
+                Platform.runLater(() -> {
+                    drawer = new FXDrawer(tab, page, ui, searchLog.getLast());
+                    root.draw(drawer);
+                    updateTabContent();
+                });
+            } catch (InvalidSyntaxException | InvalidContentException e) {
+                e.printStackTrace();
+                page = new ExceptionPage(this,path,string,e);
+                root = null;
+                drawer = null;
+                Platform.runLater(this::updateTabContent);
+            } finally {
+                Platform.runLater(this::hideLoading);
+            }
+        })).start();
 
-        FXDrawer fxDrawer = new FXDrawer(tab, page, ui, searchLog.getLast());
-        ParsingTest.log("parsing...");
-
-        Tag head =  HTMLParser.compile(string);
-        ParsingTest.log("rendering...");
-
-        head.draw(fxDrawer);
-        updateTabContent();
     }
 
     public void loadPage() {
@@ -173,12 +195,12 @@ public class Window {
         File file = fileChooser.showOpenDialog(ui.getMainStage());
         if (file == null) return;
         String ext = null;
-        int i=file.toString().lastIndexOf(".");
-        if(i==-1){
+        int i = file.toString().lastIndexOf(".");
+        if (i == -1) {
             ext = "txt";
-        }
-        else ext=file.toString().substring(i);
+        } else ext = file.toString().substring(i);
         ParsingTest.log(ext);
+        showLoading();
         switch (ext) {
             case ".htm": {
                 String s = file.toString();
@@ -196,7 +218,7 @@ public class Window {
                 page = new PDFPage(this, file.toString(), "non");
                 updateTabContent();
                 break;
-            default: {
+            default:
                 String s = file.toString();
                 String data = "page cannot open ";
                 try {
@@ -207,36 +229,36 @@ public class Window {
                 page = new TextPage(this, file.toString(), data);
                 updateTabContent();
                 break;
-            }
         }
 
     }
-    public void savePage()
-    {
-        FileChooser fileChooser =new FileChooser();
+
+    public void savePage() {
+        FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showSaveDialog(ui.getMainStage());
-        if(file!=null)
-            StorageManger.savePage(page.getData(),file.toString());
+        if (file != null)
+            StorageManger.savePage(page.getData(), file.toString());
 
     }
-    public UserInterface getUi()
-    {
+
+    public UserInterface getUi() {
         return ui;
     }
 
     public void setPageIndexInSearchLog(Integer pageIndexInSearchLog) {
         this.pageIndexInSearchLog = pageIndexInSearchLog;
     }
-    public void showHistory()
-    {
+
+    public void showHistory() {
 //        Window window = ui.createNewWindow();
 //        window.setPage(new HistoryPage(window , "history" ,null));
 //        window.updateTabContent();
 //
-        Window window1=ui.createNewWindow();
-        window1.setPage(new EditorModePage(window1,"editor",null));
+        Window window1 = ui.createNewWindow();
+        window1.setPage(new EditorModePage(window1, "editor", null));
         window1.updateTabContent();
     }
+
 
     public void showErrorMessage(String title ,String header , String content )
     {
@@ -248,7 +270,19 @@ public class Window {
         alert.show();
 
     }
-    public void BookMark (){
+    public void BookMark (){}
+
+    public void showErrorMessage(String string) {
+        Stage stage = new Stage();
+        stage.setTitle("Error");
+        Label label = new Label(string);
+        Button button = new Button("Ok");
+        VBox vBox = new VBox(label, button);
+        vBox.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(vBox);
+        stage.setScene(scene);
+        stage.show();
+        button.setOnAction((e) -> stage.close());
 
     }
 

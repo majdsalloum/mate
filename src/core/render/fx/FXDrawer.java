@@ -7,6 +7,7 @@ import core.render.actions.Action;
 import core.render.actions.FormAction;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.*;
+import core.tags.Tag;
 import gui.Page;
 import gui.UserInterface;
 import gui.Window;
@@ -15,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -25,21 +27,21 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import tests.ParsingTest;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 
-public class FXDrawer extends Drawer {
+public class FXDrawer extends Drawer<Node> {
     Tab tab;
     Page page;
     UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
     LinkedList<SelectionList> selectionLists = new LinkedList<>();
-    
+
     public FXDrawer(Tab tab, Page page, UserInterface userInterface, String baseUrl) {
         super(baseUrl);
         this.tab = tab;
@@ -47,13 +49,15 @@ public class FXDrawer extends Drawer {
         this.ui = userInterface;
     }
 
-    private void drawNode(Node node) {
+    private Node drawNode(Node node) {
         if (parents.size() > 0) {
             parents.getLast().add(node);
         } else {
             page.getDrawerPane().getParent().getChildren().add(node);
         }
+        return node;
     }
+
     private Pane getParent() {
         if (parents.size() > 0) {
             return parents.getLast().getParent();
@@ -62,19 +66,19 @@ public class FXDrawer extends Drawer {
     }
 
     @Override
-    public void drawText(String text)
-    {
-        drawText(text , 15, Font.getDefault().getName());
+
+    public void drawText(String text) {
+        drawText(text, 15, Font.getDefault().getName());
     }
     @Override
-    public void drawText(String text  , double fontSize , String fontName) {
+    public void drawText(String text, double fontSize, String fontName) {
         Label fxText = new Label(text);
-        fxText.setFont(new Font(fontName,fontSize));
+        fxText.setFont(new Font(fontName, fontSize));
         if (hasEffect(Effect.FONT_BOLD))
             fxText.setStyle("-fx-font-weight: bold;");
         if (hasEffect(Effect.FONT_ITALIC))
             fxText.setStyle(fxText.getStyle() + " fx-font-style : italic;");
-        if(hasEffect((Effect.FONT_UNDERLINE)))
+        if (hasEffect((Effect.FONT_UNDERLINE)))
             fxText.setUnderline(true);
         if (hasAction(HrefAction.class)) {
             fxText.setStyle(fxText.getStyle() + "-fx-font-style: italic;");
@@ -82,7 +86,7 @@ public class FXDrawer extends Drawer {
             fxText.setOnMouseEntered(Styler::changeColorToActiveLink);
             fxText.setOnMouseExited(Styler::changeColorToPassiveLink);
         }
-        drawNode(fxText);
+        visibleItems.add(drawNode(fxText));
     }
 
 
@@ -104,15 +108,17 @@ public class FXDrawer extends Drawer {
             });
         }
         )).start();
+        visibleItems.add(iv);
     }
 
     private void usePane(DrawerPane drawerPane) {
         parents.addLast(drawerPane);
     }
 
-    private void unUsePane() {
+    private Pane unUsePane() {
         DrawerPane drawerPane = parents.pollLast();
-        drawNode(drawerPane.getParent());
+        return (Pane) drawNode(drawerPane.getParent());
+
     }
 
     @Override
@@ -124,25 +130,27 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawTableHeader() {
+        usePane(new DrawerPane(new FlowPane()));
         useEffect(Effect.FONT_BOLD);
     }
 
     @Override
     public void endDrawTableHeader() {
         unUseEffect(Effect.FONT_BOLD);
+        visibleItems.add(unUsePane());
     }
 
     @Override
     public void drawTableColumn() {
         ((GridDrawerPane) parents.getLast()).setCol(((GridDrawerPane) parents.getLast()).getCol() + 1);
         VBoxFlowPane vBoxFlowPane = new VBoxFlowPane();
-        vBoxFlowPane.setMarign(2,2,2,2);
+        vBoxFlowPane.setMarign(2, 2, 2, 2);
         usePane(vBoxFlowPane);
     }
 
     @Override
-    public void endDraTableColumn() {
-        unUsePane();
+    public void endDrawTableColumn() {
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -173,12 +181,12 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawOrderedList() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
     public void endDrawUnOrderedList() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -186,7 +194,7 @@ public class FXDrawer extends Drawer {
         VBoxFlowPane flowPane = new VBoxFlowPane();
         Label space = new Label();
         space.setPrefWidth(16);
-        Label space2=  new Label();
+        Label space2 = new Label();
         space2.setPrefWidth(4);
         flowPane.getParent().getChildren().add(space);
         String string = "";
@@ -194,18 +202,18 @@ public class FXDrawer extends Drawer {
             string = ((UnOrderedListDrawPane) parents.getLast()).getSymbol().getNext();
         else if (parents.getLast().getClass().equals(OrderedListDrawPane.class))
             string = ((OrderedListDrawPane) parents.getLast()).getSymbol().getNext();
-        usePane(new ListItem(space,space2 , new Label(string)));
+        usePane(new ListItem(space, space2, new Label(string)));
     }
 
     @Override
     public void endDrawListItem() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
     public void drawNewLine() {
         if (!parents.isEmpty())
-        parents.getLast().drawLine();
+            parents.getLast().drawLine();
         else page.getDrawerPane().drawLine();
     }
 
@@ -213,14 +221,14 @@ public class FXDrawer extends Drawer {
     public void drawSelectionList(Boolean multiple, String name, Integer size) {
         SelectionList selectionList = new SelectionList(multiple);
         selectionList.setSize(size);
-        FormEntry formEntry = new FormEntry(selectionList.getContent() , name);
+        FormEntry formEntry = new FormEntry(selectionList.getContent(), name);
         selectionLists.addLast(selectionList);
         //todo fix the size of list
     }
 
     @Override
     public void endDrawSelectionList() {
-        drawNode(selectionLists.pop().getContent());
+        visibleItems.add(drawNode(selectionLists.pop().getContent()));
     }
 
     @Override
@@ -230,36 +238,86 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawOptionGroup() {
-
     }
 
     @Override
     public void drawParagraph() {
         VBoxFlowPane vBoxFlowPane = new VBoxFlowPane();
-        vBoxFlowPane.setMarign(10,0,10,0);
+        vBoxFlowPane.setMarign(10, 0, 10, 0);
         usePane(vBoxFlowPane);
     }
 
     @Override
     public void endDrawParagraph() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
     public void addOption(String text, String value, Boolean disabled, Boolean selected) {
-        Button button =  new Button(text);
+        Button button = new Button(text);
         button.setUserData(value);
         button.setDisable(disabled);
-       selectionLists.getLast().addItem(button);
-       if(selected)
-           selectionLists.getLast().select(button);
+        selectionLists.getLast().addItem(button);
+        if (selected)
+            selectionLists.getLast().select(button);
+        visibleItems.add(button);
     }
+
+    private void recursiveDrawDOM(Tag tag, TreeItem<String> parent, Map<TreeItem, Tag> treeItemTagMap) {
+        treeItemTagMap.put(parent, tag);
+        for (Object element : tag.getChildren()) {
+            if (element instanceof String)
+                parent.getChildren().add(new TreeItem<>(element.toString()));
+            else {
+                TreeItem<String> newParent = new TreeItem<>(element.toString());
+                parent.getChildren().add(newParent);
+                if (((Tag) element).getChildren().isEmpty())
+                    continue;
+                newParent.setExpanded(true);
+                recursiveDrawDOM((Tag) element, newParent, treeItemTagMap);
+            }
+        }
+    }
+
+
+    @Override
+    public void drawDOM(Tag rootTag) {
+        final Map<TreeItem, Tag> treeItemTagMap = new HashMap<>();
+        TreeView<String> treeView = new TreeView<>();
+        TreeItem<String> root = new TreeItem("Document");
+        root.setExpanded(true);
+        treeView.setRoot(root);
+        recursiveDrawDOM(rootTag, root, treeItemTagMap);
+        Stage DOMStage = new Stage();
+        DOMStage.setTitle("DOM Tree View");
+        DOMStage.setScene(new Scene(new VBox() {{
+            this.getChildren().add(treeView);
+        }}));
+        treeView.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((_1, oldVal, val) -> {
+
+                    Tag meantTag = treeItemTagMap.get(val);
+                    List<Node> meantNodes = tagBaseVisibleItemsMap.get(meantTag);
+                    if (meantNodes != null) {
+                        for (Node node : visibleItems) {
+                            node.setOpacity(0.1);
+                        }
+                        for (Node node :
+                                meantNodes) {
+                            node.setOpacity(0.9);
+                        }
+                    }
+                });
+        DOMStage.show();
+    }
+
 
     @Override
     public void endDrawTable() {
-       Parent parent =  parents.getLast().getParent();
-       ((Pane) parent).setMaxWidth(parent.getBaselineOffset());//todo make sure if this correct
-        unUsePane();
+        Parent parent = parents.getLast().getParent();
+        ((Pane) parent).setMaxWidth(parent.getBaselineOffset());//todo make sure if this correct
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -272,6 +330,7 @@ public class FXDrawer extends Drawer {
     @Override
     public void endDrawCaption() {
         unUseAlignment();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -329,7 +388,7 @@ public class FXDrawer extends Drawer {
         }
         drawNode(button);
         drawNode(text);
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
 
@@ -355,7 +414,7 @@ public class FXDrawer extends Drawer {
             return;
         textField.setPromptText(placeHolder);
         textField.textProperty().addListener((o, old, newVal) -> action.setAttribute(name, new FormEntry(textField, value)));
-        drawNode(textField);
+        visibleItems.add(drawNode(textField));
     }
 
     static private class FormEntry {
@@ -381,7 +440,7 @@ public class FXDrawer extends Drawer {
                 if (formEntry.node instanceof TextInputControl) {
                     ((TextInputControl) formEntry.node).clear();
                 } else if (formEntry.node instanceof Text) {
-                    if ((formEntry.node).getUserData()!= null)
+                    if ((formEntry.node).getUserData() != null)
                         ((Text) formEntry.node).setText((formEntry.node).getUserData().toString());
                 }
             }
@@ -412,35 +471,35 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawButton() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
-    public void drawRadioInput(String name, String value,Boolean checked){
+    public void drawRadioInput(String name, String value, Boolean checked) {
         RadioButton radioButton = new RadioButton();
         radioButton.setUserData(value);
         radioButton.setSelected(checked);
         FormAction formAction = getLastAction(FormAction.class);
-        if (formAction.getFields().keySet().contains(name)){
+        if (formAction.getFields().keySet().contains(name)) {
             if (formAction.getFields().get(name) instanceof ToggleGroup) {
                 radioButton.setToggleGroup((ToggleGroup) formAction.getFields().get(name));
             }
-        } else{
+        } else {
             ToggleGroup toggleGroup = new ToggleGroup();
             //FormEntry formEntry = new FormEntry(toggleGroup , null);
-            formAction.setAttribute(name , toggleGroup);
+            formAction.setAttribute(name, toggleGroup);
             radioButton.setToggleGroup(toggleGroup);
         }
-        drawNode(radioButton);
+        visibleItems.add(drawNode(radioButton));
     }
+
     @Override
-    public void drawCheckBoxInput(String name , String value  ,Boolean checked)
-    {
+    public void drawCheckBoxInput(String name, String value, Boolean checked) {
         CheckBox checkBox = new CheckBox();
         checkBox.setUserData(value);
         checkBox.setSelected(checked);
         FormAction formAction = getLastAction(FormAction.class);
-        formAction.setAttribute(name , checkBox);
-        drawNode(checkBox);
+        formAction.setAttribute(name, checkBox);
+        visibleItems.add(drawNode(checkBox));
     }
 }

@@ -10,7 +10,7 @@ public class META extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         // META DOESN'T DRAW ANY THING
     }
 }

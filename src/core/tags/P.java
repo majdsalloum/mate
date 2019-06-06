@@ -7,7 +7,7 @@ public class P extends Tag {
     protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.joinArrays(CommonAttributes.GLOBAL_HTML_ATTRIBUTES, new String[]{"align"});
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawParagraph();
         for (Object i : children)
             if (i instanceof Tag)

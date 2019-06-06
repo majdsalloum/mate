@@ -29,7 +29,7 @@ public class INPUT extends Tag {
     protected Boolean multiple = false;
     protected Boolean checked=false;
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         if (type.equals("file"))
             drawer.drawFileInput(name, accept, multiple);
         else if (type.equals("radio"))

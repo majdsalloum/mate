@@ -56,7 +56,21 @@ abstract public class Tag {
         }
     }
 
-    abstract public void draw(Drawer drawer);
+    protected void beforeDraw(Drawer drawer) {
+        drawer.captureLink();
+    }
+
+    abstract protected void actualDraw(Drawer drawer);
+
+
+    protected void afterDraw(Drawer drawer) {
+        drawer.linkTagAndVisibleItems(this,drawer.unCaptureLinkAndGetNewAdded());
+    }
+    public void draw(Drawer drawer) {
+        beforeDraw(drawer);
+        actualDraw(drawer);
+        afterDraw(drawer);
+    }
 
     public void addChildren(Tag tag) throws InvalidContentException {
         try {

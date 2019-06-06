@@ -10,7 +10,7 @@ public class OPTION extends Tag {
     Boolean disabled=false;
     Boolean selected=false;
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         if (label.length()==0)
             label= (String) children.get(0);
         drawer.addOption(label,value,disabled,selected);

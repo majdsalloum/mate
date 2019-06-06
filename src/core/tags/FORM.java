@@ -17,7 +17,7 @@ public class FORM extends Tag {
         // TODO VALIDATE THAT NO NESTED FORMS
     }
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.useAction(new FormAction(method, action, drawer));
 
         for (Object i : children) {

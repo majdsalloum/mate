@@ -24,6 +24,7 @@ public class InternetConnection {
     private void getPageLogic() {
         try {
             Thread.sleep(1000);
+
 //            try {
 //                url = new URL(urlPath);
 //                ParsingTest.log("url ");
@@ -105,36 +106,27 @@ public class InternetConnection {
                     "</body>\n" +
                     "</html>";
             Platform.runLater(() -> {
-                try {
                     window.onLoad(data,urlPath);
-                } catch (InvalidContentException e) {
-                    window.showErrorMessage("Error in showing page",
-                            "Page Parsing error\nInvalid content exception\n",
-                            e.getMessage());
-                    window.setPageAndUpdate(new TextPage(window , urlPath , data));
-                } catch (InvalidSyntaxException e) {
-                    window.showErrorMessage("Error in showing page",
-                            "Page Parsing error\nInvalid syntax exception\n",
-                            e.getMessage());
-                    window.setPageAndUpdate(new TextPage(window , urlPath , data));
-
-                }
             });
         } catch (Exception e) {
             Platform.runLater(
                     () -> {
                         //TODO MAKE THIS FUNCTION
                         //window.errorHappened(e);
-                        try {
                             window.onLoad("<html><body>Error in Page loading</body></html>",urlPath);
-                        } catch (InvalidContentException e1) {
-                            e1.printStackTrace();
-                        } catch (InvalidSyntaxException e1) {
-                            e1.printStackTrace();
-                        }
                     }
             );
         }
+        final String data;// = dataBuilder.toString();
+        data = "<!DOCTYPE HTML>" +
+                "<html>\n" +
+                "<body>" +
+                "Hello" +
+                "</body>" +
+                "</html>";
+        Platform.runLater(() -> {
+            window.onLoad(data, urlPath);
+        });
     }
 
     public void getPage(String urlPath) {
@@ -157,6 +149,7 @@ public class InternetConnection {
         BING
     }
     SearchEngine defaultSearchEngine =SearchEngine.GOOGLE;
+
     private void tryInSearchEngine() throws UnsupportedEncodingException, MalformedURLException {
         String website="";
         switch (defaultSearchEngine)

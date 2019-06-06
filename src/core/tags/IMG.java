@@ -13,7 +13,7 @@ public class IMG extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.drawImage(src);
     }
 }

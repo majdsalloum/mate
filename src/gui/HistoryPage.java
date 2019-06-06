@@ -1,13 +1,12 @@
 package gui;
 
-import Storage.StorageManger;
+import storage.StorageManger;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.*;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import java.util.LinkedList;
 

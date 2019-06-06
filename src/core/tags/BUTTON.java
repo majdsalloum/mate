@@ -28,7 +28,7 @@ public class BUTTON extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         drawer.beginDrawButton(type.toLowerCase());
         if (value != null)
             drawer.drawInput("hidden", name, value, null);

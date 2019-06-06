@@ -10,6 +10,6 @@ public class LINK extends Tag{
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
     }
 }

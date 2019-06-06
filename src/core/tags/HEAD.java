@@ -17,7 +17,7 @@ public class HEAD extends Tag {
     }
 
     @Override
-    public void draw(Drawer drawer) {
+    public void actualDraw(Drawer drawer) {
         for (Object element : children)
             if (element instanceof Tag)
                 ((Tag) element).draw(drawer);
