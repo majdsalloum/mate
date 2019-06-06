@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 
 public class ExceptionPage extends Page {
@@ -33,6 +32,7 @@ public class ExceptionPage extends Page {
                 new ImageView(Images.getImage("..\\img\\mate_broken.png"))
         );
         VBox vBox = new VBox();
+        vBox.setSpacing(25);
         vBox.getChildren().addAll(
                 new Label("Your mate just 'maslet'") {{
                     this.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 255, 0.5f), null, null)));
@@ -41,6 +41,7 @@ public class ExceptionPage extends Page {
                 new Label(exception.toString()) {{
                     this.setBackground(new Background(new BackgroundFill(Color.rgb(255, 0, 0, 0.5f), null, null)));
                     this.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #FFF;");
+                    this.setWrapText(true);
                 }}
         );
 
