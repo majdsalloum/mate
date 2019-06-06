@@ -118,7 +118,7 @@ public class HTMLParser {
             Matcher openTagMatcher = openTag.matcher(text);
             Matcher closeTagMatcher = closeTag.matcher(text);
             Matcher openAndCloseMatcher = openAndCloseTag.matcher(text);
-            // TODO WE CAN MAKE THIS FASTER BY MAKING mass find for each tag type and include the step of finding father here
+            // TODO WE CAN MAKE THIS FASTER Including the step of finding father here
 
             while (openTagMatcher.find())
                 openTagSummaries.add(matcherToSummary(openTagMatcher));

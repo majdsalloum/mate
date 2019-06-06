@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class FXDrawer extends Drawer {
+public class FXDrawer extends Drawer<Node> {
     Tab tab;
     Page page;
     UserInterface ui;
@@ -48,12 +48,13 @@ public class FXDrawer extends Drawer {
         this.ui = userInterface;
     }
 
-    private void drawNode(Node node) {
+    private Node drawNode(Node node) {
         if (parents.size() > 0) {
             parents.getLast().add(node);
         } else {
             page.getDrawerPane().getParent().getChildren().add(node);
         }
+        return node;
     }
 
     private Pane getParent() {
@@ -84,7 +85,7 @@ public class FXDrawer extends Drawer {
             fxText.setOnMouseEntered(Styler::changeColorToActiveLink);
             fxText.setOnMouseExited(Styler::changeColorToPassiveLink);
         }
-        drawNode(fxText);
+        visibleItems.add(drawNode(fxText));
     }
 
 
@@ -106,15 +107,17 @@ public class FXDrawer extends Drawer {
             });
         }
         )).start();
+        visibleItems.add(iv);
     }
 
     private void usePane(DrawerPane drawerPane) {
         parents.addLast(drawerPane);
     }
 
-    private void unUsePane() {
+    private Pane unUsePane() {
         DrawerPane drawerPane = parents.pollLast();
-        drawNode(drawerPane.getParent());
+        return (Pane) drawNode(drawerPane.getParent());
+
     }
 
     @Override
@@ -126,12 +129,14 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void drawTableHeader() {
+        usePane(new DrawerPane(new FlowPane()));
         useEffect(Effect.FONT_BOLD);
     }
 
     @Override
     public void endDrawTableHeader() {
         unUseEffect(Effect.FONT_BOLD);
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -143,8 +148,8 @@ public class FXDrawer extends Drawer {
     }
 
     @Override
-    public void endDraTableColumn() {
-        unUsePane();
+    public void endDrawTableColumn() {
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -152,10 +157,12 @@ public class FXDrawer extends Drawer {
         GridDrawerPane p = (GridDrawerPane) parents.getLast();
         p.setRow(p.getRow() + 1);
         p.setCol(0);
+        usePane(new DrawerPane(new FlowPane()));
     }
 
     @Override
     public void endDrawTableRow() {
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -175,12 +182,12 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawOrderedList() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
     public void endDrawUnOrderedList() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -201,7 +208,7 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawListItem() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -222,7 +229,7 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawSelectionList() {
-        drawNode(selectionLists.pop().getContent());
+        visibleItems.add(drawNode(selectionLists.pop().getContent()));
     }
 
     @Override
@@ -232,7 +239,6 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawOptionGroup() {
-
     }
 
     @Override
@@ -244,7 +250,7 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawParagraph() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -255,6 +261,7 @@ public class FXDrawer extends Drawer {
         selectionLists.getLast().addItem(button);
         if (selected)
             selectionLists.getLast().select(button);
+        visibleItems.add(button);
     }
 
     private void recursiveDrawDOM(Tag tag, TreeItem<String> parent) {
@@ -288,18 +295,12 @@ public class FXDrawer extends Drawer {
         DOMStage.show();
     }
 
-    @Override
-    public void linkTag(Tag node) {
-        // TODO MAKE THIS FUNCtION
-        return;
-
-    }
 
     @Override
     public void endDrawTable() {
         Parent parent = parents.getLast().getParent();
         ((Pane) parent).setMaxWidth(parent.getBaselineOffset());//todo make sure if this correct
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -312,6 +313,7 @@ public class FXDrawer extends Drawer {
     @Override
     public void endDrawCaption() {
         unUseAlignment();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -369,7 +371,7 @@ public class FXDrawer extends Drawer {
         }
         drawNode(button);
         drawNode(text);
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
 
@@ -395,7 +397,7 @@ public class FXDrawer extends Drawer {
             return;
         textField.setPromptText(placeHolder);
         textField.textProperty().addListener((o, old, newVal) -> action.setAttribute(name, new FormEntry(textField, value)));
-        drawNode(textField);
+        visibleItems.add(drawNode(textField));
     }
 
     static private class FormEntry {
@@ -452,7 +454,7 @@ public class FXDrawer extends Drawer {
 
     @Override
     public void endDrawButton() {
-        unUsePane();
+        visibleItems.add(unUsePane());
     }
 
     @Override
@@ -471,7 +473,7 @@ public class FXDrawer extends Drawer {
             formAction.setAttribute(name, toggleGroup);
             radioButton.setToggleGroup(toggleGroup);
         }
-        drawNode(radioButton);
+        visibleItems.add(drawNode(radioButton));
     }
 
     @Override
@@ -481,6 +483,6 @@ public class FXDrawer extends Drawer {
         checkBox.setSelected(checked);
         FormAction formAction = getLastAction(FormAction.class);
         formAction.setAttribute(name, checkBox);
-        drawNode(checkBox);
+        visibleItems.add(drawNode(checkBox));
     }
 }

@@ -8,11 +8,10 @@ import core.tags.Tag;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class Drawer {
+public abstract class Drawer<BaseVisibleItem> {
     final Integer LIST_TRANSLATE_X = 32;
 
     protected int[] effectsUsages = new int[Effect.values().length];
@@ -20,6 +19,11 @@ public abstract class Drawer {
     protected LinkedList<Alignment> alignments = new LinkedList<>();
 
     protected String baseUrl;
+
+
+    protected Set<BaseVisibleItem> visibleItems = new HashSet<>();
+    protected Map<Tag, List<BaseVisibleItem>> tagBaseVisibleItemsMap = new HashMap<>();
+    protected LinkedList<List<BaseVisibleItem>> capturedLinks = new LinkedList<>();
 
     public String getRelativePath(String relativePath) {
         if (URI.create(relativePath).getScheme() == null) {
@@ -99,6 +103,37 @@ public abstract class Drawer {
         alignments.pop();
     }
 
+    public void linkTagAndVisibleItems(Tag tag, List<BaseVisibleItem> visibleItems) {
+        if (visibleItems.isEmpty())
+            return;
+        tagBaseVisibleItemsMap.put(tag, visibleItems);
+        for (BaseVisibleItem item : visibleItems) {
+            visibleItems.add(item);
+        }
+    }
+
+    public void linkTagAndVisibleItem(Tag tag, BaseVisibleItem visibleItems) {
+        linkTagAndVisibleItems(tag, new LinkedList<>() {{
+            add(visibleItems);
+        }});
+    }
+
+
+    public void captureLink() {
+        capturedLinks.addLast(
+                new ArrayList<>(visibleItems)
+        );
+    }
+
+
+    public List<BaseVisibleItem> unCaptureLinkAndGetNewAdded() {
+        List<BaseVisibleItem> lastCapture = capturedLinks.getLast();
+        capturedLinks.removeLast();
+        return new ArrayList<>(visibleItems) {{
+            this.removeAll(lastCapture);
+        }};
+    }
+
     abstract protected void resetForm(FormAction formAction);
 
     abstract protected void submitForm(FormAction formAction);
@@ -137,7 +172,7 @@ public abstract class Drawer {
 
     abstract public void drawTableColumn();
 
-    abstract public void endDraTableColumn();
+    abstract public void endDrawTableColumn();
 
     abstract public void drawTableRow();
 
@@ -173,5 +208,4 @@ public abstract class Drawer {
 
     abstract public void drawDOM(Tag root);
 
-    abstract public void linkTag(Tag node);
 }
