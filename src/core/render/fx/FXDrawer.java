@@ -71,6 +71,7 @@ public class FXDrawer extends Drawer<Node> {
     public void drawText(String text) {
         drawText(text, 15, Font.getDefault().getName());
     }
+
     @Override
     public void drawText(String text, double fontSize, String fontName) {
         Label fxText = new Label(text);
@@ -348,8 +349,15 @@ public class FXDrawer extends Drawer<Node> {
             drawerPane.getParent().setCursor(Cursor.HAND);
             HrefAction hrefAction = (HrefAction) action;
             drawerPane.getParent().setOnMouseClicked((event) -> {
-                Window window = this.ui.createNewWindow();
-                window.search(hrefAction.getLink());
+                String fullLink = getRelativePath(hrefAction.getLink());
+
+                Window window;
+                if (hrefAction.getTarget() != HrefAction.Target._blank)
+                    window = this.page.getWindow();
+                else
+                    window = this.ui.createNewWindow();
+
+                window.search(fullLink);
             });
         }
         parents.addLast(drawerPane);
