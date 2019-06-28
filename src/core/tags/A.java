@@ -11,7 +11,7 @@ public class A extends Tag {
 
     protected String href = null;
 
-    protected String target = "_blank";
+    protected String target = "_self";
 
     @Override
     void validate() throws InvalidContentException {
