@@ -225,8 +225,8 @@ public class HTMLParser {
         return tagLocationList;
     }
 
-
-    private static void setAttributes(LinkedList<TagLocation> list, String text) throws InvalidContentException {
+   // private setAttributes(LinkedList<TagLocation list> , String)
+    private static void setAttributes(LinkedList<TagLocation> list, String text)throws InvalidContentException {
         final Pattern attributePattern = Pattern.compile("(\\w+)(?:=(['\"]?)((?:.|\\s)+?)\\2)?(\\s|>|/>)");
         for (TagLocation tagLocation : list) {
             if (tagLocation.tag == null) continue;
@@ -271,7 +271,6 @@ public class HTMLParser {
 
 
     public static Tag compile(String text) throws InvalidSyntaxException, InvalidContentException {
-
         String textWithoutComments = removeComments(text);
         LinkedList<TagLocation> tagsLocations = detectTagsLocations(textWithoutComments);
         getTree(tagsLocations);

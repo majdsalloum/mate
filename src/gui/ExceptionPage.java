@@ -1,6 +1,6 @@
 package gui;
 
-import core.exceptions.UnSupportedSaveType;
+import core.exceptions.UnSupportedSaveTypeException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -51,7 +51,7 @@ public class ExceptionPage extends Page {
     }
 
     @Override
-    public String toBeSaved() throws UnSupportedSaveType {
-        throw new UnSupportedSaveType("Exception page");
+    public String toBeSaved() throws UnSupportedSaveTypeException {
+        throw new UnSupportedSaveTypeException("Exception page");
     }
 }

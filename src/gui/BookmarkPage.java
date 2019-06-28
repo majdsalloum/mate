@@ -1,7 +1,7 @@
 package gui;
 
 import Storage.StorageManger;
-import core.exceptions.UnSupportedSaveType;
+import core.exceptions.UnSupportedSaveTypeException;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -45,8 +45,8 @@ public class BookmarkPage extends Page{
     }
 
     @Override
-    public String toBeSaved() throws UnSupportedSaveType {
-        throw new UnSupportedSaveType("bookmark page");
+    public String toBeSaved() throws UnSupportedSaveTypeException {
+        throw new UnSupportedSaveTypeException("bookmark page");
     }
 }
 

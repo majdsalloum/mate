@@ -8,6 +8,7 @@ import core.render.actions.FormAction;
 import core.render.actions.HrefAction;
 import core.render.fx.panes.*;
 import core.tags.Tag;
+import gui.Images;
 import gui.Page;
 import gui.UserInterface;
 import gui.Window;
@@ -98,6 +99,7 @@ public class FXDrawer extends Drawer<Node> {
     @Override
     public void drawImage(String path) {
         final ImageView iv = new ImageView();
+        iv.setImage(Images.getImage("..\\img\\image not found.png"));
         drawNode(iv);
         page.getWindow().showLoading();
         (new Thread(() -> {
@@ -242,6 +244,11 @@ public class FXDrawer extends Drawer<Node> {
 
     @Override
     public void drawParagraph() {
+        drawParagraph(Alignment.LEFT);
+    }
+
+    @Override
+    public void drawParagraph(Alignment align) {
         VBoxFlowPane vBoxFlowPane = new VBoxFlowPane();
         vBoxFlowPane.setMarign(10, 0, 10, 0);
         usePane(vBoxFlowPane);

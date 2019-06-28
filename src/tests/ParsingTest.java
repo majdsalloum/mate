@@ -1,18 +1,13 @@
 package tests;
 
-import storage.StorageManger;
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
+import core.render.Symbols.OrderedSymbol;
 import core.tags.Tag;
-import network.DownloadManger;
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,13 +95,11 @@ public class ParsingTest {
 //                System.out.print(s + " ");
 //            System.out.println();
 //        }
-        Pattern pattern = Pattern.compile("\\w+/(\\w+)");
-        Matcher matcher = pattern.matcher(urlConnection.getHeaderField("Content-type"));
-        matcher.find();
-        System.out.println(urlConnection.getHeaderField("Content-type"));
-        System.out.println("Ext : "+matcher.group(1));
-
-
-
+//        Pattern pattern = Pattern.compile("\\w+/(\\w+)");
+//        Matcher matcher = pattern.matcher(urlConnection.getHeaderField("Content-type"));
+//        matcher.find();
+//        System.out.println(urlConnection.getHeaderField("Content-type"));
+//        System.out.println("Ext : "+matcher.group(1));
+//
     }
 }

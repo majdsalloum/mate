@@ -1,7 +1,7 @@
 package gui;
 
 import Storage.StorageManger;
-import core.exceptions.UnSupportedSaveType;
+import core.exceptions.UnSupportedSaveTypeException;
 import core.render.Drawer;
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
@@ -242,8 +242,8 @@ public class Window {
             File file = fileChooser.showSaveDialog(ui.getMainStage());
             if (file != null)
                 StorageManger.savePage(data, file.toString());
-        } catch (UnSupportedSaveType unSupportedSaveType) {
-            showErrorMessage("Error in saving" , "this type cannot be saved" , unSupportedSaveType.getMessage());
+        } catch (UnSupportedSaveTypeException unSupportedSaveTypeException) {
+            showErrorMessage("Error in saving" , "this type cannot be saved" , unSupportedSaveTypeException.getMessage());
         }
 
     }

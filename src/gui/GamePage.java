@@ -1,6 +1,6 @@
 package gui;
 
-import core.exceptions.UnSupportedSaveType;
+import core.exceptions.UnSupportedSaveTypeException;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -11,10 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.util.Builder;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -38,6 +36,7 @@ public class GamePage extends Page {
     ToolBar toolBar;
     FlowPane gameGrid;
     private void initializeGame() {
+
         player = new Player();
         scoreLabel = new Label("score 0");
         livesLabel = new Label("lives 0");
@@ -53,8 +52,16 @@ public class GamePage extends Page {
         drop.setTranslateY(dropY);
         holder.setTranslateX(holderX);
         holder.setTranslateY(holderY);
-        ((FlowPane)gameGrid).getChildren().addAll(drop , holder);
-        gameNode = new VBox(toolBar , gameGrid);
+
+        gameGrid.getChildren().addAll(drop , holder);
+        Background background= new Background(new BackgroundImage(
+                Images.getImage("..\\img\\background.png"),
+                BackgroundRepeat.REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT));
+
+        gameNode = new VBox(toolBar ,gameGrid );
 
     }
     private void refreshGame()
@@ -110,8 +117,8 @@ public class GamePage extends Page {
     }
 
     @Override
-    public String toBeSaved() throws UnSupportedSaveType {
-        throw new UnSupportedSaveType("game page");
+    public String toBeSaved() throws UnSupportedSaveTypeException {
+        throw new UnSupportedSaveTypeException("game page");
     }
 
     @Override
@@ -149,10 +156,6 @@ public class GamePage extends Page {
                     //((Circle)(t.getSource())).setTranslateY(newTranslateY);
                 }
             };
-
-
-
-
 
     class Player{
         int lives;

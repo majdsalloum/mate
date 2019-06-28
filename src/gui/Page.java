@@ -1,6 +1,6 @@
 package gui;
 
-import core.exceptions.UnSupportedSaveType;
+import core.exceptions.UnSupportedSaveTypeException;
 import core.render.fx.panes.DrawerPane;
 import core.render.fx.panes.VBoxFlowPane;
 import javafx.scene.Node;
@@ -59,7 +59,7 @@ public class Page {
         return path;
     }
 
-    public String toBeSaved() throws UnSupportedSaveType {
+    public String toBeSaved() throws UnSupportedSaveTypeException {
         return data;
     }
 

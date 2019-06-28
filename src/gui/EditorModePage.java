@@ -1,7 +1,7 @@
 package gui;
 
 
-import core.exceptions.UnSupportedSaveType;
+import core.exceptions.UnSupportedSaveTypeException;
 import core.parser.HTMLParser;
 import core.render.Drawer;
 import core.render.fx.FXDrawer;
@@ -166,7 +166,7 @@ public class EditorModePage extends Page{
     }
 
     @Override
-    public String toBeSaved() throws UnSupportedSaveType {
+    public String toBeSaved() throws UnSupportedSaveTypeException {
         return textArea.getText();
     }
 }

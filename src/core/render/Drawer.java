@@ -198,7 +198,7 @@ public abstract class Drawer<BaseVisibleItem> {
     abstract public void endDrawOptionGroup();
 
     abstract public void drawParagraph();
-
+    abstract public void drawParagraph(Alignment align);
     abstract public void endDrawParagraph();
 
     abstract public void addOption(String label, String value, Boolean disabled, Boolean selected);
