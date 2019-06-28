@@ -4,7 +4,7 @@ import core.render.Drawer;
 import core.render.Effect;
 
 public class I extends Tag{
-        protected final static String[] CHILDREN_TYPES = {};
+        protected final static String[] CHILDREN_TYPES = BODY.CHILDREN_TYPES;
         protected final static String[] SUPPORTED_ATTRIBUTES = CommonAttributes.GLOBAL_HTML_ATTRIBUTES;
 
         @Override

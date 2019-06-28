@@ -1,6 +1,8 @@
 package core.render.fx.panes;
 
+import core.render.Alignment;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.FlowPane;
@@ -32,5 +34,20 @@ public class VBoxFlowPane extends DrawerPane {
         flowPane.setMinHeight(10);
         parent.getChildren().add(flowPane);
     }
+//    @Override
+//    public void setAlign(Alignment align)
+//    {
+//
+//        switch (align)
+//        {
+//            case CENTER:
+//                ((VBox)parent).setAlignment(Pos.CENTER);
+//            case RIGHT:
+//                ((VBox)parent).setAlignment(Pos.BASELINE_RIGHT);
+//            case LEFT:
+//                ((VBox)parent).setAlignment(Pos.BASELINE_LEFT);
+//
+//        }
+//    }
 
 }

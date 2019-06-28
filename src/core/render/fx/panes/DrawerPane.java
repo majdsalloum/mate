@@ -1,5 +1,6 @@
 package core.render.fx.panes;
 
+import core.render.Alignment;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -26,4 +27,5 @@ public class DrawerPane {
     }
 
     public void setMarign(double x1, double x2 ,double x3 ,double x4){}
+    public void setAlign(Alignment align){}
 }
