@@ -10,7 +10,6 @@ public class StorageManger {
         try {
             fileWriter = new FileWriter(path);
             fileWriter.write(fileData);
-            fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
@@ -31,6 +30,8 @@ public class StorageManger {
         while ((line = bufferReader.readLine()) != null) {
             stringBuilder.append(line);
         }
+        inputFile.close();
+        bufferReader.close();
         return stringBuilder.toString();
     }
 
