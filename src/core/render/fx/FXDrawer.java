@@ -52,7 +52,7 @@ public class FXDrawer extends Drawer<Node> {
     }
 
     private Node drawNode(Node node) {
-        ParsingTest.log(node + " " + (parents.size()>0?parents.getLast():page.getDrawerPane().getParent()));
+        //ParsingTest.log(node + " " + (parents.size()>0?parents.getLast():page.getDrawerPane().getParent()));
         if (parents.size() > 0) {
             parents.getLast().add(node);
         } else {
@@ -81,7 +81,7 @@ public class FXDrawer extends Drawer<Node> {
         if (hasEffect(Effect.FONT_BOLD))
             fxText.setStyle("-fx-font-weight: bold;");
         if (hasEffect(Effect.FONT_ITALIC))
-            fxText.setStyle(fxText.getStyle() + " fx-font-style : italic;");
+            fxText.setStyle(fxText.getStyle() + "-fx-font-style : italic;");
         if (hasEffect((Effect.FONT_UNDERLINE)))
             fxText.setUnderline(true);
         if (hasAction(HrefAction.class)) {
@@ -472,11 +472,10 @@ public class FXDrawer extends Drawer<Node> {
     @Override
     public void beginDrawButton(String type) {
         final FormAction formAction = getLastAction(FormAction.class);
-        Button buttonPane = new Button();
+        StackPane buttonPane = new StackPane();
         buttonPane.setEffect(new DropShadow(10, Color.GRAY));
         buttonPane.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
         buttonPane.setPadding(new Insets(2, 2, 2, 2));
-        buttonPane.setText(type);
         buttonPane.setCursor(Cursor.HAND);
         if (formAction != null && type != null && !type.equals("button"))
             buttonPane.setOnMouseClicked(e -> {
@@ -485,7 +484,7 @@ public class FXDrawer extends Drawer<Node> {
                 else
                     resetForm(formAction);
             });
-        usePane(new DrawerPane(new StackPane(buttonPane)));
+        usePane(new DrawerPane(buttonPane));
     }
 
     @Override

@@ -129,7 +129,7 @@ public class PageToolBar {
 
     public void updateAppearance() {
 
-        if (window.getPageIndexInSearchLog() == window.getSearchLog().size() - 1)
+        if (window.getPageIndexInSearchLog() == window.getSearchLog().size()-1)
             forward.setDisable(true);
         else forward.setDisable(false);
 
@@ -179,17 +179,26 @@ public class PageToolBar {
         refresh.setOnAction((e) -> {
             //todo: reload data from internet
             //todo :make it in new page
-            window.updateTabContent();
+//            window.updateTabContent();
+            window.search(window.getPage().getPath());
         });
         exit.setOnAction((e) -> {
             window.getUi().getMainStage().close();
         });
         forward.setOnAction((e) -> {
+            if(!forward.isDisable()) {
+                window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()+1);
+                window.searchOld(window.getSearchLog().get(window.getPageIndexInSearchLog()));
+            }
         });
 
         backward.setOnAction((e) -> {
-            window.setPageIndexInSearchLog(window.getPageIndexInSearchLog() - 1);
-            window.search(window.getSearchLog().get(window.getPageIndexInSearchLog()));
+            if(!backward.isDisable()) {
+                window.setPageIndexInSearchLog(window.getPageIndexInSearchLog() - 1);
+                window.searchOld(window.getSearchLog().get(window.getPageIndexInSearchLog()));
+                System.out.println(window.getSearchLog().get(window.getPageIndexInSearchLog()));
+            }
+
         });
 
         textSearch.setOnKeyPressed(new EventHandler<KeyEvent>() {

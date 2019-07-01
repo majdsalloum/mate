@@ -38,6 +38,7 @@ public class INPUT extends Tag {
             drawer.drawCheckBoxInput(name ,value ,checked);
         else if (type.equals("reset")) {
             drawer.beginDrawButton("reset");
+            drawer.drawText("reset");
             drawer.endDrawButton();
         }
         else

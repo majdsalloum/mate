@@ -19,8 +19,8 @@ public class Page {
         this.window=window;
         this.data =data;
         this.path=path;
-        window.getSearchLog().add(path);
-        window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()+1);
+//        window.getSearchLog().add(path);
+//        window.setPageIndexInSearchLog(window.getPageIndexInSearchLog()+1);
       //  window.updateTabContent();
 
     }

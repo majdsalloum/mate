@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import tests.ParsingTest;
 
 public class VBoxFlowPane extends DrawerPane {
     FlowPane currentFlowPane;
@@ -29,6 +30,7 @@ public class VBoxFlowPane extends DrawerPane {
     }
     @Override
     public void add (Node node) {
+        ParsingTest.log(node.toString()+"   " + currentFlowPane.toString());
         //((FlowPane)parent.getChildren().get(parent.getChildren().size()-1)).getChildren().add(node);
         currentFlowPane.getChildren().add(node);
     }

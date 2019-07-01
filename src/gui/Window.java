@@ -48,7 +48,7 @@ public class Window {
     public Window(TabPane tabPane, UserInterface ui) {
         this.ui = ui;
         searchLog = new LinkedList<>();
-        // searchLog.add("matte:\\home");
+        searchLog.add("matte://home");
 
 
         page = new HomePage(this);
@@ -59,6 +59,8 @@ public class Window {
         createNewTab();
         tabPane.getTabs().add(tab);
         //todo add actions to buttons
+
+       // Deubug();
     }
 
     public void changeContent(Page page) {
@@ -158,10 +160,18 @@ public class Window {
     }
 
     public void search(String path) {
+        if (path.equals("matte://home"))
+        {
+            setPageAndUpdate(new HomePage(this));
+            return;
+        }
         StorageManger.addToHistory(path);
         if (loading > 0) return;
         // searchLog.add(path);
         showLoading();
+        searchLog.add(path);
+        pageIndexInSearchLog = searchLog.size()-1;
+
         // searchLog.add(path);
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
@@ -175,7 +185,7 @@ public class Window {
                 root = HTMLParser.compile(string);
                 ParsingTest.log("rendering...");
                 Platform.runLater(() -> {
-                    drawer = new FXDrawer(tab, page, ui, searchLog.getLast());
+                    drawer = new FXDrawer(tab, page, ui, searchLog.isEmpty()?path:searchLog.getLast());
                     root.draw(drawer);
                     updateTabContent();
                 });
@@ -332,5 +342,38 @@ public class Window {
         });
         no.setOnAction((e)-> stage.close());
     }
+    public void searchOld(String path)
+    {
+        if (path.equals("matte://home"))
+        {
+            setPageAndUpdate(new HomePage(this));
+            return;
+        }
+        StorageManger.addToHistory(path);
+        if (loading > 0) return;
+        // searchLog.add(path);
+        showLoading();
+        // searchLog.add(path);
+        InternetConnection internetConnection = new InternetConnection(this);
+        internetConnection.getPage(path);
 
+    }
+
+    private void Deubug()
+    {
+        Stage stage = new Stage();
+        Button get = new Button("get");
+        VBox vBox = new VBox();
+        Label label = new Label();
+        get.setOnAction((e)->{
+            vBox.getChildren().setAll();
+            for (String aSearchLog : searchLog)
+            {
+                vBox.getChildren().add(new Label(aSearchLog));
+                label.setText(pageIndexInSearchLog+"");
+            }
+        });
+        stage.setScene(new Scene(new ScrollPane(new VBox(get , vBox , label))));
+        stage.show();
+    }
 }
