@@ -10,12 +10,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class VBoxFlowPane extends DrawerPane {
+    FlowPane currentFlowPane;
     public VBoxFlowPane(Pane parent) {
         super(new VBox(new FlowPane(parent)));
+        currentFlowPane = (FlowPane) parent.getChildren().get(0);
+
+
     }
     public VBoxFlowPane()
     {
         super(new VBox(new FlowPane()));
+        currentFlowPane = (FlowPane) parent.getChildren().get(0);
     }
 
     @Override
@@ -24,7 +29,8 @@ public class VBoxFlowPane extends DrawerPane {
     }
     @Override
     public void add (Node node) {
-        ((FlowPane)parent.getChildren().get(parent.getChildren().size()-1)).getChildren().add(node);
+        //((FlowPane)parent.getChildren().get(parent.getChildren().size()-1)).getChildren().add(node);
+        currentFlowPane.getChildren().add(node);
     }
 
     @Override
@@ -33,6 +39,7 @@ public class VBoxFlowPane extends DrawerPane {
         FlowPane flowPane = new FlowPane();
         flowPane.setMinHeight(10);
         parent.getChildren().add(flowPane);
+        currentFlowPane=flowPane;
     }
 //    @Override
 //    public void setAlign(Alignment align)

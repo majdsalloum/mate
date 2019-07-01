@@ -28,7 +28,7 @@ public class StorageManger {
         String line;
         StringBuilder stringBuilder = new StringBuilder();
         while ((line = bufferReader.readLine()) != null) {
-            stringBuilder.append(line);
+            stringBuilder.append("\n"+line);
         }
         inputFile.close();
         bufferReader.close();

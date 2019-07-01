@@ -192,7 +192,6 @@ public class PageToolBar {
             window.search(window.getSearchLog().get(window.getPageIndexInSearchLog()));
         });
 
-        //todo: make sure if this correct
         textSearch.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
@@ -209,7 +208,7 @@ public class PageToolBar {
         });
 
         bookmark.setOnAction((e->{
-            //todo
+            window.markPage();
         }));
         HTMLEditor.setOnAction((e)->{
             window.setPageAndUpdate(new EditorModePage(window , "editor" ,null));
@@ -226,6 +225,10 @@ public class PageToolBar {
 
         game.setOnAction((e)->{
             window.setPageAndUpdate(new GamePage(window , null ,null));
+        });
+
+        newWindow.setOnAction((e)->{
+            new UserInterface().showUI();
         });
     }
 

@@ -36,6 +36,10 @@ public class INPUT extends Tag {
             drawer.drawRadioInput(name,value,checked);
         else if (type.equals("checkbox"))
             drawer.drawCheckBoxInput(name ,value ,checked);
+        else if (type.equals("reset")) {
+            drawer.beginDrawButton("reset");
+            drawer.endDrawButton();
+        }
         else
             drawer.drawInput(type, name, value, placeholder);
     }

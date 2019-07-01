@@ -2,6 +2,8 @@ package network;
 
 
 
+import tests.ParsingTest;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,6 +36,9 @@ public class DownloadManger {
         urlConnection = url.openConnection();
         urlConnection.connect();
         fileSize = urlConnection.getContentLength();
+//        if (fileSize<=0)
+//        fileSize=Integer.parseInt(urlConnection.getHeaderField("Content-Length"));
+        ParsingTest.log("file size :"+fileSize);
         String toGetName = urlConnection.getHeaderField("Content-Disposition");
         Pattern pattern = Pattern.compile("filename=\"(.+)\"");
         Matcher matcher;
@@ -42,7 +47,7 @@ public class DownloadManger {
             if(matcher.find())
                 fileName = matcher.group(1).replaceAll("\"","");}
         else
-            fileName = getRandomFileName()+"."+ getExtension();  //todo : get extension
+            fileName = getRandomFileName()+"."+ getExtension();
 
         file = new File(fileName);
     }

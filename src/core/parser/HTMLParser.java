@@ -55,7 +55,7 @@ public class HTMLParser {
         String replacedValidComments = text.replaceAll("<!--(?:.|\\s)*?-->", "");
         if (replacedValidComments.contains("<!--"))
             throw new CommentWithoutEndException("At index" + replacedValidComments.indexOf("<!--"));
-        return replacedValidComments.replaceAll("<!DOCTYPE html>","");
+        return replacedValidComments.replaceAll("<!DOCTYPE html>", "");
     }
 
     private static Integer min(Integer... list) {
@@ -175,7 +175,7 @@ public class HTMLParser {
                 if (!matchSummary.groups[1].toLowerCase().equals(tempStack.getFirst().tagText)
                         &&
                         tempStack.getFirst().tag.requiresClosing()
-                )
+                        )
                     throw new InvalidSyntaxException(tempStack.getFirst().tag.toString() + " not closed correctly");
                 else {
                     TagLocation tagLocation = tempStack.pop();
@@ -225,8 +225,8 @@ public class HTMLParser {
         return tagLocationList;
     }
 
-   // private setAttributes(LinkedList<TagLocation list> , String)
-    private static void setAttributes(LinkedList<TagLocation> list, String text)throws InvalidContentException {
+    // private setAttributes(LinkedList<TagLocation list> , String)
+    private static void setAttributes(LinkedList<TagLocation> list, String text) throws InvalidContentException {
         final Pattern attributePattern = Pattern.compile("(\\w+)(?:=(['\"]?)((?:.|\\s)+?)\\2)?(\\s|>|/>)");
         for (TagLocation tagLocation : list) {
             if (tagLocation.tag == null) continue;

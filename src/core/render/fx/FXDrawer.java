@@ -28,6 +28,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import tests.ParsingTest;
 
 import java.io.File;
 import java.util.HashMap;
@@ -51,10 +52,11 @@ public class FXDrawer extends Drawer<Node> {
     }
 
     private Node drawNode(Node node) {
+        ParsingTest.log(node + " " + (parents.size()>0?parents.getLast():page.getDrawerPane().getParent()));
         if (parents.size() > 0) {
             parents.getLast().add(node);
         } else {
-            page.getDrawerPane().getParent().getChildren().add(node);
+            page.getDrawerPane().add(node);
         }
         return node;
     }
@@ -423,6 +425,7 @@ public class FXDrawer extends Drawer<Node> {
                 textField = new TextField(value);
 
         }
+        textField.setMaxWidth(100);
         final FormAction action = getLastAction(FormAction.class);
         action.setAttribute(name, new FormEntry(textField, value));
         if (textField == null)
@@ -469,10 +472,11 @@ public class FXDrawer extends Drawer<Node> {
     @Override
     public void beginDrawButton(String type) {
         final FormAction formAction = getLastAction(FormAction.class);
-        StackPane buttonPane = new StackPane();
+        Button buttonPane = new Button();
         buttonPane.setEffect(new DropShadow(10, Color.GRAY));
         buttonPane.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
         buttonPane.setPadding(new Insets(2, 2, 2, 2));
+        buttonPane.setText(type);
         buttonPane.setCursor(Cursor.HAND);
         if (formAction != null && type != null && !type.equals("button"))
             buttonPane.setOnMouseClicked(e -> {
@@ -481,7 +485,7 @@ public class FXDrawer extends Drawer<Node> {
                 else
                     resetForm(formAction);
             });
-        usePane(new DrawerPane(buttonPane));
+        usePane(new DrawerPane(new StackPane(buttonPane)));
     }
 
     @Override

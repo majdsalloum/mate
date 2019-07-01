@@ -66,7 +66,6 @@ public class ParsingTest {
         if(debug) System.out.println(string);
     }
     public static void main(String... args) throws Exception {
-
 //       simpleTest();
 //      simpleTestTable();
 //        Thread thread = new Thread(()->{

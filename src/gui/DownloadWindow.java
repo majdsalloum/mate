@@ -104,13 +104,14 @@ public class DownloadWindow {
                     e.printStackTrace();
                 }
                 Platform.runLater(()->{
-                    label2.setText("downloaded "+ file.length()/1024 + "KB from " +size/1024 + "KB");
+                    label2.setText("downloaded "+ file.length()/1024 + "KB from " +(size>0?size/1024:"un known") + "KB");
                     progressBar.setProgress(file.length()*1.0/size);});
                 System.out.println("updated");
             }
             Platform.runLater(()->{
             cancel.setText("ok");
             label2.setText(label2.getText()  + " Download done");
+            progressBar.setProgress(1/1);
             cancel.setOnAction((e)->stage.close());});
         });
         thread.start();

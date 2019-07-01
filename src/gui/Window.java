@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -188,6 +189,8 @@ public class Window {
                 Platform.runLater(this::hideLoading);
             }
         })).start();
+        pageToolBar.getTextSearch().setText(page.path);
+
 
     }
 
@@ -202,14 +205,17 @@ public class Window {
         } else ext = file.toString().substring(i);
         ParsingTest.log(ext);
         showLoading();
+        if(ext==".html")
+            ext=new String(".htm");
         switch (ext) {
             case ".htm": {
                 String s = file.toString();
                 String data = "page not found";
                 try {
                     data = StorageManger.loadPage(s);
+                    ParsingTest.log(data);
                     onLoad(data, file.toString());
-                } catch (Exception e) {
+                } catch (IOException e) {
                     page = new TextPage(this, file.toString(), data);
                     updateTabContent();
                 }
@@ -301,6 +307,30 @@ public class Window {
         });
         stage.setScene(new Scene(new VBox(label,textField,button)));
         stage.show();
+    }
+
+    public void errorInGettingPage(String path)
+    {
+        Stage stage = new Stage();
+        stage.getIcons().add(Images.logo);
+        stage.setTitle("Error in loading page");
+        Label label = new Label("Error happened in loading page \n" +
+                "press ok to play mate game ");
+        Button ok=new Button("Ok");
+        Button no=new Button("No ,thanks");
+        HBox hBox = new HBox(ok,no);
+        hBox.setAlignment(Pos.CENTER);
+        VBox vBox= new VBox(label,hBox);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPrefSize(500,200);
+        stage.setScene(new Scene(vBox));
+        stage.show();
+        hideLoading();
+        ok.setOnAction((e)->{
+            stage.close();
+            setPageAndUpdate(new GamePage(this,path,""));
+        });
+        no.setOnAction((e)-> stage.close());
     }
 
 }

@@ -18,7 +18,6 @@ public class HomePage extends Page{
     public HomePage(Window window)
     {
         super(window,"matte://home","<html>Home page</html>");
-        //todo : edit this or create new way to Know how to open new page (page , homePage , setting ,etc...)
 
         homePage=new VBox();
         homePage.setSpacing(10);

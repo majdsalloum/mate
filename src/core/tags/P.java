@@ -29,6 +29,7 @@ public class P extends Tag {
             else
                 drawer.drawText(i.toString());
         drawer.endDrawParagraph();
+        drawer.drawNewLine();
 
     }
 

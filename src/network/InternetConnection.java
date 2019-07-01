@@ -46,15 +46,16 @@ public class InternetConnection {
                     dataBuilder.append("\n");
             }
             final String data= dataBuilder.toString();
+            ParsingTest.log(data);
             Platform.runLater(() -> {
                     window.onLoad(data,urlPath);
             });
         } catch (Exception e) {
             Platform.runLater(
                     () -> {
-                        //TODO MAKE THIS FUNCTION
                         //window.errorHappened(e);
-                            window.onLoad("<html><body>Error in Page loading</body></html>",urlPath);
+                        window.errorInGettingPage(urlPath);
+                          //  window.onLoad("<html><body>Error in Page loading</body></html>",urlPath);
                     }
             );
         }
