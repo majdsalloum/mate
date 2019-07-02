@@ -32,7 +32,7 @@ public class HomePage extends Page{
         transition.setToValue(1.0);
         //transition.setCycleCount(Animation.INDEFINITE);
         transition.play();
-        textSearch = new TextField();
+        textSearch = new TextField("http://matebrowser.atwebpages.com/home.html");
         textSearch.setMaxWidth(500);
         search = new Button("Search");
         search.setFont(Font.font(20));
@@ -42,6 +42,7 @@ public class HomePage extends Page{
             if (textSearch.getText()!=null)
             window.search(textSearch.getText());
         });
+
     }
     @Override
     public Node getContent()

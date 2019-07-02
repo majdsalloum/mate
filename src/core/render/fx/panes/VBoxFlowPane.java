@@ -1,22 +1,16 @@
 package core.render.fx.panes;
 
-import core.render.Alignment;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import tests.ParsingTest;
+import javafx.scene.paint.*;
 
 public class VBoxFlowPane extends DrawerPane {
     FlowPane currentFlowPane;
     public VBoxFlowPane(Pane parent) {
         super(new VBox(new FlowPane(parent)));
         currentFlowPane = (FlowPane) parent.getChildren().get(0);
-
-
     }
     public VBoxFlowPane()
     {

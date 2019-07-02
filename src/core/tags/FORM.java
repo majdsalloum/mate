@@ -18,6 +18,7 @@ public class FORM extends Tag {
     }
     @Override
     public void actualDraw(Drawer drawer) {
+        drawer.drawParagraph();
         drawer.useAction(new FormAction(method, action, drawer));
 
         for (Object i : children) {
@@ -28,6 +29,7 @@ public class FORM extends Tag {
         }
 
         drawer.unUseAction();
+        drawer.endDrawParagraph();
     }
 
 

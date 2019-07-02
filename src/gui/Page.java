@@ -38,9 +38,9 @@ public class Page {
 
     public Node getContent() {
         return new ScrollPane(drawerPane.getParent()) {{
-            VBox.setVgrow(this, Priority.ALWAYS);
-            this.setFitToHeight(true);
-            this.setFitToWidth(true);
+           VBox.setVgrow(this, Priority.ALWAYS);
+//            this.setFitToHeight(true);
+//            this.setFitToWidth(true);
         }};
     }
 

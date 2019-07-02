@@ -12,6 +12,7 @@ public class UL extends Tag {
     }
     @Override
     public void actualDraw(Drawer drawer) {
+       drawer.drawNewLine();
        drawer.drawUnOrderedList("disk");
        for (Object  item : children)
        {

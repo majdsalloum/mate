@@ -215,7 +215,7 @@ public class Window {
         } else ext = file.toString().substring(i);
         ParsingTest.log(ext);
         showLoading();
-        if(ext==".html")
+        if(ext.equals(".html"))
             ext=new String(".htm");
         switch (ext) {
             case ".htm": {
@@ -247,6 +247,7 @@ public class Window {
                 updateTabContent();
                 break;
         }
+        hideLoading();
 
     }
 

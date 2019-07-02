@@ -42,7 +42,7 @@ public class FXDrawer extends Drawer<Node> {
     Page page;
     UserInterface ui;
     LinkedList<DrawerPane> parents = new LinkedList<>();
-    LinkedList<SelectionList> selectionLists = new LinkedList<>();
+    LinkedList<SelectionList2> selectionLists = new LinkedList<>();
 
     public FXDrawer(Tab tab, Page page, UserInterface userInterface, String baseUrl) {
         super(baseUrl);
@@ -224,7 +224,7 @@ public class FXDrawer extends Drawer<Node> {
 
     @Override
     public void drawSelectionList(Boolean multiple, String name, Integer size) {
-        SelectionList selectionList = new SelectionList(multiple);
+        SelectionList2 selectionList = new SelectionList2(multiple);
         selectionList.setSize(size);
         FormEntry formEntry = new FormEntry(selectionList.getContent(), name);
         selectionLists.addLast(selectionList);
@@ -254,6 +254,7 @@ public class FXDrawer extends Drawer<Node> {
     public void drawParagraph(Alignment align) {
         VBoxFlowPane vBoxFlowPane = new VBoxFlowPane();
         vBoxFlowPane.setMarign(10, 0, 10, 0);
+        drawNewLine();
         usePane(vBoxFlowPane);
     }
 
@@ -264,13 +265,13 @@ public class FXDrawer extends Drawer<Node> {
 
     @Override
     public void addOption(String text, String value, Boolean disabled, Boolean selected) {
-        Button button = new Button(text);
-        button.setUserData(value);
-        button.setDisable(disabled);
-        selectionLists.getLast().addItem(button);
+        Label label = new Label(text);
+        label.setUserData(value);
+        label.setDisable(disabled);
+        selectionLists.getLast().addItem(label.getText());
         if (selected)
-            selectionLists.getLast().select(button);
-        visibleItems.add(button);
+            selectionLists.getLast().select(label.getText());
+        visibleItems.add(selectionLists.getLast().getContent());
     }
 
     private void recursiveDrawDOM(Tag tag, TreeItem<String> parent, Map<TreeItem, Tag> treeItemTagMap) {
@@ -451,18 +452,23 @@ public class FXDrawer extends Drawer<Node> {
     }
 
     protected void resetForm(FormAction formAction) {
-        Map<String, Object> fields = formAction.getFields();
-        for (Map.Entry<String, Object> field : fields.entrySet()) {
-            FormEntry formEntry = (FormEntry) field.getValue();
-            if (formEntry.node != null) {
-                if (formEntry.node instanceof TextInputControl) {
-                    ((TextInputControl) formEntry.node).clear();
-                } else if (formEntry.node instanceof Text) {
-                    if ((formEntry.node).getUserData() != null)
-                        ((Text) formEntry.node).setText((formEntry.node).getUserData().toString());
-                }
+            Map<String, Object> fields = formAction.getFields();
+            for (Map.Entry<String, Object> field : fields.entrySet()) {
+                if(field.getValue() instanceof FormEntry ){
+                FormEntry formEntry = (FormEntry) field.getValue();
+                if (formEntry.node != null) {
+                    if (formEntry.node instanceof TextInputControl) {
+                        ((TextInputControl) formEntry.node).clear();
+                    } else if (formEntry.node instanceof Text) {
+                        if ((formEntry.node).getUserData() != null)
+                            ((Text) formEntry.node).setText((formEntry.node).getUserData().toString());
+                    } }
+                } else if (field.getValue() instanceof ToggleGroup) {
+                    ((ToggleGroup)field.getValue()).getSelectedToggle().setSelected(false); }
             }
-        }
+
+
+
     }
 
     protected void submitForm(FormAction formAction) {
