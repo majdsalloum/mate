@@ -107,8 +107,11 @@ public class FXDrawer extends Drawer<Node> {
         page.getWindow().showLoading();
         (new Thread(() -> {
             Image image = new Image(getRelativePath(path));
+            if (image.isError())
+                image = Images.getImage("..\\img\\image not found.png");
+            final Image img = image;
             Platform.runLater(() -> {
-                iv.setImage(image);
+                iv.setImage(img);
                 page.getWindow().hideLoading();
             });
         }
@@ -228,7 +231,7 @@ public class FXDrawer extends Drawer<Node> {
         selectionList.setSize(size);
         FormEntry formEntry = new FormEntry(selectionList.getContent(), name);
         FormAction formAction = getLastAction(FormAction.class);
-        formAction.setAttribute(name,formEntry);
+        formAction.setAttribute(name, formEntry);
         selectionLists.addLast(selectionList);
         //todo fix the size of list
     }
@@ -454,9 +457,9 @@ public class FXDrawer extends Drawer<Node> {
     }
 
     protected void resetForm(FormAction formAction) {
-            Map<String, Object> fields = formAction.getFields();
-            for (Map.Entry<String, Object> field : fields.entrySet()) {
-                if(field.getValue() instanceof FormEntry ){
+        Map<String, Object> fields = formAction.getFields();
+        for (Map.Entry<String, Object> field : fields.entrySet()) {
+            if (field.getValue() instanceof FormEntry) {
                 FormEntry formEntry = (FormEntry) field.getValue();
                 if (formEntry.node != null) {
                     if (formEntry.node instanceof TextInputControl) {
@@ -464,22 +467,27 @@ public class FXDrawer extends Drawer<Node> {
                     } else if (formEntry.node instanceof Text) {
                         if ((formEntry.node).getUserData() != null)
                             ((Text) formEntry.node).setText((formEntry.node).getUserData().toString());
-                    }else if (formEntry.node instanceof ChoiceBox)
-                    {
+                    } else if (formEntry.node instanceof ChoiceBox) {
                         ChoiceBox<String> choiceBox = (ChoiceBox<String>) formEntry.node;
                         choiceBox.getSelectionModel().clearSelection();
                     }
                 }
-                } else if (field.getValue() instanceof ToggleGroup) {
+            } else if (field.getValue() instanceof ToggleGroup) {
 
-                    if(((ToggleGroup)field.getValue()).getSelectedToggle()!=null)
-                        ((ToggleGroup)field.getValue()).getSelectedToggle().setSelected(false);
-                }
+                if (((ToggleGroup) field.getValue()).getSelectedToggle() != null)
+                    ((ToggleGroup) field.getValue()).getSelectedToggle().setSelected(false);
             }
 
 
-
+        else if (field.getValue() instanceof ToggleGroup) {
+            ((ToggleGroup) field.getValue()).getSelectedToggle().setSelected(false);
+        }
     }
+
+}
+
+
+
 
     protected void submitForm(FormAction formAction) {
         // TODO
