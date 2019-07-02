@@ -169,8 +169,9 @@ public class Window {
         if (loading > 0) return;
         // searchLog.add(path);
         showLoading();
+        pageIndexInSearchLog = searchLog.size();
+
         searchLog.add(path);
-        pageIndexInSearchLog = searchLog.size()-1;
 
         // searchLog.add(path);
         InternetConnection internetConnection = new InternetConnection(this);
@@ -355,6 +356,7 @@ public class Window {
         // searchLog.add(path);
         showLoading();
         // searchLog.add(path);
+        searchLog.add(path);
         InternetConnection internetConnection = new InternetConnection(this);
         internetConnection.getPage(path);
 
