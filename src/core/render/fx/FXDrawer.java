@@ -227,6 +227,8 @@ public class FXDrawer extends Drawer<Node> {
         SelectionList2 selectionList = new SelectionList2(multiple);
         selectionList.setSize(size);
         FormEntry formEntry = new FormEntry(selectionList.getContent(), name);
+        FormAction formAction = getLastAction(FormAction.class);
+        formAction.setAttribute(name,formEntry);
         selectionLists.addLast(selectionList);
         //todo fix the size of list
     }
@@ -462,9 +464,17 @@ public class FXDrawer extends Drawer<Node> {
                     } else if (formEntry.node instanceof Text) {
                         if ((formEntry.node).getUserData() != null)
                             ((Text) formEntry.node).setText((formEntry.node).getUserData().toString());
-                    } }
+                    }else if (formEntry.node instanceof ChoiceBox)
+                    {
+                        ChoiceBox<String> choiceBox = (ChoiceBox<String>) formEntry.node;
+                        choiceBox.getSelectionModel().clearSelection();
+                    }
+                }
                 } else if (field.getValue() instanceof ToggleGroup) {
-                    ((ToggleGroup)field.getValue()).getSelectedToggle().setSelected(false); }
+
+                    if(((ToggleGroup)field.getValue()).getSelectedToggle()!=null)
+                        ((ToggleGroup)field.getValue()).getSelectedToggle().setSelected(false);
+                }
             }
 
 
