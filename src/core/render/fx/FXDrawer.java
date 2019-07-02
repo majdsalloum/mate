@@ -107,8 +107,11 @@ public class FXDrawer extends Drawer<Node> {
         page.getWindow().showLoading();
         (new Thread(() -> {
             Image image = new Image(getRelativePath(path));
+            if (image.isError())
+                image = Images.getImage("..\\img\\image not found.png");
+            final Image img = image;
             Platform.runLater(() -> {
-                iv.setImage(image);
+                iv.setImage(img);
                 page.getWindow().hideLoading();
             });
         }
@@ -452,9 +455,9 @@ public class FXDrawer extends Drawer<Node> {
     }
 
     protected void resetForm(FormAction formAction) {
-            Map<String, Object> fields = formAction.getFields();
-            for (Map.Entry<String, Object> field : fields.entrySet()) {
-                if(field.getValue() instanceof FormEntry ){
+        Map<String, Object> fields = formAction.getFields();
+        for (Map.Entry<String, Object> field : fields.entrySet()) {
+            if (field.getValue() instanceof FormEntry) {
                 FormEntry formEntry = (FormEntry) field.getValue();
                 if (formEntry.node != null) {
                     if (formEntry.node instanceof TextInputControl) {
@@ -462,11 +465,12 @@ public class FXDrawer extends Drawer<Node> {
                     } else if (formEntry.node instanceof Text) {
                         if ((formEntry.node).getUserData() != null)
                             ((Text) formEntry.node).setText((formEntry.node).getUserData().toString());
-                    } }
-                } else if (field.getValue() instanceof ToggleGroup) {
-                    ((ToggleGroup)field.getValue()).getSelectedToggle().setSelected(false); }
+                    }
+                }
+            } else if (field.getValue() instanceof ToggleGroup) {
+                ((ToggleGroup) field.getValue()).getSelectedToggle().setSelected(false);
             }
-
+        }
 
 
     }
