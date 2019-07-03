@@ -18,7 +18,7 @@ public class BookmarkPage extends Page{
         super(window, path, data);
         LinkedList<Pair<String,String>> bookmarks = StorageManger.getBookmarks();
         if(bookmarks==null) {
-            vBox.getChildren().add(new Label("No Bookmark "));
+            vBox.getChildren().add(new Label("No Bookmarks yet "));
             return;
         }
         for (int i=0;i<bookmarks.size();i++)

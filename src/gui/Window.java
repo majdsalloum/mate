@@ -229,12 +229,14 @@ public class Window {
                 } catch (IOException e) {
                     page = new TextPage(this, file.toString(), data);
                     updateTabContent();
+                    hideLoading();
                 }
                 break;
             }
             case ".pdf":
                 page = new PDFPage(this, file.toString(), "non");
                 updateTabContent();
+                hideLoading();
                 break;
             default:
                 String s = file.toString();
@@ -246,9 +248,9 @@ public class Window {
                 if (data == null) data = "page cannot open  ";
                 page = new TextPage(this, file.toString(), data);
                 updateTabContent();
+                hideLoading();
                 break;
         }
-        hideLoading();
 
     }
 

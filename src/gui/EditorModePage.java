@@ -160,6 +160,7 @@ public class EditorModePage extends Page{
 
     @Override
     public Node getContent() {
+        editSide.setMinWidth(window.getUi().getMainStage().getWidth()/2);
         HBox hBox = new HBox(editSide ,result);
         //hBox.setPadding(new Insets(10,10,10,10));
         return hBox;

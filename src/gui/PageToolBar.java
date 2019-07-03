@@ -236,9 +236,11 @@ public class PageToolBar {
             window.setPageAndUpdate(new GamePage(window , null ,null));
         });
 
-        newWindow.setOnAction((e)->{
-            new UserInterface().showUI();
-        });
+        newWindow.setOnAction((e)-> new UserInterface().showUI());
+
+        setting.setOnAction((e)->window.showErrorMessage("Error" , "Error in setting"
+                ,"Setting not available right now" +
+                "\nwait our new updates "));
     }
 
     public ToolBar getToolBar() {

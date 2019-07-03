@@ -6,6 +6,7 @@ import core.exceptions.InvalidSyntaxException;
 import core.exceptions.MoreThanOneRootException;
 import core.tags.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,6 +97,14 @@ public class HTMLParser {
         return new MatchSummary(matcher.start(), matcher.end(), groups);
     }
 
+//    private static void convertSymbols(String text)
+//    {
+//        try {
+//            text = java.net.URLDecoder.decode(text,"UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            text=text;
+//        }
+//    }
     private static Integer closestSummaryIndex(LinkedList<MatchSummary> summaries, int start) {
         Integer idx = Arrays.binarySearch(summaries.toArray(), new MatchSummary(start));
         if (idx < 0) idx = -1 * (idx + 1);
@@ -204,6 +213,7 @@ public class HTMLParser {
             }
             try {
                 String remainingText = text.substring(start, minStart).trim();
+//                convertSymbols(remainingText);
                 if (!remainingText.isEmpty()) {
                     TagLocation textTagLocation = new TagLocation();
                     textTagLocation.startTagBegin = start;
@@ -278,5 +288,6 @@ public class HTMLParser {
         return tagsLocations.getFirst().tag;
 
     }
+
 
 }

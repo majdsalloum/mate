@@ -26,7 +26,7 @@ public class DownloadWindow {
         TextField textField=new TextField();
 
         textField.setFont(Font.font("Segoe Print",15));
-        Label label = new Label("drop the link here");
+        Label label = new Label("paste the link here");
         label.setTextFill(Color.GREEN);
         label.setFont(Font.font("Segoe Print",40));
         Button button = new Button("ok");

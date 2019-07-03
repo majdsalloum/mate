@@ -528,7 +528,6 @@ public class FXDrawer extends Drawer<Node> {
             }
         } else {
             ToggleGroup toggleGroup = new ToggleGroup();
-            //FormEntry formEntry = new FormEntry(toggleGroup , null);
             formAction.setAttribute(name, toggleGroup);
             radioButton.setToggleGroup(toggleGroup);
         }

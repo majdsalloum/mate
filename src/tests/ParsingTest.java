@@ -3,13 +3,9 @@ package tests;
 import core.exceptions.InvalidContentException;
 import core.exceptions.InvalidSyntaxException;
 import core.parser.HTMLParser;
-import core.render.Symbols.OrderedSymbol;
 import core.tags.Tag;
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 
 public class ParsingTest {
@@ -66,6 +62,7 @@ public class ParsingTest {
         if(debug) System.out.println(string);
     }
     public static void main(String... args) throws Exception {
+
 //       simpleTest();
 //      simpleTestTable();
 //        Thread thread = new Thread(()->{
@@ -84,10 +81,10 @@ public class ParsingTest {
        // thread.start();
 
 
-
-        URL url = new URL("https://scontent-frt3-2.xx.fbcdn.net/v/t1.0-9/62056188_1243861369109989_5683586078846484480_n.jpg?_nc_cat=105&_nc_ht=scontent-frt3-2.xx&oh=e23d531b3a0fbe0fb16ef0e2cac948dd&oe=5D86418C");
-        URLConnection urlConnection = url.openConnection();
-        urlConnection.connect();
+//
+//        URL url = new URL("https://scontent-frt3-2.xx.fbcdn.net/v/t1.0-9/62056188_1243861369109989_5683586078846484480_n.jpg?_nc_cat=105&_nc_ht=scontent-frt3-2.xx&oh=e23d531b3a0fbe0fb16ef0e2cac948dd&oe=5D86418C");
+//        URLConnection urlConnection = url.openConnection();
+//        urlConnection.connect();
 //        for (Map.Entry<String,List<String>> entry:urlConnection.getHeaderFields().entrySet()) {
 //            System.out.print(entry.getKey()+ " : ");
 //            for(String s : entry.getValue())
