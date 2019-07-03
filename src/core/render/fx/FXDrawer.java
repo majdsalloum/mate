@@ -309,6 +309,11 @@ public class FXDrawer extends Drawer<Node> {
         DOMStage.setScene(new Scene(new VBox() {{
             this.getChildren().add(treeView);
         }}));
+        final HashMap<Node, String> origianlValues = new HashMap<>();
+        for (Node node : visibleItems) {
+            origianlValues.put(node, node.getStyle());
+        }
+
         treeView.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((_1, oldVal, val) -> {
@@ -317,14 +322,22 @@ public class FXDrawer extends Drawer<Node> {
                     List<Node> meantNodes = tagBaseVisibleItemsMap.get(meantTag);
                     if (meantNodes != null) {
                         for (Node node : visibleItems) {
-                            node.setOpacity(0.1);
+                            node.setStyle("-fx-background-color: white;");
                         }
                         for (Node node :
                                 meantNodes) {
-                            node.setOpacity(0.9);
+                            if (origianlValues.containsKey(node)) {
+                                node.setStyle("-fx-background-color: grey;");
+                            }
                         }
                     }
                 });
+        DOMStage.setOnCloseRequest(e -> {
+            for (Node node : visibleItems) {
+                if (origianlValues.containsKey(node))
+                    node.setStyle(origianlValues.get(node));
+            }
+        });
         DOMStage.show();
     }
 
@@ -476,17 +489,12 @@ public class FXDrawer extends Drawer<Node> {
 
                 if (((ToggleGroup) field.getValue()).getSelectedToggle() != null)
                     ((ToggleGroup) field.getValue()).getSelectedToggle().setSelected(false);
+            } else if (field.getValue() instanceof ToggleGroup) {
+                ((ToggleGroup) field.getValue()).getSelectedToggle().setSelected(false);
             }
-
-
-        else if (field.getValue() instanceof ToggleGroup) {
-            ((ToggleGroup) field.getValue()).getSelectedToggle().setSelected(false);
         }
+
     }
-
-}
-
-
 
 
     protected void submitForm(FormAction formAction) {
